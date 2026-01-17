@@ -1,110 +1,85 @@
 flowchart TB
 
-%% Root
-A[Armis API v1] --> AUTH[Authentication<br/>Access Token]
+%% ======================
+%% ROOT
+%% ======================
+ARMIS_API[Armis API v1]
 
-%% Core API Domains
-AUTH --> ALERTS[Alerts]
-AUTH --> DEVICES[Devices]
-AUTH --> USERS[Users]
-AUTH --> VULNS[Vulnerabilities]
-AUTH --> BOUNDARIES[Boundaries]
-AUTH --> INTEGRATIONS[Integrations]
-AUTH --> POLICIES[Policies]
-AUTH --> REPORTS[Reports]
-AUTH --> ROLES[Roles]
-AUTH --> SEARCH[Search]
-AUTH --> SITES[Sites]
-AUTH --> COLLECTORS[Collectors]
+%% ======================
+%% ALERTS
+%% ======================
+ARMIS_API --> ALERTS_API[Alerts]
 
-%% Alerts
-ALERTS --> ALERT_LIST[GET /alerts]
-ALERT_LIST --> ALERT_ARRAY[alerts (array)]
-ALERT_LIST --> ALERT_PAGINATION[pagination<br/>count / next / prev]
+ALERTS_API --> ALERTS_GET[GET /alerts]
+ALERTS_GET --> ALERTS_ARRAY[alerts array]
+ALERTS_GET --> ALERTS_PAGINATION[pagination]
 
-ALERTS --> ALERT_UPDATE[PUT /alerts/{alert_id}]
-ALERT_UPDATE --> ALERT_ID[alert_id<br/>path parameter]
-ALERT_UPDATE --> ALERT_STATUS[status<br/>UNHANDLED<br/>SUPPRESSED<br/>RESOLVED]
+ALERTS_API --> ALERTS_UPDATE[PUT /alerts/{alert_id}]
+ALERTS_UPDATE --> ALERT_ID[alert_id path parameter]
+ALERTS_UPDATE --> ALERT_STATUS[status value]
+ALERT_STATUS --> STATUS_UNHANDLED[UNHANDLED]
+ALERT_STATUS --> STATUS_SUPPRESSED[SUPPRESSED]
+ALERT_STATUS --> STATUS_RESOLVED[RESOLVED]
 
-%% Devices
-DEVICES --> DEVICE_LIST[GET /devices]
-DEVICE_LIST --> DEVICE_ARRAY[devices (array)]
-DEVICE_LIST --> DEVICE_PAGINATION[pagination]
+%% ======================
+%% USERS
+%% ======================
+ARMIS_API --> USERS_API[Users]
 
-DEVICE_ARRAY --> DEVICE_ID[id]
-DEVICE_ARRAY --> DEVICE_NETWORK[ip / mac]
-DEVICE_ARRAY --> DEVICE_PROTOCOLS[protocols]
-DEVICE_ARRAY --> DEVICE_OS[os / firmware]
-DEVICE_ARRAY --> DEVICE_SITE[siteId]
-DEVICE_ARRAY --> DEVICE_BOUNDARIES[boundaryIds]
-DEVICE_ARRAY --> DEVICE_TAGS[tagIds]
+USERS_API --> USERS_GET[GET /users]
+USERS_GET --> USERS_ARRAY[users array]
+USERS_GET --> USERS_PAGINATION[pagination]
 
-%% Device Sub-Resources
-DEVICES --> DEVICE_APPS[GET /device-applications]
-DEVICES --> DEVICE_PROPERTIES[GET /device-properties]
-DEVICES --> DEVICE_BOUNDARY_MAP[GET /device-boundaries]
+USERS_ARRAY --> USER_ID[id]
+USERS_ARRAY --> USER_EMAIL[email]
+USERS_ARRAY --> USER_USERNAME[username]
+USERS_ARRAY --> USER_NAME[name]
+USERS_ARRAY --> USER_ROLE[role]
+USERS_ARRAY --> USER_ACTIVE[isActive]
+USERS_ARRAY --> USER_2FA[twoFactorAuthentication]
 
-%% Vulnerabilities
-VULNS --> VULN_LIST[GET /vulnerabilities]
-VULN_LIST --> VULN_ARRAY[vulnerabilities (array)]
-VULN_LIST --> VULN_PAGINATION[pagination]
+%% ======================
+%% DEVICES
+%% ======================
+ARMIS_API --> DEVICES_API[Devices]
 
-VULN_ARRAY --> VULN_ID[id]
-VULN_ARRAY --> VULN_CVE[cve]
-VULN_ARRAY --> VULN_SEVERITY[severity]
-VULN_ARRAY --> VULN_DEVICE[deviceId]
+DEVICES_API --> DEVICES_GET[GET /devices]
+DEVICES_GET --> DEVICES_ARRAY[devices array]
+DEVICES_GET --> DEVICES_PAGINATION[pagination]
 
-%% Users
-USERS --> USER_LIST[GET /users]
-USER_LIST --> USER_ARRAY[users (array)]
-USER_LIST --> USER_PAGINATION[pagination]
+DEVICES_ARRAY --> DEVICE_ID[id]
+DEVICES_ARRAY --> DEVICE_IP[ipAddress]
+DEVICES_ARRAY --> DEVICE_MAC[macAddress]
+DEVICES_ARRAY --> DEVICE_VENDOR[vendor]
+DEVICES_ARRAY --> DEVICE_MODEL[model]
+DEVICES_ARRAY --> DEVICE_OS[operatingSystem]
+DEVICES_ARRAY --> DEVICE_RISK[riskLevel]
 
-USER_ARRAY --> USER_ID[id]
-USER_ARRAY --> USER_EMAIL[email]
-USER_ARRAY --> USER_USERNAME[username]
-USER_ARRAY --> USER_ROLE[role]
-USER_ARRAY --> USER_ACTIVE[isActive]
-USER_ARRAY --> USER_2FA[twoFactorAuthentication]
+%% ======================
+%% VULNERABILITIES
+%% ======================
+ARMIS_API --> VULNS_API[Vulnerabilities]
 
-%% Boundaries
-BOUNDARIES --> BOUNDARY_LIST[GET /boundaries]
-BOUNDARY_LIST --> BOUNDARY_ARRAY[boundaries (array)]
-BOUNDARY_LIST --> BOUNDARY_PAGINATION[pagination]
+VULNS_API --> VULNS_GET[GET /vulnerabilities]
+VULNS_GET --> VULNS_ARRAY[vulnerabilities array]
+VULNS_GET --> VULNS_PAGINATION[pagination]
 
-BOUNDARY_ARRAY --> BOUNDARY_ID[id]
-BOUNDARY_ARRAY --> BOUNDARY_NAME[name]
-BOUNDARY_ARRAY --> BOUNDARY_TYPE[type]
+VULNS_ARRAY --> VULN_ID[id]
+VULNS_ARRAY --> VULN_CVE[cve]
+VULNS_ARRAY --> VULN_SEVERITY[severity]
+VULNS_ARRAY --> VULN_STATUS[status]
 
-%% Integrations
-INTEGRATIONS --> INTEGRATION_LIST[GET /integrations]
-INTEGRATION_LIST --> INTEGRATION_ARRAY[integrations (array)]
-INTEGRATION_LIST --> INTEGRATION_PAGINATION[pagination]
+%% ======================
+%% INTEGRATIONS
+%% ======================
+ARMIS_API --> INTEGRATIONS_API[Integrations]
 
-INTEGRATION_ARRAY --> INTEGRATION_ID[id]
-INTEGRATION_ARRAY --> INTEGRATION_NAME[name]
-INTEGRATION_ARRAY --> INTEGRATION_STATE[integrationState]
-INTEGRATION_ARRAY --> INTEGRATION_STATS[statistics]
+INTEGRATIONS_API --> INTEGRATIONS_GET[GET /integrations]
+INTEGRATIONS_GET --> INTEGRATIONS_ARRAY[integrations array]
+INTEGRATIONS_GET --> INTEGRATIONS_PAGINATION[pagination]
 
-%% Policies
-POLICIES --> POLICY_LIST[GET /policies]
-POLICY_LIST --> POLICY_ARRAY[policies (array)]
-
-%% Reports
-REPORTS --> REPORT_LIST[GET /reports]
-REPORT_LIST --> REPORT_ARRAY[reports (array)]
-
-%% Roles
-ROLES --> ROLE_LIST[GET /roles]
-ROLE_LIST --> ROLE_ARRAY[roles (array)]
-
-%% Search
-SEARCH --> SEARCH_QUERY[POST /search]
-SEARCH_QUERY --> SEARCH_RESULTS[results (array)]
-
-%% Sites
-SITES --> SITE_LIST[GET /sites]
-SITE_LIST --> SITE_ARRAY[sites (array)]
-
-%% Collectors
-COLLECTORS --> COLLECTOR_LIST[GET /collectors]
-COLLECTOR_LIST --> COLLECTOR_ARRAY[collectors (array)]
+INTEGRATIONS_ARRAY --> INTEGRATION_ID[id]
+INTEGRATIONS_ARRAY --> INTEGRATION_NAME[name]
+INTEGRATIONS_ARRAY --> INTEGRATION_STATE[integrationState]
+INTEGRATIONS_ARRAY --> INTEGRATION_LASTRUN[lastRunEnd]
+INTEGRATIONS_ARRAY --> INTEGRATION_STATS[statistics]
