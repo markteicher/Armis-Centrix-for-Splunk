@@ -1,85 +1,67 @@
 flowchart TB
 
-%% ======================
-%% ROOT
-%% ======================
-ARMIS_API[Armis API v1]
+ARMIS_API["Armis API v1"]
 
-%% ======================
 %% ALERTS
-%% ======================
-ARMIS_API --> ALERTS_API[Alerts]
+ARMIS_API --> ALERTS_API["Alerts"]
 
-ALERTS_API --> ALERTS_GET[GET /alerts]
-ALERTS_GET --> ALERTS_ARRAY[alerts array]
-ALERTS_GET --> ALERTS_PAGINATION[pagination]
+ALERTS_API --> ALERTS_LIST["List Alerts"]
+ALERTS_LIST --> ALERTS_ARRAY["alerts array"]
+ALERTS_LIST --> ALERTS_PAGINATION["pagination object"]
 
-ALERTS_API --> ALERTS_UPDATE[PUT /alerts/{alert_id}]
-ALERTS_UPDATE --> ALERT_ID[alert_id path parameter]
-ALERTS_UPDATE --> ALERT_STATUS[status value]
-ALERT_STATUS --> STATUS_UNHANDLED[UNHANDLED]
-ALERT_STATUS --> STATUS_SUPPRESSED[SUPPRESSED]
-ALERT_STATUS --> STATUS_RESOLVED[RESOLVED]
+ALERTS_API --> ALERTS_UPDATE["Update Alert Status"]
+ALERTS_UPDATE --> ALERT_ID["alert_id path parameter"]
+ALERTS_UPDATE --> ALERT_STATUS["status value"]
 
-%% ======================
+ALERT_STATUS --> STATUS_UNHANDLED["UNHANDLED"]
+ALERT_STATUS --> STATUS_SUPPRESSED["SUPPRESSED"]
+ALERT_STATUS --> STATUS_RESOLVED["RESOLVED"]
+
 %% USERS
-%% ======================
-ARMIS_API --> USERS_API[Users]
+ARMIS_API --> USERS_API["Users"]
 
-USERS_API --> USERS_GET[GET /users]
-USERS_GET --> USERS_ARRAY[users array]
-USERS_GET --> USERS_PAGINATION[pagination]
+USERS_API --> USERS_LIST["List Users"]
+USERS_LIST --> USERS_ARRAY["users array"]
+USERS_LIST --> USERS_PAGINATION["pagination object"]
 
-USERS_ARRAY --> USER_ID[id]
-USERS_ARRAY --> USER_EMAIL[email]
-USERS_ARRAY --> USER_USERNAME[username]
-USERS_ARRAY --> USER_NAME[name]
-USERS_ARRAY --> USER_ROLE[role]
-USERS_ARRAY --> USER_ACTIVE[isActive]
-USERS_ARRAY --> USER_2FA[twoFactorAuthentication]
+USERS_ARRAY --> USER_ID["id"]
+USERS_ARRAY --> USER_EMAIL["email"]
+USERS_ARRAY --> USER_USERNAME["username"]
+USERS_ARRAY --> USER_ROLE["role"]
+USERS_ARRAY --> USER_ACTIVE["isActive"]
 
-%% ======================
 %% DEVICES
-%% ======================
-ARMIS_API --> DEVICES_API[Devices]
+ARMIS_API --> DEVICES_API["Devices"]
 
-DEVICES_API --> DEVICES_GET[GET /devices]
-DEVICES_GET --> DEVICES_ARRAY[devices array]
-DEVICES_GET --> DEVICES_PAGINATION[pagination]
+DEVICES_API --> DEVICES_LIST["List Devices"]
+DEVICES_LIST --> DEVICES_ARRAY["devices array"]
+DEVICES_LIST --> DEVICES_PAGINATION["pagination object"]
 
-DEVICES_ARRAY --> DEVICE_ID[id]
-DEVICES_ARRAY --> DEVICE_IP[ipAddress]
-DEVICES_ARRAY --> DEVICE_MAC[macAddress]
-DEVICES_ARRAY --> DEVICE_VENDOR[vendor]
-DEVICES_ARRAY --> DEVICE_MODEL[model]
-DEVICES_ARRAY --> DEVICE_OS[operatingSystem]
-DEVICES_ARRAY --> DEVICE_RISK[riskLevel]
+DEVICES_ARRAY --> DEVICE_ID["id"]
+DEVICES_ARRAY --> DEVICE_IP["ipAddress"]
+DEVICES_ARRAY --> DEVICE_VENDOR["vendor"]
+DEVICES_ARRAY --> DEVICE_MODEL["model"]
+DEVICES_ARRAY --> DEVICE_RISK["riskLevel"]
 
-%% ======================
 %% VULNERABILITIES
-%% ======================
-ARMIS_API --> VULNS_API[Vulnerabilities]
+ARMIS_API --> VULNS_API["Vulnerabilities"]
 
-VULNS_API --> VULNS_GET[GET /vulnerabilities]
-VULNS_GET --> VULNS_ARRAY[vulnerabilities array]
-VULNS_GET --> VULNS_PAGINATION[pagination]
+VULNS_API --> VULNS_LIST["List Vulnerabilities"]
+VULNS_LIST --> VULNS_ARRAY["vulnerabilities array"]
+VULNS_LIST --> VULNS_PAGINATION["pagination object"]
 
-VULNS_ARRAY --> VULN_ID[id]
-VULNS_ARRAY --> VULN_CVE[cve]
-VULNS_ARRAY --> VULN_SEVERITY[severity]
-VULNS_ARRAY --> VULN_STATUS[status]
+VULNS_ARRAY --> VULN_ID["id"]
+VULNS_ARRAY --> VULN_CVE["cve"]
+VULNS_ARRAY --> VULN_SEVERITY["severity"]
 
-%% ======================
 %% INTEGRATIONS
-%% ======================
-ARMIS_API --> INTEGRATIONS_API[Integrations]
+ARMIS_API --> INTEGRATIONS_API["Integrations"]
 
-INTEGRATIONS_API --> INTEGRATIONS_GET[GET /integrations]
-INTEGRATIONS_GET --> INTEGRATIONS_ARRAY[integrations array]
-INTEGRATIONS_GET --> INTEGRATIONS_PAGINATION[pagination]
+INTEGRATIONS_API --> INTEGRATIONS_LIST["List Integrations"]
+INTEGRATIONS_LIST --> INTEGRATIONS_ARRAY["integrations array"]
+INTEGRATIONS_LIST --> INTEGRATIONS_PAGINATION["pagination object"]
 
-INTEGRATIONS_ARRAY --> INTEGRATION_ID[id]
-INTEGRATIONS_ARRAY --> INTEGRATION_NAME[name]
-INTEGRATIONS_ARRAY --> INTEGRATION_STATE[integrationState]
-INTEGRATIONS_ARRAY --> INTEGRATION_LASTRUN[lastRunEnd]
-INTEGRATIONS_ARRAY --> INTEGRATION_STATS[statistics]
+INTEGRATIONS_ARRAY --> INTEGRATION_ID["id"]
+INTEGRATIONS_ARRAY --> INTEGRATION_NAME["name"]
+INTEGRATIONS_ARRAY --> INTEGRATION_STATE["integrationState"]
+INTEGRATIONS_ARRAY --> INTEGRATION_LASTRUN["lastRunEnd"]
