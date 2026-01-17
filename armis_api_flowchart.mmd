@@ -1,44 +1,100 @@
 flowchart TD
 
-%% ======================
-%% Alerts
-%% ======================
+%% ROOT
+API[Armis API v1]
 
-Alerts["Alerts"]
+%% ALERTS
+API --> AlertsList[GET /api/v1/alerts]
+AlertsList --> AlertsData[data]
+AlertsData --> AlertsArray[alerts[]]
 
-AlertID["alert_id (path)\nRequired"]
-AlertStatus["status (formData)\nRequired\nValues:\n- UNHANDLED\n- SUPPRESSED\n- RESOLVED"]
+AlertsArray --> AlertID[id]
+AlertsArray --> AlertSeverity[severity]
+AlertsArray --> AlertStatus[status]
+AlertsArray --> AlertType[type]
+AlertsArray --> AlertConfidence[confidence]
+AlertsArray --> AlertTimestamp[timestamp]
+AlertsArray --> AlertDevice[device]
+AlertsArray --> AlertSite[site]
 
-Alerts --> AlertID
-Alerts --> AlertStatus
+%% ALERT ACTION (STATUS UPDATE)
+API --> AlertUpdate[PUT /api/v1/alerts/{alert_id}]
+AlertUpdate --> AlertPathID[alert_id (path)]
+AlertUpdate --> AlertStatusForm[status (formData)]
+AlertStatusForm --> StatusValues[UNHANDLED | SUPPRESSED | RESOLVED]
 
-%% ======================
-%% Users
-%% ======================
+%% USERS
+API --> UsersList[GET /api/v1/users]
+UsersList --> UsersData[data]
+UsersData --> UsersArray[users[]]
 
-Users["Users"]
+UsersArray --> UserID[id]
+UsersArray --> UserEmail[email]
+UsersArray --> Username[username]
+UsersArray --> UserName[name]
+UsersArray --> UserActive[isActive]
+UsersArray --> UserRole[role]
+UsersArray --> UserTitle[title]
+UsersArray --> UserLocation[location]
+UsersArray --> UserPhone[phone]
+UsersArray --> User2FA[twoFactorAuthentication]
 
-UsersEndpoint["GET /api/v1/users"]
+%% DEVICES
+API --> DevicesList[GET /api/v1/devices]
+DevicesList --> DevicesData[data]
+DevicesData --> DevicesArray[devices[]]
 
-Users --> UsersEndpoint
+DevicesArray --> DeviceID[id]
+DevicesArray --> DeviceIP[ip]
+DevicesArray --> DeviceMAC[mac]
+DevicesArray --> DeviceType[type]
+DevicesArray --> DeviceVendor[vendor]
+DevicesArray --> DeviceModel[model]
+DevicesArray --> DeviceOS[operatingSystem]
+DevicesArray --> DeviceSite[site]
+DevicesArray --> DeviceRisk[riskLevel]
+DevicesArray --> DeviceFirstSeen[firstSeen]
+DevicesArray --> DeviceLastSeen[lastSeen]
 
-UsersEndpoint --> UsersData["data"]
+%% BOUNDARIES
+API --> BoundariesList[GET /api/v1/boundaries]
+BoundariesList --> BoundariesData[data]
+BoundariesData --> BoundariesArray[boundaries[]]
 
-UsersData --> UsersList["users[]"]
+BoundariesArray --> BoundaryID[id]
+BoundariesArray --> BoundaryName[name]
+BoundariesArray --> BoundaryType[type]
+BoundariesArray --> BoundaryNetwork[network]
 
-UsersList --> UserObject["user"]
+%% INTEGRATIONS
+API --> IntegrationsList[GET /api/v1/integrations]
+IntegrationsList --> IntegrationsData[data]
+IntegrationsData --> IntegrationsArray[integrations[]]
 
-UserObject --> UserID["id"]
-UserObject --> UserEmail["email"]
-UserObject --> UserUsername["username"]
-UserObject --> UserName["name"]
-UserObject --> UserIsActive["isActive"]
-UserObject --> UserRole["role"]
-UserObject --> UserTitle["title"]
-UserObject --> UserLocation["location"]
-UserObject --> UserPhone["phone"]
-UserObject --> User2FA["twoFactorAuthentication"]
-UserObject --> UserReportPerms["reportPermissions"]
+IntegrationsArray --> IntegrationID[id]
+IntegrationsArray --> IntegrationName[name]
+IntegrationsArray --> IntegrationState[integrationState]
+IntegrationsArray --> IntegrationInstance[instance]
+IntegrationsArray --> IntegrationStats[statistics]
+IntegrationsArray --> IntegrationLastRun[lastRunEnd]
 
-UserObject --> RoleAssignment["roleAssignment[]"]
-RoleAssignment --> RoleNames["name[]"]
+%% POLICIES
+API --> PoliciesList[GET /api/v1/policies]
+PoliciesList --> PoliciesData[data]
+PoliciesData --> PoliciesArray[policies[]]
+
+PoliciesArray --> PolicyID[id]
+PoliciesArray --> PolicyName[name]
+PoliciesArray --> PolicyStatus[status]
+PoliciesArray --> PolicySeverity[severity]
+
+%% VULNERABILITIES
+API --> VulnsList[GET /api/v1/vulnerabilities]
+VulnsList --> VulnsData[data]
+VulnsData --> VulnsArray[vulnerabilities[]]
+
+VulnsArray --> VulnID[id]
+VulnsArray --> VulnCVE[cve]
+VulnsArray --> VulnSeverity[severity]
+VulnsArray --> VulnDevice[device]
+VulnsArray --> VulnStatus[status]
