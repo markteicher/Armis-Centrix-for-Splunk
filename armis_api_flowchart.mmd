@@ -1,67 +1,124 @@
-flowchart TB
+flowchart LR
 
-ARMIS_API["Armis API v1"]
+%% =====================
+%% CORE ENTRY
+%% =====================
+API[Armis API v1]
 
+%% =====================
 %% ALERTS
-ARMIS_API --> ALERTS_API["Alerts"]
+%% =====================
+API --> ALERTS_ENDPOINT[Alerts Endpoint]
+ALERTS_ENDPOINT --> ALERTS_LIST[Alerts Collection]
+ALERTS_LIST --> ALERT[Alert]
+ALERT --> ALERT_ID[alert_id]
+ALERT --> ALERT_STATUS[status]
+ALERT_STATUS --> STATUS_UNHANDLED[UNHANDLED]
+ALERT_STATUS --> STATUS_SUPPRESSED[SUPPRESSED]
+ALERT_STATUS --> STATUS_RESOLVED
 
-ALERTS_API --> ALERTS_LIST["List Alerts"]
-ALERTS_LIST --> ALERTS_ARRAY["alerts array"]
-ALERTS_LIST --> ALERTS_PAGINATION["pagination object"]
-
-ALERTS_API --> ALERTS_UPDATE["Update Alert Status"]
-ALERTS_UPDATE --> ALERT_ID["alert_id path parameter"]
-ALERTS_UPDATE --> ALERT_STATUS["status value"]
-
-ALERT_STATUS --> STATUS_UNHANDLED["UNHANDLED"]
-ALERT_STATUS --> STATUS_SUPPRESSED["SUPPRESSED"]
-ALERT_STATUS --> STATUS_RESOLVED["RESOLVED"]
-
-%% USERS
-ARMIS_API --> USERS_API["Users"]
-
-USERS_API --> USERS_LIST["List Users"]
-USERS_LIST --> USERS_ARRAY["users array"]
-USERS_LIST --> USERS_PAGINATION["pagination object"]
-
-USERS_ARRAY --> USER_ID["id"]
-USERS_ARRAY --> USER_EMAIL["email"]
-USERS_ARRAY --> USER_USERNAME["username"]
-USERS_ARRAY --> USER_ROLE["role"]
-USERS_ARRAY --> USER_ACTIVE["isActive"]
-
+%% =====================
 %% DEVICES
-ARMIS_API --> DEVICES_API["Devices"]
+%% =====================
+API --> DEVICES_ENDPOINT[Devices Endpoint]
+DEVICES_ENDPOINT --> DEVICES_LIST[Devices Collection]
+DEVICES_LIST --> DEVICE[Device]
+DEVICE --> DEVICE_ID[device_id]
+DEVICE --> DEVICE_NAME[name]
+DEVICE --> DEVICE_IP[ip_address]
+DEVICE --> DEVICE_MAC[mac_address]
+DEVICE --> DEVICE_OS[operating_system]
+DEVICE --> DEVICE_RISK[risk_level]
+DEVICE --> DEVICE_SITE[site]
+DEVICE --> DEVICE_TAGS[tags]
+DEVICE --> DEVICE_BOUNDARIES[boundaries]
 
-DEVICES_API --> DEVICES_LIST["List Devices"]
-DEVICES_LIST --> DEVICES_ARRAY["devices array"]
-DEVICES_LIST --> DEVICES_PAGINATION["pagination object"]
-
-DEVICES_ARRAY --> DEVICE_ID["id"]
-DEVICES_ARRAY --> DEVICE_IP["ipAddress"]
-DEVICES_ARRAY --> DEVICE_VENDOR["vendor"]
-DEVICES_ARRAY --> DEVICE_MODEL["model"]
-DEVICES_ARRAY --> DEVICE_RISK["riskLevel"]
-
+%% =====================
 %% VULNERABILITIES
-ARMIS_API --> VULNS_API["Vulnerabilities"]
+%% =====================
+API --> VULNS_ENDPOINT[Vulnerabilities Endpoint]
+VULNS_ENDPOINT --> VULNS_LIST[Vulnerabilities Collection]
+VULNS_LIST --> VULN[Vulnerability]
+VULN --> VULN_DEVICE_ID[device_id]
+VULN --> VULN_CVE[cve_uid]
+VULN --> VULN_ADVISORY[advisory_id]
+VULN --> VULN_STATUS[status]
+VULN --> VULN_AVM[avm_rating]
+VULN --> VULN_REMEDIATION[remediation_types]
+VULN --> VULN_MATCH_SOURCE[match_source]
+VULN --> VULN_STATUS_TIME[status_change_time]
 
-VULNS_API --> VULNS_LIST["List Vulnerabilities"]
-VULNS_LIST --> VULNS_ARRAY["vulnerabilities array"]
-VULNS_LIST --> VULNS_PAGINATION["pagination object"]
+DEVICE --> VULN
 
-VULNS_ARRAY --> VULN_ID["id"]
-VULNS_ARRAY --> VULN_CVE["cve"]
-VULNS_ARRAY --> VULN_SEVERITY["severity"]
+%% =====================
+%% BOUNDARIES
+%% =====================
+API --> BOUNDARIES_ENDPOINT[Boundaries Endpoint]
+BOUNDARIES_ENDPOINT --> BOUNDARIES_LIST[Boundaries Collection]
+BOUNDARIES_LIST --> BOUNDARY[Boundary]
+BOUNDARY --> BOUNDARY_ID[id]
+BOUNDARY --> BOUNDARY_NAME[name]
+BOUNDARY --> BOUNDARY_RULE[rule_aql]
 
+DEVICE --> BOUNDARY
+
+%% =====================
+%% POLICIES
+%% =====================
+API --> POLICIES_ENDPOINT[Policies Endpoint]
+POLICIES_ENDPOINT --> POLICIES_LIST[Policies Collection]
+POLICIES_LIST --> POLICY[Policy]
+POLICY --> POLICY_ID[id]
+POLICY --> POLICY_NAME[name]
+POLICY --> POLICY_ENABLED[is_enabled]
+POLICY --> POLICY_ACTION[action]
+POLICY --> POLICY_RULES[rules]
+
+POLICY --> ALERT
+
+%% =====================
 %% INTEGRATIONS
-ARMIS_API --> INTEGRATIONS_API["Integrations"]
+%% =====================
+API --> INTEGRATIONS_ENDPOINT[Integrations Endpoint]
+INTEGRATIONS_ENDPOINT --> INTEGRATIONS_LIST[Integrations Collection]
+INTEGRATIONS_LIST --> INTEGRATION[Integration]
+INTEGRATION --> INTEGRATION_ID[id]
+INTEGRATION --> INTEGRATION_NAME[name]
+INTEGRATION --> INTEGRATION_STATE[state]
+INTEGRATION --> INTEGRATION_STATS[statistics]
 
-INTEGRATIONS_API --> INTEGRATIONS_LIST["List Integrations"]
-INTEGRATIONS_LIST --> INTEGRATIONS_ARRAY["integrations array"]
-INTEGRATIONS_LIST --> INTEGRATIONS_PAGINATION["pagination object"]
+INTEGRATION --> DEVICE
 
-INTEGRATIONS_ARRAY --> INTEGRATION_ID["id"]
-INTEGRATIONS_ARRAY --> INTEGRATION_NAME["name"]
-INTEGRATIONS_ARRAY --> INTEGRATION_STATE["integrationState"]
-INTEGRATIONS_ARRAY --> INTEGRATION_LASTRUN["lastRunEnd"]
+%% =====================
+%% SITES
+%% =====================
+API --> SITES_ENDPOINT[Sites Endpoint]
+SITES_ENDPOINT --> SITES_LIST[Sites Collection]
+SITES_LIST --> SITE[Site]
+SITE --> SITE_ID[id]
+SITE --> SITE_NAME[name]
+SITE --> SITE_LOCATION[location]
+
+SITE --> DEVICE
+
+%% =====================
+%% USERS
+%% =====================
+API --> USERS_ENDPOINT[Users Endpoint]
+USERS_ENDPOINT --> USERS_LIST[Users Collection]
+USERS_LIST --> USER[User]
+USER --> USER_ID[id]
+USER --> USER_NAME[name]
+USER --> USER_EMAIL[email]
+USER --> USER_ROLE[role]
+
+%% =====================
+%% ROLES
+%% =====================
+API --> ROLES_ENDPOINT[Roles Endpoint]
+ROLES_ENDPOINT --> ROLES_LIST[Roles Collection]
+ROLES_LIST --> ROLE[Role]
+ROLE --> ROLE_NAME[name]
+ROLE --> ROLE_PERMISSIONS[permissions]
+
+ROLE --> USER
