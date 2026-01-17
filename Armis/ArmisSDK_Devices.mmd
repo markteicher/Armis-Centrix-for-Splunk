@@ -1,57 +1,83 @@
-flowchart TD
+flowchart LR
 
-    DEVICES_API["GET /api/v1/devices"]
+    DEV_API["GET /api/v1/devices"]
 
-    DEVICES_API --> DEVICES_RESPONSE
+    DEV_API --> RESPONSE
 
-    DEVICES_RESPONSE --> DEVICE
+    RESPONSE --> DEVICE
 
-    DEVICE --> DEVICE_ID["id"]
-    DEVICE --> DEVICE_NAME["name"]
-    DEVICE --> DEVICE_NAMES["names"]
-    DEVICE --> DEVICE_CATEGORY["category"]
-    DEVICE --> DEVICE_TYPE["type"]
-    DEVICE --> DEVICE_VISIBILITY["visibility"]
-    DEVICE --> DEVICE_RISK_LEVEL["riskLevel"]
-    DEVICE --> DEVICE_BUSINESS_IMPACT["businessImpact"]
-    DEVICE --> DEVICE_PURDUE_LEVEL["purdueLevel"]
+    %% Core Identity
+    subgraph IDENTITY["Device Identity"]
+        DEVICE --> ID["id"]
+        DEVICE --> NAME["name"]
+        DEVICE --> NAMES["names"]
+        DEVICE --> TYPE["type"]
+        DEVICE --> CATEGORY["category"]
+        DEVICE --> VISIBILITY["visibility"]
+    end
 
-    DEVICE --> DEVICE_IP["ipAddress"]
-    DEVICE --> DEVICE_IPV6["ipv6"]
-    DEVICE --> DEVICE_MAC["macAddress"]
+    %% Risk & Classification
+    subgraph RISK["Risk and Classification"]
+        DEVICE --> RISK_LEVEL["riskLevel"]
+        DEVICE --> BUSINESS_IMPACT["businessImpact"]
+        DEVICE --> PURDUE["purdueLevel"]
+    end
 
-    DEVICE --> DEVICE_MANUFACTURER["manufacturer"]
-    DEVICE --> DEVICE_MODEL["model"]
-    DEVICE --> DEVICE_OS["operatingSystem"]
-    DEVICE --> DEVICE_OS_VERSION["operatingSystemVersion"]
+    %% Network Identifiers
+    subgraph NETWORK["Network Identifiers"]
+        DEVICE --> IP["ipAddress"]
+        DEVICE --> IPV6["ipv6"]
+        DEVICE --> MAC["macAddress"]
+    end
 
-    DEVICE --> DEVICE_FIRST_SEEN["firstSeen"]
-    DEVICE --> DEVICE_LAST_SEEN["lastSeen"]
+    %% Platform Details
+    subgraph PLATFORM["Platform Details"]
+        DEVICE --> MANUFACTURER["manufacturer"]
+        DEVICE --> MODEL["model"]
+        DEVICE --> OS["operatingSystem"]
+        DEVICE --> OS_VERSION["operatingSystemVersion"]
+    end
 
-    DEVICE --> DEVICE_BOUNDARIES["boundaries"]
-    DEVICE --> DEVICE_TAGS["tags"]
-    DEVICE --> DEVICE_USER_IDS["userIds"]
+    %% Lifecycle
+    subgraph LIFECYCLE["Lifecycle"]
+        DEVICE --> FIRST_SEEN["firstSeen"]
+        DEVICE --> LAST_SEEN["lastSeen"]
+    end
 
-    DEVICE --> DEVICE_SENSOR
-    DEVICE_SENSOR --> SENSOR_NAME["sensor.name"]
-    DEVICE_SENSOR --> SENSOR_TYPE["sensor.type"]
+    %% Context
+    subgraph CONTEXT["Context"]
+        DEVICE --> BOUNDARIES["boundaries"]
+        DEVICE --> TAGS["tags"]
+        DEVICE --> USER_IDS["userIds"]
+    end
 
-    DEVICE --> DEVICE_SITE
-    DEVICE_SITE --> SITE_NAME["site.name"]
-    DEVICE_SITE --> SITE_LOCATION["site.location"]
+    %% Sensor
+    subgraph SENSOR["Sensor"]
+        DEVICE --> SENSOR_NODE["sensor"]
+        SENSOR_NODE --> SENSOR_NAME["name"]
+        SENSOR_NODE --> SENSOR_TYPE["type"]
+    end
 
-    DEVICE --> DEVICE_DATA_SOURCES
+    %% Site
+    subgraph SITE["Site"]
+        DEVICE --> SITE_NODE["site"]
+        SITE_NODE --> SITE_NAME["name"]
+        SITE_NODE --> SITE_LOCATION["location"]
+    end
 
-    DEVICE_DATA_SOURCES --> DATA_SOURCE
+    %% Data Sources
+    subgraph DATA_SOURCES["Data Sources"]
+        DEVICE --> DS["dataSources"]
+        DS --> DS_NAME["name"]
+        DS --> DS_TYPES["types"]
+        DS --> DS_FIRST["firstSeen"]
+        DS --> DS_LAST["lastSeen"]
+    end
 
-    DATA_SOURCE --> DS_NAME["name"]
-    DATA_SOURCE --> DS_TYPES["types"]
-    DATA_SOURCE --> DS_FIRST_SEEN["firstSeen"]
-    DATA_SOURCE --> DS_LAST_SEEN["lastSeen"]
-
-    DEVICES_RESPONSE --> PAGINATION
-
-    PAGINATION --> PAGE_COUNT["count"]
-    PAGINATION --> PAGE_NEXT["next"]
-    PAGINATION --> PAGE_PREV["prev"]
-    PAGINATION --> PAGE_TOTAL["total"]
+    %% Pagination
+    subgraph PAGINATION["Pagination"]
+        RESPONSE --> COUNT["count"]
+        RESPONSE --> NEXT["next"]
+        RESPONSE --> PREV["prev"]
+        RESPONSE --> TOTAL["total"]
+    end
