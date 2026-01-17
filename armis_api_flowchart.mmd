@@ -3,7 +3,7 @@ flowchart TB
 %% Root
 A[Armis API v1] --> AUTH[Authentication<br/>Access Token]
 
-%% Core Domains
+%% Core API Domains
 AUTH --> ALERTS[Alerts]
 AUTH --> DEVICES[Devices]
 AUTH --> USERS[Users]
@@ -19,90 +19,92 @@ AUTH --> COLLECTORS[Collectors]
 
 %% Alerts
 ALERTS --> ALERT_LIST[GET /alerts]
-ALERT_LIST --> ALERTS_ARRAY[alerts[]]
+ALERT_LIST --> ALERT_ARRAY[alerts (array)]
 ALERT_LIST --> ALERT_PAGINATION[pagination<br/>count / next / prev]
 
-ALERTS --> ALERT_ACTION[PUT /alerts/{alert_id}]
-ALERT_ACTION --> ALERT_ID[alert_id<br/>(path, required)]
-ALERT_ACTION --> ALERT_STATUS[status<br/>UNHANDLED<br/>SUPPRESSED<br/>RESOLVED]
+ALERTS --> ALERT_UPDATE[PUT /alerts/{alert_id}]
+ALERT_UPDATE --> ALERT_ID[alert_id<br/>path parameter]
+ALERT_UPDATE --> ALERT_STATUS[status<br/>UNHANDLED<br/>SUPPRESSED<br/>RESOLVED]
 
 %% Devices
 DEVICES --> DEVICE_LIST[GET /devices]
-DEVICE_LIST --> DEVICES_ARRAY[devices[]]
+DEVICE_LIST --> DEVICE_ARRAY[devices (array)]
 DEVICE_LIST --> DEVICE_PAGINATION[pagination]
 
-DEVICES_ARRAY --> DEVICE_CORE[id<br/>name<br/>type<br/>riskLevel]
-DEVICES_ARRAY --> DEVICE_NETWORK[ip<br/>mac<br/>protocols]
-DEVICES_ARRAY --> DEVICE_OS[os<br/>firmware]
-DEVICES_ARRAY --> DEVICE_SITE[siteId]
-DEVICES_ARRAY --> DEVICE_BOUNDARIES[boundaryIds]
-DEVICES_ARRAY --> DEVICE_TAGS[tagIds]
+DEVICE_ARRAY --> DEVICE_ID[id]
+DEVICE_ARRAY --> DEVICE_NETWORK[ip / mac]
+DEVICE_ARRAY --> DEVICE_PROTOCOLS[protocols]
+DEVICE_ARRAY --> DEVICE_OS[os / firmware]
+DEVICE_ARRAY --> DEVICE_SITE[siteId]
+DEVICE_ARRAY --> DEVICE_BOUNDARIES[boundaryIds]
+DEVICE_ARRAY --> DEVICE_TAGS[tagIds]
 
 %% Device Sub-Resources
 DEVICES --> DEVICE_APPS[GET /device-applications]
 DEVICES --> DEVICE_PROPERTIES[GET /device-properties]
-DEVICES --> DEVICE_BOUNDARIES_MAP[GET /device-boundaries]
+DEVICES --> DEVICE_BOUNDARY_MAP[GET /device-boundaries]
 
 %% Vulnerabilities
 VULNS --> VULN_LIST[GET /vulnerabilities]
-VULN_LIST --> VULNS_ARRAY[vulnerabilities[]]
+VULN_LIST --> VULN_ARRAY[vulnerabilities (array)]
 VULN_LIST --> VULN_PAGINATION[pagination]
 
-VULNS_ARRAY --> VULN_ID[id]
-VULNS_ARRAY --> VULN_SEVERITY[severity]
-VULNS_ARRAY --> VULN_CVE[cve]
-VULNS_ARRAY --> VULN_DEVICE[deviceId]
+VULN_ARRAY --> VULN_ID[id]
+VULN_ARRAY --> VULN_CVE[cve]
+VULN_ARRAY --> VULN_SEVERITY[severity]
+VULN_ARRAY --> VULN_DEVICE[deviceId]
 
 %% Users
 USERS --> USER_LIST[GET /users]
-USER_LIST --> USERS_ARRAY[users[]]
+USER_LIST --> USER_ARRAY[users (array)]
 USER_LIST --> USER_PAGINATION[pagination]
 
-USERS_ARRAY --> USER_ID[id]
-USERS_ARRAY --> USER_EMAIL[email]
-USERS_ARRAY --> USER_ROLE[role]
-USERS_ARRAY --> USER_STATUS[isActive]
-USERS_ARRAY --> USER_2FA[twoFactorAuthentication]
+USER_ARRAY --> USER_ID[id]
+USER_ARRAY --> USER_EMAIL[email]
+USER_ARRAY --> USER_USERNAME[username]
+USER_ARRAY --> USER_ROLE[role]
+USER_ARRAY --> USER_ACTIVE[isActive]
+USER_ARRAY --> USER_2FA[twoFactorAuthentication]
 
 %% Boundaries
 BOUNDARIES --> BOUNDARY_LIST[GET /boundaries]
-BOUNDARY_LIST --> BOUNDARIES_ARRAY[boundaries[]]
+BOUNDARY_LIST --> BOUNDARY_ARRAY[boundaries (array)]
 BOUNDARY_LIST --> BOUNDARY_PAGINATION[pagination]
 
-BOUNDARIES_ARRAY --> BOUNDARY_ID[id]
-BOUNDARIES_ARRAY --> BOUNDARY_NAME[name]
-BOUNDARIES_ARRAY --> BOUNDARY_TYPE[type]
+BOUNDARY_ARRAY --> BOUNDARY_ID[id]
+BOUNDARY_ARRAY --> BOUNDARY_NAME[name]
+BOUNDARY_ARRAY --> BOUNDARY_TYPE[type]
 
 %% Integrations
 INTEGRATIONS --> INTEGRATION_LIST[GET /integrations]
-INTEGRATION_LIST --> INTEGRATIONS_ARRAY[integrations[]]
+INTEGRATION_LIST --> INTEGRATION_ARRAY[integrations (array)]
 INTEGRATION_LIST --> INTEGRATION_PAGINATION[pagination]
 
-INTEGRATIONS_ARRAY --> INTEGRATION_ID[id]
-INTEGRATIONS_ARRAY --> INTEGRATION_NAME[name]
-INTEGRATIONS_ARRAY --> INTEGRATION_STATE[integrationState]
-INTEGRATIONS_ARRAY --> INTEGRATION_STATS[statistics]
+INTEGRATION_ARRAY --> INTEGRATION_ID[id]
+INTEGRATION_ARRAY --> INTEGRATION_NAME[name]
+INTEGRATION_ARRAY --> INTEGRATION_STATE[integrationState]
+INTEGRATION_ARRAY --> INTEGRATION_STATS[statistics]
 
 %% Policies
 POLICIES --> POLICY_LIST[GET /policies]
-POLICY_LIST --> POLICIES_ARRAY[policies[]]
+POLICY_LIST --> POLICY_ARRAY[policies (array)]
 
 %% Reports
 REPORTS --> REPORT_LIST[GET /reports]
-REPORT_LIST --> REPORTS_ARRAY[reports[]]
+REPORT_LIST --> REPORT_ARRAY[reports (array)]
 
 %% Roles
 ROLES --> ROLE_LIST[GET /roles]
-ROLE_LIST --> ROLES_ARRAY[roles[]]
+ROLE_LIST --> ROLE_ARRAY[roles (array)]
 
 %% Search
 SEARCH --> SEARCH_QUERY[POST /search]
-SEARCH_QUERY --> SEARCH_RESULTS[entities[]]
+SEARCH_QUERY --> SEARCH_RESULTS[results (array)]
 
 %% Sites
 SITES --> SITE_LIST[GET /sites]
-SITE_LIST --> SITES_ARRAY[sites[]]
+SITE_LIST --> SITE_ARRAY[sites (array)]
 
 %% Collectors
 COLLECTORS --> COLLECTOR_LIST[GET /collectors]
-COLLECTOR_LIST --> COLLECTORS_ARRAY[collectors[]]
+COLLECTOR_LIST --> COLLECTOR_ARRAY[collectors (array)]
