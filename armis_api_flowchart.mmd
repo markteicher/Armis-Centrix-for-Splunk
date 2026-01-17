@@ -1,0 +1,44 @@
+flowchart TD
+
+%% ======================
+%% Alerts
+%% ======================
+
+Alerts["Alerts"]
+
+AlertID["alert_id (path)\nRequired"]
+AlertStatus["status (formData)\nRequired\nValues:\n- UNHANDLED\n- SUPPRESSED\n- RESOLVED"]
+
+Alerts --> AlertID
+Alerts --> AlertStatus
+
+%% ======================
+%% Users
+%% ======================
+
+Users["Users"]
+
+UsersEndpoint["GET /api/v1/users"]
+
+Users --> UsersEndpoint
+
+UsersEndpoint --> UsersData["data"]
+
+UsersData --> UsersList["users[]"]
+
+UsersList --> UserObject["user"]
+
+UserObject --> UserID["id"]
+UserObject --> UserEmail["email"]
+UserObject --> UserUsername["username"]
+UserObject --> UserName["name"]
+UserObject --> UserIsActive["isActive"]
+UserObject --> UserRole["role"]
+UserObject --> UserTitle["title"]
+UserObject --> UserLocation["location"]
+UserObject --> UserPhone["phone"]
+UserObject --> User2FA["twoFactorAuthentication"]
+UserObject --> UserReportPerms["reportPermissions"]
+
+UserObject --> RoleAssignment["roleAssignment[]"]
+RoleAssignment --> RoleNames["name[]"]
