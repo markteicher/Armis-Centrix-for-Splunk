@@ -1,0 +1,57 @@
+flowchart TD
+
+    DEVICES_API["GET /api/v1/devices"]
+
+    DEVICES_API --> DEVICES_RESPONSE
+
+    DEVICES_RESPONSE --> DEVICE
+
+    DEVICE --> DEVICE_ID["id"]
+    DEVICE --> DEVICE_NAME["name"]
+    DEVICE --> DEVICE_NAMES["names"]
+    DEVICE --> DEVICE_CATEGORY["category"]
+    DEVICE --> DEVICE_TYPE["type"]
+    DEVICE --> DEVICE_VISIBILITY["visibility"]
+    DEVICE --> DEVICE_RISK_LEVEL["riskLevel"]
+    DEVICE --> DEVICE_BUSINESS_IMPACT["businessImpact"]
+    DEVICE --> DEVICE_PURDUE_LEVEL["purdueLevel"]
+
+    DEVICE --> DEVICE_IP["ipAddress"]
+    DEVICE --> DEVICE_IPV6["ipv6"]
+    DEVICE --> DEVICE_MAC["macAddress"]
+
+    DEVICE --> DEVICE_MANUFACTURER["manufacturer"]
+    DEVICE --> DEVICE_MODEL["model"]
+    DEVICE --> DEVICE_OS["operatingSystem"]
+    DEVICE --> DEVICE_OS_VERSION["operatingSystemVersion"]
+
+    DEVICE --> DEVICE_FIRST_SEEN["firstSeen"]
+    DEVICE --> DEVICE_LAST_SEEN["lastSeen"]
+
+    DEVICE --> DEVICE_BOUNDARIES["boundaries"]
+    DEVICE --> DEVICE_TAGS["tags"]
+    DEVICE --> DEVICE_USER_IDS["userIds"]
+
+    DEVICE --> DEVICE_SENSOR
+    DEVICE_SENSOR --> SENSOR_NAME["sensor.name"]
+    DEVICE_SENSOR --> SENSOR_TYPE["sensor.type"]
+
+    DEVICE --> DEVICE_SITE
+    DEVICE_SITE --> SITE_NAME["site.name"]
+    DEVICE_SITE --> SITE_LOCATION["site.location"]
+
+    DEVICE --> DEVICE_DATA_SOURCES
+
+    DEVICE_DATA_SOURCES --> DATA_SOURCE
+
+    DATA_SOURCE --> DS_NAME["name"]
+    DATA_SOURCE --> DS_TYPES["types"]
+    DATA_SOURCE --> DS_FIRST_SEEN["firstSeen"]
+    DATA_SOURCE --> DS_LAST_SEEN["lastSeen"]
+
+    DEVICES_RESPONSE --> PAGINATION
+
+    PAGINATION --> PAGE_COUNT["count"]
+    PAGINATION --> PAGE_NEXT["next"]
+    PAGINATION --> PAGE_PREV["prev"]
+    PAGINATION --> PAGE_TOTAL["total"]
