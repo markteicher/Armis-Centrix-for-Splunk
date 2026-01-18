@@ -9,7 +9,6 @@ API[Armis API v1]
 %% ALERTS
 %% =====================
 API --> ALERTS_ENDPOINT[Alerts]
-ALERTS_ENDPOINT --> ALERTS_LIST[Alerts Collection]
 ALERTS_LIST --> ALERT[Alert]
 ALERT --> ALERT_ID[alert_id]
 ALERT --> ALERT_STATUS[status]
@@ -21,7 +20,7 @@ ALERT_STATUS --> STATUS_RESOLVED
 %% DEVICES
 %% =====================
 API --> DEVICES_ENDPOINT[Devices]
-DEVICES_ENDPOINT --> DEVICES_LIST[Devices Collection]
+
 DEVICES_LIST --> DEVICE[Device]
 DEVICE --> DEVICE_ID[device_id]
 DEVICE --> DEVICE_NAME[name]
@@ -37,7 +36,7 @@ DEVICE --> DEVICE_BOUNDARIES[boundaries]
 %% VULNERABILITIES
 %% =====================
 API --> VULNS_ENDPOINT[Vulnerabilities]
-VULNS_ENDPOINT --> VULNS_LIST[Vulnerabilities Collection]
+
 VULNS_LIST --> VULN[Vulnerability]
 VULN --> VULN_DEVICE_ID[device_id]
 VULN --> VULN_CVE[cve_uid]
@@ -54,7 +53,7 @@ DEVICE --> VULN
 %% BOUNDARIES
 %% =====================
 API --> BOUNDARIES_ENDPOINT[Boundaries]
-BOUNDARIES_ENDPOINT --> BOUNDARIES_LIST[Boundaries Collection]
+
 BOUNDARIES_LIST --> BOUNDARY[Boundary]
 BOUNDARY --> BOUNDARY_ID[id]
 BOUNDARY --> BOUNDARY_NAME[name]
@@ -66,7 +65,7 @@ DEVICE --> BOUNDARY
 %% POLICIES
 %% =====================
 API --> POLICIES_ENDPOINT[Policies]
-POLICIES_ENDPOINT --> POLICIES_LIST[Policies Collection]
+
 POLICIES_LIST --> POLICY[Policy]
 POLICY --> POLICY_ID[id]
 POLICY --> POLICY_NAME[name]
@@ -80,7 +79,7 @@ POLICY --> ALERT
 %% INTEGRATIONS
 %% =====================
 API --> INTEGRATIONS_ENDPOINT[Integrations]
-INTEGRATIONS_ENDPOINT --> INTEGRATIONS_LIST[Integrations Collection]
+
 INTEGRATIONS_LIST --> INTEGRATION[Integration]
 INTEGRATION --> INTEGRATION_ID[id]
 INTEGRATION --> INTEGRATION_NAME[name]
@@ -93,7 +92,7 @@ INTEGRATION --> DEVICE
 %% SITES
 %% =====================
 API --> SITES_ENDPOINT[Sites]
-SITES_ENDPOINT --> SITES_LIST[Sites Collection]
+
 SITES_LIST --> SITE[Site]
 SITE --> SITE_ID[id]
 SITE --> SITE_NAME[name]
@@ -105,7 +104,7 @@ SITE --> DEVICE
 %% USERS
 %% =====================
 API --> USERS_ENDPOINT[Users Endpoint]
-USERS_ENDPOINT --> USERS_LIST[Users Collection]
+
 USERS_LIST --> USER[User]
 USER --> USER_ID[id]
 USER --> USER_NAME[name]
@@ -116,7 +115,7 @@ USER --> USER_ROLE[role]
 %% ROLES
 %% =====================
 API --> ROLES_ENDPOINT[Roles Endpoint]
-ROLES_ENDPOINT --> ROLES_LIST[Roles Collection]
+
 ROLES_LIST --> ROLE[Role]
 ROLE --> ROLE_NAME[name]
 ROLE --> ROLE_PERMISSIONS[permissions]
