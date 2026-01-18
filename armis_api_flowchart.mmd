@@ -8,7 +8,7 @@ API[Armis API v1]
 %% =====================
 %% ALERTS
 %% =====================
-API --> ALERTS_ENDPOINT[Alerts Endpoint]
+API --> ALERTS_ENDPOINT[Alerts]
 ALERTS_ENDPOINT --> ALERTS_LIST[Alerts Collection]
 ALERTS_LIST --> ALERT[Alert]
 ALERT --> ALERT_ID[alert_id]
@@ -20,7 +20,7 @@ ALERT_STATUS --> STATUS_RESOLVED
 %% =====================
 %% DEVICES
 %% =====================
-API --> DEVICES_ENDPOINT[Devices Endpoint]
+API --> DEVICES_ENDPOINT[Devices]
 DEVICES_ENDPOINT --> DEVICES_LIST[Devices Collection]
 DEVICES_LIST --> DEVICE[Device]
 DEVICE --> DEVICE_ID[device_id]
@@ -36,7 +36,7 @@ DEVICE --> DEVICE_BOUNDARIES[boundaries]
 %% =====================
 %% VULNERABILITIES
 %% =====================
-API --> VULNS_ENDPOINT[Vulnerabilities Endpoint]
+API --> VULNS_ENDPOINT[Vulnerabilities]
 VULNS_ENDPOINT --> VULNS_LIST[Vulnerabilities Collection]
 VULNS_LIST --> VULN[Vulnerability]
 VULN --> VULN_DEVICE_ID[device_id]
@@ -53,7 +53,7 @@ DEVICE --> VULN
 %% =====================
 %% BOUNDARIES
 %% =====================
-API --> BOUNDARIES_ENDPOINT[Boundaries Endpoint]
+API --> BOUNDARIES_ENDPOINT[Boundaries]
 BOUNDARIES_ENDPOINT --> BOUNDARIES_LIST[Boundaries Collection]
 BOUNDARIES_LIST --> BOUNDARY[Boundary]
 BOUNDARY --> BOUNDARY_ID[id]
@@ -65,7 +65,7 @@ DEVICE --> BOUNDARY
 %% =====================
 %% POLICIES
 %% =====================
-API --> POLICIES_ENDPOINT[Policies Endpoint]
+API --> POLICIES_ENDPOINT[Policies]
 POLICIES_ENDPOINT --> POLICIES_LIST[Policies Collection]
 POLICIES_LIST --> POLICY[Policy]
 POLICY --> POLICY_ID[id]
@@ -79,7 +79,7 @@ POLICY --> ALERT
 %% =====================
 %% INTEGRATIONS
 %% =====================
-API --> INTEGRATIONS_ENDPOINT[Integrations Endpoint]
+API --> INTEGRATIONS_ENDPOINT[Integrations]
 INTEGRATIONS_ENDPOINT --> INTEGRATIONS_LIST[Integrations Collection]
 INTEGRATIONS_LIST --> INTEGRATION[Integration]
 INTEGRATION --> INTEGRATION_ID[id]
@@ -92,7 +92,7 @@ INTEGRATION --> DEVICE
 %% =====================
 %% SITES
 %% =====================
-API --> SITES_ENDPOINT[Sites Endpoint]
+API --> SITES_ENDPOINT[Sites]
 SITES_ENDPOINT --> SITES_LIST[Sites Collection]
 SITES_LIST --> SITE[Site]
 SITE --> SITE_ID[id]
