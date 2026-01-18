@@ -1,24 +1,25 @@
 flowchart LR
 
-    NETWORK_IF["NetworkInterface"]
+    DEVICE["Device"]
+    DEVICE -->|0..*| NET_IF["NetworkInterface"]
 
     %% Identity
-    NETWORK_IF --> IF_NAME["name"]
-    NETWORK_IF --> IF_ALIAS["alias"]
-    NETWORK_IF --> IF_TYPE["type"]
-    NETWORK_IF --> IF_BRAND["brand"]
-    NETWORK_IF --> IF_DESCRIPTION["description"]
+    NET_IF --> IF_NAME["name (0..1)"]
+    NET_IF --> IF_ALIAS["alias (0..1)"]
+    NET_IF --> IF_TYPE["type (0..1)"]
+    NET_IF --> IF_BRAND["brand (0..1)"]
+    NET_IF --> IF_DESCRIPTION["description (0..1)"]
 
-    %% MAC & VLAN
-    NETWORK_IF --> IF_MAC["mac_address"]
-    NETWORK_IF --> IF_VLAN["vlan"]
+    %% Addressing — last-seen only
+    NET_IF --> IF_MAC["mac_address (0..1)"]
+    NET_IF --> IF_IPV4["ipv4_address (0..1)"]
+    NET_IF --> IF_IPV6["ipv6_address (0..1)"]
 
-    %% IP Addressing (single last-seen values)
-    NETWORK_IF --> IF_IPV4["ipv4_address"]
-    NETWORK_IF --> IF_IPV6["ipv6_address"]
+    %% Wireless
+    NET_IF --> IF_CHANNELS["channels (0..*)"]
+    NET_IF --> IF_BROADCAST_SSID["broadcast_ssid (0..1)"]
+    NET_IF --> IF_HIDDEN["hidden_broadcast_ssid (0..1)"]
+    NET_IF --> IF_LAST_SSID["last_connected_ssid (0..1)"]
 
-    %% Wireless Attributes
-    NETWORK_IF --> IF_CHANNELS["channels (0..*)"]
-    NETWORK_IF --> IF_BROADCAST_SSID["broadcast_ssid"]
-    NETWORK_IF --> IF_HIDDEN_SSID["hidden_broadcast_ssid"]
-    NETWORK_IF --> IF_LAST_SSID["last_connected_ssid"]
+    %% VLAN
+    NET_IF --> IF_VLAN["vlan (0..1)"]
