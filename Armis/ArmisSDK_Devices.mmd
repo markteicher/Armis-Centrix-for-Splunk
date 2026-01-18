@@ -1,59 +1,76 @@
-flowchart LR
+flowchart TD
 
-DEVICE["Device"]
+    DEVICES_API["GET /api/v1/devices"]
 
-%% Core Identity
-DEVICE --> DEVICE_ID["device_id (1)"]
-DEVICE --> DISPLAY["display (0..1)"]
-DEVICE --> CATEGORY["category (0..1)"]
-DEVICE --> TYPE["type (0..1)"]
-DEVICE --> BRAND["manufacturer / brand (0..1)"]
-DEVICE --> MODEL["model (0..1)"]
-DEVICE --> BUSINESS_IMPACT["businessImpact (0..1)"]
+    DEVICES_API --> PAGINATION
+    DEVICES_API --> DEVICES_LIST
 
-%% Visibility & Risk
-DEVICE --> VISIBILITY["visibility (Full | Limited)"]
-DEVICE --> RISK_LEVEL["riskLevel (0..1)"]
-DEVICE --> PURDUE_LEVEL["purdueLevel (0..1)"]
+    PAGINATION --> COUNT["count"]
+    PAGINATION --> NEXT["next"]
+    PAGINATION --> PREV["prev"]
+    PAGINATION --> TOTAL["total"]
 
-%% Time
-DEVICE --> FIRST_SEEN["firstSeen (0..1)"]
-DEVICE --> LAST_SEEN["lastSeen (0..1)"]
+    DEVICES_LIST --> DEVICE["Device"]
 
-%% Names
-DEVICE --> NAMES["names (0..N strings)"]
+    %% Core Identity
+    DEVICE --> DEVICE_ID["device_id (1)"]
+    DEVICE --> DISPLAY["display"]
+    DEVICE --> NAMES["names (0..*)"]
 
-%% Network Identity
-DEVICE --> IPV4["ipv4_addresses (0..N)"]
-DEVICE --> IPV6["ipv6_addresses (0..N)"]
-DEVICE --> MACS["mac_addresses (0..N)"]
-DEVICE --> SERIALS["serial_numbers (0..N)"]
+    %% Classification
+    DEVICE --> BRAND["brand"]
+    DEVICE --> CATEGORY["category"]
+    DEVICE --> TYPE["type"]
+    DEVICE --> MODEL["model"]
+    DEVICE --> BUSINESS_IMPACT["businessImpact"]
 
-%% Tags
-DEVICE --> TAGS["tags (0..N)"]
+    %% Risk & Purdue
+    DEVICE --> RISK_LEVEL["riskLevel"]
+    DEVICE --> PURDUE_LEVEL["purdueLevel"]
+    DEVICE --> VISIBILITY["visibility"]
 
-%% Boundaries
-DEVICE --> BOUNDARIES["boundaries (0..N)"]
-BOUNDARIES --> BOUNDARY_ID["boundary.id"]
-BOUNDARIES --> BOUNDARY_NAME["boundary.name"]
+    %% Temporal
+    DEVICE --> FIRST_SEEN["firstSeen"]
+    DEVICE --> LAST_SEEN["lastSeen"]
 
-%% Site
-DEVICE --> SITE["site (0..1)"]
-SITE --> SITE_ID["site.id"]
-SITE --> SITE_NAME["site.name"]
-SITE --> SITE_LOCATION["site.location"]
+    %% Network Identity (multi-valued)
+    DEVICE --> IPV4["ipv4_addresses (0..*)"]
+    DEVICE --> IPV6["ipv6_addresses (0..*)"]
+    DEVICE --> MACS["mac_addresses (0..*)"]
 
-%% Sensor
-DEVICE --> SENSOR["sensor (0..1)"]
-SENSOR --> SENSOR_NAME["sensor.name"]
-SENSOR --> SENSOR_TYPE["sensor.type"]
+    %% Serial Numbers
+    DEVICE --> SERIALS["serial_numbers (0..*)"]
 
-%% Data Sources
-DEVICE --> DATASOURCES["dataSources (0..N)"]
-DATASOURCES --> DS_NAME["name"]
-DATASOURCES --> DS_TYPES["types (0..N)"]
-DATASOURCES --> DS_FIRST_SEEN["firstSeen"]
-DATASOURCES --> DS_LAST_SEEN["lastSeen"]
+    %% Tags
+    DEVICE --> TAGS["tags (0..*)"]
 
-%% Users
-DEVICE --> USERS["userIds (0..N)"]
+    %% Users
+    DEVICE --> USERS["userIds (0..*)"]
+
+    %% Site Relationship
+    DEVICE --> SITE["site (0..1)"]
+    SITE --> SITE_ID["site.id"]
+    SITE --> SITE_NAME["site.name"]
+    SITE --> SITE_LOCATION["site.location"]
+
+    %% Boundaries (many-to-many)
+    DEVICE --> BOUNDARIES["boundaries (0..*)"]
+    BOUNDARIES --> BOUNDARY_ID["boundary.id"]
+    BOUNDARIES --> BOUNDARY_NAME["boundary.name"]
+
+    %% Data Sources (discovery provenance)
+    DEVICE --> DATA_SOURCES["dataSources (0..*)"]
+    DATA_SOURCES --> DS_NAME["name"]
+    DATA_SOURCES --> DS_TYPES["types (0..*)"]
+    DATA_SOURCES --> DS_FIRST_SEEN["firstSeen"]
+    DATA_SOURCES --> DS_LAST_SEEN["lastSeen"]
+
+    %% Sensor
+    DEVICE --> SENSOR["sensor (0..1)"]
+    SENSOR --> SENSOR_NAME["name"]
+    SENSOR --> SENSOR_TYPE["type"]
+
+    %% Network Interfaces
+    DEVICE --> INTERFACES["networkInterfaces (0..*)"]
+    INTERFACES --> IF_NAME["interface name"]
+    INTERFACES --> IF_TYPE["interface type"]
