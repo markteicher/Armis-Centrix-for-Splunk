@@ -1,0 +1,24 @@
+flowchart LR
+
+    NETWORK_IF["NetworkInterface"]
+
+    %% Identity
+    NETWORK_IF --> IF_NAME["name"]
+    NETWORK_IF --> IF_ALIAS["alias"]
+    NETWORK_IF --> IF_TYPE["type"]
+    NETWORK_IF --> IF_BRAND["brand"]
+    NETWORK_IF --> IF_DESCRIPTION["description"]
+
+    %% MAC & VLAN
+    NETWORK_IF --> IF_MAC["mac_address"]
+    NETWORK_IF --> IF_VLAN["vlan"]
+
+    %% IP Addressing (single last-seen values)
+    NETWORK_IF --> IF_IPV4["ipv4_address"]
+    NETWORK_IF --> IF_IPV6["ipv6_address"]
+
+    %% Wireless Attributes
+    NETWORK_IF --> IF_CHANNELS["channels (0..*)"]
+    NETWORK_IF --> IF_BROADCAST_SSID["broadcast_ssid"]
+    NETWORK_IF --> IF_HIDDEN_SSID["hidden_broadcast_ssid"]
+    NETWORK_IF --> IF_LAST_SSID["last_connected_ssid"]
