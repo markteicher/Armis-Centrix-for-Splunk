@@ -35,15 +35,15 @@ flowchart LR
     %% Params Block
     INTEGRATION --> PARAMS[params]
 
-    PARAMS --> API_HOST[crowdstrike_api_host]
-    PARAMS --> CLIENT_ID[crowdstrike_client_id]
-    PARAMS --> FETCH_APPS[crowdstrike_fetch_applications]
-    PARAMS --> FETCH_CVES[crowdstrike_fetch_device_cves]
-    PARAMS --> FETCH_GROUPS[crowdstrike_fetch_host_groups]
-    PARAMS --> FETCH_IOT[crowdstrike_fetch_iot_devices]
-    PARAMS --> FETCH_UNMANAGED[crowdstrike_fetch_unmanaged_assets]
-    PARAMS --> FETCH_LOGINS[crowdstrike_is_fetch_device_login_history]
-    PARAMS --> USER_DOMAIN[crowdstrike_user_domain_include_list]
+    PARAMS --> API_HOST[api_host]
+    PARAMS --> CLIENT_ID[client_id]
+    PARAMS --> FETCH_APPS[fetch_applications]
+    PARAMS --> FETCH_CVES[fetch_device_cves]
+    PARAMS --> FETCH_GROUPS[fetch_host_groups]
+    PARAMS --> FETCH_IOT[fetch_iot_devices]
+    PARAMS --> FETCH_UNMANAGED[fetch_unmanaged_assets]
+    PARAMS --> FETCH_LOGINS[fetch_device_login_history]
+    PARAMS --> USER_DOMAIN[user_domain_include_list]
 
     %% Integration Schedule
     PARAMS --> SCHEDULE[integration_schedule]
