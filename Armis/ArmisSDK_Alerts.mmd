@@ -1,0 +1,61 @@
+flowchart LR
+
+    API[Armis Alerts API]
+
+    API --> ALERT_LIST[Alert Collection]
+
+    ALERT_LIST --> PAGINATION[Pagination Metadata]
+    PAGINATION --> COUNT[count]
+    PAGINATION --> NEXT[next]
+    PAGINATION --> PREV[prev]
+    PAGINATION --> TOTAL[total]
+
+    ALERT_LIST --> ALERT[Alert]
+
+    ALERT --> ALERT_ID[alert_id]
+    ALERT --> STATUS[status]
+    ALERT --> SEVERITY[severity]
+    ALERT --> CONFIDENCE[confidence]
+    ALERT --> CATEGORY[category]
+    ALERT --> TYPE[type]
+
+    ALERT --> DESCRIPTION[description]
+    ALERT --> RECOMMENDED_ACTION[recommended_action]
+
+    ALERT --> CREATED_AT[creation_time]
+    ALERT --> FIRST_SEEN[first_seen]
+    ALERT --> LAST_SEEN[last_seen]
+
+    ALERT --> POLICY[Policy]
+    POLICY --> POLICY_ID[policy_id]
+    POLICY --> POLICY_NAME[policy_name]
+
+    ALERT --> DEVICES[Devices]
+    DEVICES --> DEVICE_ID[device_id]
+    DEVICES --> DEVICE_NAME[device_name]
+
+    ALERT --> NETWORK_CONTEXT[Network Context]
+    NETWORK_CONTEXT --> PROTOCOL[protocol]
+    NETWORK_CONTEXT --> PORT[port]
+    NETWORK_CONTEXT --> SRC_IP[source_ip]
+    NETWORK_CONTEXT --> DST_IP[destination_ip]
+    NETWORK_CONTEXT --> DIRECTION[direction]
+
+    ALERT --> SITE[Site]
+    SITE --> SITE_ID[site_id]
+    SITE --> SITE_NAME[site_name]
+
+    ALERT --> BOUNDARY[Boundary]
+    BOUNDARY --> BOUNDARY_ID[boundary_id]
+    BOUNDARY --> BOUNDARY_NAME[boundary_name]
+
+    ALERT --> THREAT_CONTEXT[Threat Attribution]
+    THREAT_CONTEXT --> THREAT_ACTOR[threat_actor]
+    THREAT_CONTEXT --> CAMPAIGN[campaign]
+    THREAT_CONTEXT --> MALWARE_FAMILY[malware_family]
+    THREAT_CONTEXT --> KILL_CHAIN_STAGE[kill_chain_stage]
+
+    ALERT --> STATUS_UPDATE[Status Update]
+    STATUS_UPDATE --> UPDATE_API[PUT alert status]
+    UPDATE_API --> STATUS_CHANGE_TIME[status_change_time]
+    UPDATE_API --> STATUS_CHANGE_REASON[status_change_reason]
