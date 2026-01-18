@@ -1,0 +1,37 @@
+flowchart LR
+
+    API[Armis Policies API]
+    API --> COLLECTION[Policy Collection]
+
+    %% Pagination Metadata
+    COLLECTION --> PAGINATION[Pagination Metadata]
+    PAGINATION --> COUNT[count]
+    PAGINATION --> NEXT[next]
+    PAGINATION --> PREV[prev]
+    PAGINATION --> TOTAL[total]
+
+    %% Policy Object
+    COLLECTION --> POLICY[Policy]
+
+    POLICY --> POLICY_ID[id]
+    POLICY --> POLICY_NAME[name]
+    POLICY --> ENABLED[isEnabled]
+
+    %% Action Block
+    POLICY --> ACTION[action]
+    ACTION --> ACTION_KIND[action.type]
+
+    ACTION --> ACTION_PARAMS[action.params]
+    ACTION_PARAMS --> SEVERITY[severity]
+    ACTION_PARAMS --> DESCRIPTION[description]
+    ACTION_PARAMS --> ACTION_CLASS[type]
+
+    %% Consolidation
+    ACTION_PARAMS --> CONSOLIDATION[consolidation]
+    CONSOLIDATION --> CONS_AMOUNT[amount]
+    CONSOLIDATION --> CONS_UNIT[unit]
+
+    %% Rules Block
+    POLICY --> RULES[rules]
+    RULES --> AND_BLOCK[and]
+    AND_BLOCK --> RULE_EXPR[rule expressions]
