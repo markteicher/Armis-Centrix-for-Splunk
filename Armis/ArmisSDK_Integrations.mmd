@@ -1,0 +1,79 @@
+flowchart LR
+
+    API[Armis Integrations API]
+    API --> COLLECTION[Integration Collection]
+
+    %% Pagination Metadata
+    COLLECTION --> PAGINATION[Pagination Metadata]
+    PAGINATION --> COUNT[count]
+    PAGINATION --> NEXT[next]
+    PAGINATION --> PREV[prev]
+    PAGINATION --> TOTAL[total]
+
+    %% Integration Object
+    COLLECTION --> INTEGRATION[Integration]
+
+    %% Identity & Lifecycle
+    INTEGRATION --> INT_ID[id]
+    INTEGRATION --> NAME[name]
+    INTEGRATION --> INSTANCE[instance]
+    INTEGRATION --> STATE[integrationState]
+    INTEGRATION --> STATUS[status]
+    INTEGRATION --> STATUS_CAT[statusCategory]
+
+    %% Time Metadata
+    INTEGRATION --> CREATED[creationTime]
+    INTEGRATION --> CHANGED[changeTime]
+    INTEGRATION --> LAST_RUN[lastRunEnd]
+    INTEGRATION --> STATUS_CREATED[statusCreationTime]
+    INTEGRATION --> STATUS_CHANGED[statusLastChanged]
+
+    %% Collector & Enforcement
+    INTEGRATION --> COLLECTOR_ID[collectorId]
+    INTEGRATION --> ENFORCEMENT[enforcementLists]
+
+    %% Params Block
+    INTEGRATION --> PARAMS[params]
+
+    PARAMS --> API_HOST[crowdstrike_api_host]
+    PARAMS --> CLIENT_ID[crowdstrike_client_id]
+    PARAMS --> FETCH_APPS[crowdstrike_fetch_applications]
+    PARAMS --> FETCH_CVES[crowdstrike_fetch_device_cves]
+    PARAMS --> FETCH_GROUPS[crowdstrike_fetch_host_groups]
+    PARAMS --> FETCH_IOT[crowdstrike_fetch_iot_devices]
+    PARAMS --> FETCH_UNMANAGED[crowdstrike_fetch_unmanaged_assets]
+    PARAMS --> FETCH_LOGINS[crowdstrike_is_fetch_device_login_history]
+    PARAMS --> USER_DOMAIN[crowdstrike_user_domain_include_list]
+
+    %% Integration Schedule
+    PARAMS --> SCHEDULE[integration_schedule]
+
+    SCHEDULE --> ALLOWED_TIME[allowed_time]
+    ALLOWED_TIME --> DAYS[days]
+    ALLOWED_TIME --> HOURS[hours]
+
+    SCHEDULE --> INTERVAL[interval]
+    INTERVAL --> INT_AMOUNT[amount]
+    INTERVAL --> INT_UNIT[unit]
+    SCHEDULE --> TIMEZONE[timezone]
+
+    %% Device Handling
+    PARAMS --> MARK_MANAGED[mark_discovered_devices_as_managed]
+
+    %% Statistics Block
+    INTEGRATION --> STATS[statistics]
+
+    STATS --> EXTRA_COLS[extraDataForColumns]
+    EXTRA_COLS --> MAX_LIMIT[maxLimit]
+
+    STATS --> CYCLE_STATS[integrationCyclesStatistics]
+    CYCLE_STATS --> ENTITY_TYPE[entity_type]
+    CYCLE_STATS --> POST_FILTER[post_filter_amount]
+    CYCLE_STATS --> SENT[sent_to_armis_amount]
+    CYCLE_STATS --> UNIQUE[unique_armis_records_amount]
+
+    STATS --> LAST_SUCCESS[lastSuccessfulCycleEnded]
+    STATS --> MOD_DATE[modificationDate]
+    STATS --> STATUS_INFO[statisticsInfo]
+    STATS --> STATUS_MSG[statusMessage]
+    STATS --> STATUS_DETAILS[statusExtraDetails]
