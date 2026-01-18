@@ -1,7 +1,7 @@
 flowchart LR
 
-    API[Armis Integrations API]
-    API --> COLLECTION[Integration Collection]
+    API["GET /api/v1/integrations"]
+    API --> COLLECTION[integrations]
 
     %% Pagination Metadata
     COLLECTION --> PAGINATION[Pagination Metadata]
