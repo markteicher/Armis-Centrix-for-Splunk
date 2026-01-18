@@ -1,7 +1,8 @@
 flowchart LR
 
-    DEVICE["Device"]
-    DEVICE -->|0..*| NET_IF["NetworkInterface"]
+ API["GET /api/v1/networkinterfaces]
+
+    DEVICE -->|0..*| NET_IF["NetworkInterfaces"]
 
     %% Identity
     NET_IF --> IF_NAME["name (0..1)"]
