@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><dashboard version="1.1">
+  <label>Armis Collectors Status</label>
+  <!-- Top counters (no normalization; use raw connectionStatus) -->
+  <!-- Detail table (shows raw status + connectionStatus) -->
+  <row>
+    <panel>
+      <title>Total Armis Collectors</title>
+      <single>
+        <search>
+          <query>| inputlookup armis_integrations_status.csv | stats count AS total_integrations</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Current State ="Running"</title>
+      <single>
+        <search>
+          <query>| inputlookup armis_integrations_status.csv
+| search "Current State"="Running"
+| stats count by "Current State"
+| table count</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Current State = "Idle"</title>
+      <single>
+        <search>
+          <query>| inputlookup armis_integrations_status.csv
+| search "Current State"="Idle"
+| stats count by "Current State"
+| table count</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Total Number of Armis Collectors Status= "Active"</title>
+      <single>
+        <search>
+          <query>| inputlookup armis_integrations_status.csv
+| search Status="Active"
+| stats count by Status
+| table count</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Total Number of Armis Collectors Status = "No Network Traffic Error"</title>
+      <single>
+        <search>
+          <query>| inputlookup armis_integrations_status.csv
+| search Status!="Active"
+| stats count by Status
+| table count</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Armis Collectors by Name</title>
+      <table>
+        <search>
+          <query>| inputlookup armis_integrations_status.csv
+| stats count by Name</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Armis Collectors by Type</title>
+      <table>
+        <search>
+          <query>| inputlookup armis_integrations_status.csv
+| stats count by Types
+| sort Types</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Integration Details</title>
+      <table>
+        <search>
+          <query>| inputlookup armis_integrations_status.csv
+| table Collector, Instance, "Current State", Status, Name, Types, "Status First Reported", "Last Status Report", *
+| sort - Status</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
+        </search>
+        <!-- Row coloring driven by raw connectionStatus
+<format type="rowColors">
+  -->
+        <field name="connectionStatus">
+          <!-- Green for CONNECTED, Red for DISCONNECTED/FAILED/ERROR, Yellow for others -->
+          <colorPalette type="list">["#d6f5d6", "#f8d7da", "#fff3cd"]</colorPalette>
+          <scale type="categorical">
+            <category label="CONNECTED">0</category>
+            <category label="DISCONNECTED">1</category>
+            <category label="FAILED">1</category>
+            <category label="ERROR">1</category>
+            <category label="UNKNOWN">2</category>
+          </scale>
+        </field>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
