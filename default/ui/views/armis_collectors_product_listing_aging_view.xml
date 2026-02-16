@@ -1,13 +1,9 @@
 <dashboard version="1.1" theme="light">
   <label>Armis Collectors Product Listing and Aging View</label>
-  <!-- ===================== TOP METRICS ===================== -->
-  <!-- ===================== NTP VALIDATION ===================== -->
-  <!-- ===================== DNS VALIDATION ===================== -->
-  <!-- ===================== STATUS BREAKDOWN ===================== -->
-  <!-- ===================== DETAILED LISTING ===================== -->
+
   <row>
     <panel>
-      <title>Total Collectors</title>
+      <title>📦 Total Collectors</title>
       <single>
         <search>
           <query>
@@ -15,11 +11,11 @@
 | stats count
           </query>
         </search>
-        <option name="drilldown">none</option>
       </single>
     </panel>
+
     <panel>
-      <title>Oldest Collector</title>
+      <title>🧓 Oldest Collector</title>
       <table>
         <search>
           <query>
@@ -32,8 +28,9 @@
         </search>
       </table>
     </panel>
+
     <panel>
-      <title>Newest Collector</title>
+      <title>🆕 Newest Collector</title>
       <table>
         <search>
           <query>
@@ -47,9 +44,10 @@
       </table>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>Single NTP = time.cloudflare.com</title>
+      <title>⏱️ Single NTP = time.cloudflare.com</title>
       <single>
         <search>
           <query>
@@ -60,11 +58,11 @@
 | stats count
           </query>
         </search>
-        <option name="drilldown">none</option>
       </single>
     </panel>
+
     <panel>
-      <title>Blank NTP Servers</title>
+      <title>💤 Blank NTP Servers</title>
       <single>
         <search>
           <query>
@@ -73,13 +71,13 @@
 | stats count
           </query>
         </search>
-        <option name="drilldown">none</option>
       </single>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>Single DNS = 8.8.8.8</title>
+      <title>🌐 Single DNS = 8.8.8.8</title>
       <single>
         <search>
           <query>
@@ -90,11 +88,57 @@
 | stats count
           </query>
         </search>
-        <option name="drilldown">none</option>
       </single>
     </panel>
+
     <panel>
-      <title>Collectors by Status</title>
+      <title>🔢 Collectors with Single DNS Entry</title>
+      <single>
+        <search>
+          <query>
+| inputlookup armis_collectors_fixed.csv
+| eval dns_clean=trim('DNS Servers')
+| where dns_clean!=""
+| eval dns_count=mvcount(split(dns_clean,","))
+| where dns_count=1
+| stats count
+          </query>
+        </search>
+      </single>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>🛰️ Collectors Using https://vzproxy.verizon.com:9290</title>
+      <single>
+        <search>
+          <query>
+| inputlookup armis_collectors_fixed.csv
+| where trim('Https Proxy')="https://vzproxy.verizon.com:9290"
+| stats count
+          </query>
+        </search>
+      </single>
+    </panel>
+
+    <panel>
+      <title>☠️ Blank Https Proxy</title>
+      <single>
+        <search>
+          <query>
+| inputlookup armis_collectors_fixed.csv
+| where isnull('Https Proxy') OR trim('Https Proxy')=""
+| stats count
+          </query>
+        </search>
+      </single>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>📊 Collectors by Status</title>
       <table>
         <search>
           <query>
@@ -106,31 +150,26 @@
       </table>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>Collector Detailed Listing with Age</title>
+      <title>📋 Collector Detailed Listing with Age</title>
       <table>
         <search>
-          <query>| inputlookup armis_collectors_fixed.csv
+          <query>
+| inputlookup armis_collectors_fixed.csv
 | eval creation_epoch=strptime('Creation Date (GMT -4)',"%Y-%m-%d %H:%M:%S")
 | eval age_seconds = now() - creation_epoch
-
 | eval years = floor(age_seconds/31536000)
 | eval months = floor((age_seconds % 31536000)/2592000)
 | eval weeks = floor((age_seconds % 2592000)/604800)
 | eval days = floor((age_seconds % 604800)/86400)
 | eval hours = floor((age_seconds % 86400)/3600)
 | eval minutes = floor((age_seconds % 3600)/60)
-
-| eval Age = years." years, ".
-             months." months, ".
-             weeks." weeks, ".
-             days." days, ".
-             hours.":".minutes
-
+| eval Age = years." years, ".months." months, ".weeks." weeks, ".days." days, ".hours.":".minutes
 | table "Collector ID",
         "Creation Date (GMT -4)",
-         "Last Seen (GMT -4)",
+        "Last Seen (GMT -4)",
         Age,
         "System Vendor",
         "Product Serial",
@@ -140,18 +179,14 @@
         "Default Gateway",
         "Subnet",
         "NTP Servers",
-        Status,
-        "DNS Servers"
-
-| sort -creation_epoch</query>
-          <earliest>$earliest$</earliest>
-          <latest>$latest$</latest>
+        "DNS Servers",
+        "Https Proxy",
+        Status
+| sort -creation_epoch
+          </query>
         </search>
-        <option name="count">20</option>
-        <option name="drilldown">none</option>
-        <option name="refresh.display">progressbar</option>
-        <option name="wrap">true</option>
       </table>
     </panel>
   </row>
+
 </dashboard>
