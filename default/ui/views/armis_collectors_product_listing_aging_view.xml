@@ -8,9 +8,7 @@
   <!-- ===================== STATUS BREAKDOWN ===================== -->
   <!-- ===================== DETAILED LISTING ===================== -->
 
-  <!-- ===================== TOP METRICS ===================== -->
   <row>
-
     <panel>
       <title>📦 Total Collectors</title>
       <single>
@@ -55,12 +53,9 @@
         <option name="drilldown">none</option>
       </table>
     </panel>
-
   </row>
 
-  <!-- ===================== NTP VALIDATION ===================== -->
   <row>
-
     <panel>
       <title>⏱️ Single NTP = time.cloudflare.com</title>
       <single>
@@ -90,12 +85,9 @@
         <option name="drilldown">none</option>
       </single>
     </panel>
-
   </row>
 
-  <!-- ===================== DNS VALIDATION ===================== -->
   <row>
-
     <panel>
       <title>🌐 Single DNS = 8.8.8.8</title>
       <single>
@@ -128,12 +120,9 @@
         <option name="drilldown">none</option>
       </single>
     </panel>
-
   </row>
 
-  <!-- ===================== PROXY METRICS ===================== -->
   <row>
-
     <panel>
       <title>🛰️ Collectors Using https://vzproxy.verizon.com:9290</title>
       <single>
@@ -161,10 +150,8 @@
         <option name="drilldown">none</option>
       </single>
     </panel>
-
   </row>
 
-  <!-- ===================== STATUS BREAKDOWN ===================== -->
   <row>
     <panel>
       <title>📊 Collectors by Status</title>
@@ -181,7 +168,6 @@
     </panel>
   </row>
 
-  <!-- ===================== DETAILED LISTING ===================== -->
   <row>
     <panel>
       <title>📋 Collector Detailed Listing with Age</title>
