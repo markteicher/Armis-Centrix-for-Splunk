@@ -1,9 +1,11 @@
 <dashboard version="1.1" theme="light">
   <label>Armis Collectors Product Listing and Aging View</label>
-
   <!-- ===================== TOP METRICS ===================== -->
+  <!-- ===================== NTP VALIDATION ===================== -->
+  <!-- ===================== DNS VALIDATION ===================== -->
+  <!-- ===================== STATUS BREAKDOWN ===================== -->
+  <!-- ===================== DETAILED LISTING ===================== -->
   <row>
-
     <panel>
       <title>Total Collectors</title>
       <single>
@@ -16,7 +18,6 @@
         <option name="drilldown">none</option>
       </single>
     </panel>
-
     <panel>
       <title>Oldest Collector</title>
       <table>
@@ -31,7 +32,6 @@
         </search>
       </table>
     </panel>
-
     <panel>
       <title>Newest Collector</title>
       <table>
@@ -46,12 +46,8 @@
         </search>
       </table>
     </panel>
-
   </row>
-
-  <!-- ===================== NTP VALIDATION ===================== -->
   <row>
-
     <panel>
       <title>Single NTP = time.cloudflare.com</title>
       <single>
@@ -67,7 +63,6 @@
         <option name="drilldown">none</option>
       </single>
     </panel>
-
     <panel>
       <title>Blank NTP Servers</title>
       <single>
@@ -81,12 +76,8 @@
         <option name="drilldown">none</option>
       </single>
     </panel>
-
   </row>
-
-  <!-- ===================== DNS VALIDATION ===================== -->
   <row>
-
     <panel>
       <title>Single DNS = 8.8.8.8</title>
       <single>
@@ -102,11 +93,6 @@
         <option name="drilldown">none</option>
       </single>
     </panel>
-
-  </row>
-
-  <!-- ===================== STATUS BREAKDOWN ===================== -->
-  <row>
     <panel>
       <title>Collectors by Status</title>
       <table>
@@ -120,15 +106,12 @@
       </table>
     </panel>
   </row>
-
-  <!-- ===================== DETAILED LISTING ===================== -->
   <row>
     <panel>
       <title>Collector Detailed Listing with Age</title>
       <table>
         <search>
-          <query>
-| inputlookup armis_collectors_fixed.csv
+          <query>| inputlookup armis_collectors_fixed.csv
 | eval creation_epoch=strptime('Creation Date (GMT -4)',"%Y-%m-%d %H:%M:%S")
 | eval age_seconds = now() - creation_epoch
 
@@ -147,8 +130,8 @@
 
 | table "Collector ID",
         "Creation Date (GMT -4)",
+         "Last Seen (GMT -4)",
         Age,
-        "Last Seen (GMT -4)",
         "System Vendor",
         "Product Serial",
         "Name",
@@ -157,16 +140,18 @@
         "Default Gateway",
         "Subnet",
         "NTP Servers",
-        Status
+        Status,
+        "DNS Servers"
 
-| sort -creation_epoch
-          </query>
+| sort -creation_epoch</query>
+          <earliest>$earliest$</earliest>
+          <latest>$latest$</latest>
         </search>
         <option name="count">20</option>
-        <option name="wrap">true</option>
         <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="wrap">true</option>
       </table>
     </panel>
   </row>
-
 </dashboard>
