@@ -1,7 +1,16 @@
 <dashboard version="1.1" theme="light">
   <label>Armis Collectors Product Listing and Aging View</label>
 
+  <!-- ===================== TOP METRICS ===================== -->
+  <!-- ===================== NTP VALIDATION ===================== -->
+  <!-- ===================== DNS VALIDATION ===================== -->
+  <!-- ===================== PROXY METRICS ===================== -->
+  <!-- ===================== STATUS BREAKDOWN ===================== -->
+  <!-- ===================== DETAILED LISTING ===================== -->
+
+  <!-- ===================== TOP METRICS ===================== -->
   <row>
+
     <panel>
       <title>📦 Total Collectors</title>
       <single>
@@ -11,6 +20,7 @@
 | stats count
           </query>
         </search>
+        <option name="drilldown">none</option>
       </single>
     </panel>
 
@@ -26,6 +36,7 @@
 | table Name, "Collector ID", "Creation Date (GMT -4)"
           </query>
         </search>
+        <option name="drilldown">none</option>
       </table>
     </panel>
 
@@ -41,11 +52,15 @@
 | table Name, "Collector ID", "Creation Date (GMT -4)"
           </query>
         </search>
+        <option name="drilldown">none</option>
       </table>
     </panel>
+
   </row>
 
+  <!-- ===================== NTP VALIDATION ===================== -->
   <row>
+
     <panel>
       <title>⏱️ Single NTP = time.cloudflare.com</title>
       <single>
@@ -58,6 +73,7 @@
 | stats count
           </query>
         </search>
+        <option name="drilldown">none</option>
       </single>
     </panel>
 
@@ -71,11 +87,15 @@
 | stats count
           </query>
         </search>
+        <option name="drilldown">none</option>
       </single>
     </panel>
+
   </row>
 
+  <!-- ===================== DNS VALIDATION ===================== -->
   <row>
+
     <panel>
       <title>🌐 Single DNS = 8.8.8.8</title>
       <single>
@@ -88,6 +108,7 @@
 | stats count
           </query>
         </search>
+        <option name="drilldown">none</option>
       </single>
     </panel>
 
@@ -104,11 +125,15 @@
 | stats count
           </query>
         </search>
+        <option name="drilldown">none</option>
       </single>
     </panel>
+
   </row>
 
+  <!-- ===================== PROXY METRICS ===================== -->
   <row>
+
     <panel>
       <title>🛰️ Collectors Using https://vzproxy.verizon.com:9290</title>
       <single>
@@ -119,6 +144,7 @@
 | stats count
           </query>
         </search>
+        <option name="drilldown">none</option>
       </single>
     </panel>
 
@@ -132,10 +158,13 @@
 | stats count
           </query>
         </search>
+        <option name="drilldown">none</option>
       </single>
     </panel>
+
   </row>
 
+  <!-- ===================== STATUS BREAKDOWN ===================== -->
   <row>
     <panel>
       <title>📊 Collectors by Status</title>
@@ -147,10 +176,12 @@
 | sort -count
           </query>
         </search>
+        <option name="drilldown">none</option>
       </table>
     </panel>
   </row>
 
+  <!-- ===================== DETAILED LISTING ===================== -->
   <row>
     <panel>
       <title>📋 Collector Detailed Listing with Age</title>
@@ -185,6 +216,9 @@
 | sort -creation_epoch
           </query>
         </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="wrap">true</option>
       </table>
     </panel>
   </row>
