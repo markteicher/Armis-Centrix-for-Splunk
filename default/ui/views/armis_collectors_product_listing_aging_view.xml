@@ -4,46 +4,78 @@
   <!-- ===================== TOP METRICS ===================== -->
   <row>
 
-    <!-- Total Collectors -->
     <panel>
+      <title>Total Collectors</title>
       <single>
-        <title>Total Collectors</title>
         <search>
           <query>
 | inputlookup armis_collectors_fixed.csv
-| stats count as total_collectors
+| stats count
           </query>
         </search>
         <option name="drilldown">none</option>
       </single>
     </panel>
 
-    <!-- Oldest Collector -->
     <panel>
-      <single>
-        <title>Oldest Collector</title>
+      <title>Oldest Collector</title>
+      <table>
         <search>
           <query>
 | inputlookup armis_collectors_fixed.csv
-| eval creation_epoch=strptime('Creation Date (GMT -4)',"%m/%d/%Y %H:%M:%S")
-| stats min(creation_epoch) as oldest_epoch
-| eval oldest=strftime(oldest_epoch,"%Y-%m-%d %H:%M:%S")
+| eval creation_epoch=strptime('Creation Date (GMT -4)',"%Y-%m-%d %H:%M:%S")
+| sort creation_epoch
+| head 1
+| table Name, "Collector ID", "Creation Date (GMT -4)"
+          </query>
+        </search>
+      </table>
+    </panel>
+
+    <panel>
+      <title>Newest Collector</title>
+      <table>
+        <search>
+          <query>
+| inputlookup armis_collectors_fixed.csv
+| eval creation_epoch=strptime('Creation Date (GMT -4)',"%Y-%m-%d %H:%M:%S")
+| sort - creation_epoch
+| head 1
+| table Name, "Collector ID", "Creation Date (GMT -4)"
+          </query>
+        </search>
+      </table>
+    </panel>
+
+  </row>
+
+  <!-- ===================== NTP VALIDATION ===================== -->
+  <row>
+
+    <panel>
+      <title>Single NTP = time.cloudflare.com</title>
+      <single>
+        <search>
+          <query>
+| inputlookup armis_collectors_fixed.csv
+| eval ntp_clean=trim('NTP Servers')
+| eval ntp_count=mvcount(split(ntp_clean,","))
+| where ntp_count=1 AND ntp_clean="time.cloudflare.com"
+| stats count
           </query>
         </search>
         <option name="drilldown">none</option>
       </single>
     </panel>
 
-    <!-- Newest Collector -->
     <panel>
+      <title>Blank NTP Servers</title>
       <single>
-        <title>Newest Collector</title>
         <search>
           <query>
 | inputlookup armis_collectors_fixed.csv
-| eval creation_epoch=strptime('Creation Date (GMT -4)',"%m/%d/%Y %H:%M:%S")
-| stats max(creation_epoch) as newest_epoch
-| eval newest=strftime(newest_epoch,"%Y-%m-%d %H:%M:%S")
+| where isnull('NTP Servers') OR trim('NTP Servers')=""
+| stats count
           </query>
         </search>
         <option name="drilldown">none</option>
@@ -52,29 +84,29 @@
 
   </row>
 
-  <!-- ===================== NTP + STATUS ===================== -->
+  <!-- ===================== DNS VALIDATION ===================== -->
   <row>
 
-    <!-- NTP Metrics -->
     <panel>
-      <title>NTP Configuration Summary</title>
-      <table>
+      <title>Single DNS = 8.8.8.8</title>
+      <single>
         <search>
           <query>
 | inputlookup armis_collectors_fixed.csv
-| eval ntp_count=mvcount(split('NTP Servers',","))
-| eval only_cloudflare=if(ntp_count=1 AND 'NTP Servers'="time.cloudflare.com",1,0)
-| stats 
-    count(eval(ntp_count=1)) as single_ntp_collectors
-    sum(only_cloudflare) as cloudflare_only_collectors
+| eval dns_clean=trim('DNS Servers')
+| eval dns_count=mvcount(split(dns_clean,","))
+| where dns_count=1 AND dns_clean="8.8.8.8"
+| stats count
           </query>
         </search>
-        <option name="count">5</option>
-        <option name="wrap">true</option>
-      </table>
+        <option name="drilldown">none</option>
+      </single>
     </panel>
 
-    <!-- Status Breakdown -->
+  </row>
+
+  <!-- ===================== STATUS BREAKDOWN ===================== -->
+  <row>
     <panel>
       <title>Collectors by Status</title>
       <table>
@@ -82,14 +114,11 @@
           <query>
 | inputlookup armis_collectors_fixed.csv
 | stats count by Status
-| sort - count
+| sort -count
           </query>
         </search>
-        <option name="count">10</option>
-        <option name="wrap">true</option>
       </table>
     </panel>
-
   </row>
 
   <!-- ===================== DETAILED LISTING ===================== -->
@@ -100,29 +129,21 @@
         <search>
           <query>
 | inputlookup armis_collectors_fixed.csv
-| eval creation_epoch=strptime('Creation Date (GMT -4)',"%m/%d/%Y %H:%M:%S")
+| eval creation_epoch=strptime('Creation Date (GMT -4)',"%Y-%m-%d %H:%M:%S")
 | eval age_seconds = now() - creation_epoch
 
 | eval years = floor(age_seconds/31536000)
-| eval rem_after_years = age_seconds - (years*31536000)
+| eval months = floor((age_seconds % 31536000)/2592000)
+| eval weeks = floor((age_seconds % 2592000)/604800)
+| eval days = floor((age_seconds % 604800)/86400)
+| eval hours = floor((age_seconds % 86400)/3600)
+| eval minutes = floor((age_seconds % 3600)/60)
 
-| eval months = floor(rem_after_years/2592000)
-| eval rem_after_months = rem_after_years - (months*2592000)
-
-| eval weeks = floor(rem_after_months/604800)
-| eval rem_after_weeks = rem_after_months - (weeks*604800)
-
-| eval days = floor(rem_after_weeks/86400)
-| eval rem_after_days = rem_after_weeks - (days*86400)
-
-| eval hours = floor(rem_after_days/3600)
-| eval minutes = floor((rem_after_days - (hours*3600))/60)
-
-| eval Age = years . " years, " . 
-              months . " months, " . 
-              weeks . " weeks, " . 
-              days . " days, " . 
-              lpad(hours,2,"0") . ":" . lpad(minutes,2,"0")
+| eval Age = years." years, ".
+             months." months, ".
+             weeks." weeks, ".
+             days." days, ".
+             hours.":".minutes
 
 | table "Collector ID",
         "Creation Date (GMT -4)",
@@ -138,7 +159,7 @@
         "NTP Servers",
         Status
 
-| sort - creation_epoch
+| sort -creation_epoch
           </query>
         </search>
         <option name="count">20</option>
