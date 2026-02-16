@@ -1,23 +1,151 @@
 <dashboard version="1.1" theme="light">
   <label>Armis Collectors Product Listing and Aging View</label>
+
+  <!-- ===================== TOP METRICS ===================== -->
   <row>
+
+    <!-- Total Collectors -->
     <panel>
+      <single>
+        <title>Total Collectors</title>
+        <search>
+          <query>
+| inputlookup armis_collectors_fixed.csv
+| stats count as total_collectors
+          </query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <!-- Oldest Collector -->
+    <panel>
+      <single>
+        <title>Oldest Collector</title>
+        <search>
+          <query>
+| inputlookup armis_collectors_fixed.csv
+| eval creation_epoch=strptime('Creation Date (GMT -4)',"%m/%d/%Y %H:%M:%S")
+| stats min(creation_epoch) as oldest_epoch
+| eval oldest=strftime(oldest_epoch,"%Y-%m-%d %H:%M:%S")
+          </query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <!-- Newest Collector -->
+    <panel>
+      <single>
+        <title>Newest Collector</title>
+        <search>
+          <query>
+| inputlookup armis_collectors_fixed.csv
+| eval creation_epoch=strptime('Creation Date (GMT -4)',"%m/%d/%Y %H:%M:%S")
+| stats max(creation_epoch) as newest_epoch
+| eval newest=strftime(newest_epoch,"%Y-%m-%d %H:%M:%S")
+          </query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+  </row>
+
+  <!-- ===================== NTP + STATUS ===================== -->
+  <row>
+
+    <!-- NTP Metrics -->
+    <panel>
+      <title>NTP Configuration Summary</title>
       <table>
         <search>
-          <query>|inputlookup armis_collectors_fixed.csv
-|table "Collector ID", "Creation Date (GMT -4)", "Last Seen (GMT -4)","System Vendor", "Product Serial","Name", "MAC Address", "IP Address", "Default Gateway", "Subnet", "NTP Servers", Status</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
-          <sampleRatio>1</sampleRatio>
+          <query>
+| inputlookup armis_collectors_fixed.csv
+| eval ntp_count=mvcount(split('NTP Servers',","))
+| eval only_cloudflare=if(ntp_count=1 AND 'NTP Servers'="time.cloudflare.com",1,0)
+| stats 
+    count(eval(ntp_count=1)) as single_ntp_collectors
+    sum(only_cloudflare) as cloudflare_only_collectors
+          </query>
         </search>
-        <option name="count">20</option>
-        <option name="dataOverlayMode">none</option>
-        <option name="drilldown">none</option>
-        <option name="percentagesRow">false</option>
-        <option name="rowNumbers">false</option>
-        <option name="totalsRow">false</option>
+        <option name="count">5</option>
         <option name="wrap">true</option>
       </table>
     </panel>
+
+    <!-- Status Breakdown -->
+    <panel>
+      <title>Collectors by Status</title>
+      <table>
+        <search>
+          <query>
+| inputlookup armis_collectors_fixed.csv
+| stats count by Status
+| sort - count
+          </query>
+        </search>
+        <option name="count">10</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+
   </row>
+
+  <!-- ===================== DETAILED LISTING ===================== -->
+  <row>
+    <panel>
+      <title>Collector Detailed Listing with Age</title>
+      <table>
+        <search>
+          <query>
+| inputlookup armis_collectors_fixed.csv
+| eval creation_epoch=strptime('Creation Date (GMT -4)',"%m/%d/%Y %H:%M:%S")
+| eval age_seconds = now() - creation_epoch
+
+| eval years = floor(age_seconds/31536000)
+| eval rem_after_years = age_seconds - (years*31536000)
+
+| eval months = floor(rem_after_years/2592000)
+| eval rem_after_months = rem_after_years - (months*2592000)
+
+| eval weeks = floor(rem_after_months/604800)
+| eval rem_after_weeks = rem_after_months - (weeks*604800)
+
+| eval days = floor(rem_after_weeks/86400)
+| eval rem_after_days = rem_after_weeks - (days*86400)
+
+| eval hours = floor(rem_after_days/3600)
+| eval minutes = floor((rem_after_days - (hours*3600))/60)
+
+| eval Age = years . " years, " . 
+              months . " months, " . 
+              weeks . " weeks, " . 
+              days . " days, " . 
+              lpad(hours,2,"0") . ":" . lpad(minutes,2,"0")
+
+| table "Collector ID",
+        "Creation Date (GMT -4)",
+        Age,
+        "Last Seen (GMT -4)",
+        "System Vendor",
+        "Product Serial",
+        "Name",
+        "MAC Address",
+        "IP Address",
+        "Default Gateway",
+        "Subnet",
+        "NTP Servers",
+        Status
+
+| sort - creation_epoch
+          </query>
+        </search>
+        <option name="count">20</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+
 </dashboard>
