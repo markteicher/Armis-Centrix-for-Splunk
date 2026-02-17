@@ -24,7 +24,7 @@
 
   <row>
     <panel>
-      <title>Total Collectors</title>
+      <title>📦 Total Collectors</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[ | stats count ]]></query>
@@ -33,7 +33,7 @@
     </panel>
 
     <panel>
-      <title>Oldest Collector</title>
+      <title>🧓 Oldest Collector</title>
       <table>
         <search base="base_collectors">
           <query><![CDATA[
@@ -46,7 +46,7 @@
     </panel>
 
     <panel>
-      <title>Newest Collector</title>
+      <title>🆕 Newest Collector</title>
       <table>
         <search base="base_collectors">
           <query><![CDATA[
@@ -59,7 +59,7 @@
     </panel>
 
     <panel>
-      <title>Collector Status Distribution</title>
+      <title>📊 Collector Status Distribution</title>
       <table>
         <search base="base_collectors">
           <query><![CDATA[
@@ -75,7 +75,7 @@
 
   <row>
     <panel>
-      <title>Total Number of Armis Collectors with a Single NTP Setting = time.cloudflare.com</title>
+      <title>⏱️ Total Number of Armis Collectors with a Single NTP Setting = time.cloudflare.com</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -88,7 +88,7 @@
     </panel>
 
     <panel>
-      <title>Total Number of Armis Collectors with a Single NTP Setting = time.cloudflare.com Percentage</title>
+      <title>📈 NTP = time.cloudflare.com (%)</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -105,7 +105,7 @@
 
   <row>
     <panel>
-      <title>NTP Inventory Table</title>
+      <title>📋 NTP Inventory (Including Blank)</title>
       <table>
         <search base="base_collectors">
           <query><![CDATA[
@@ -122,7 +122,7 @@
 
   <row>
     <panel>
-      <title>Total Number of Armis Collectors with a Single DNS setting = 8.8.8.8</title>
+      <title>🌐 Total Number of Armis Collectors with a Single DNS setting = 8.8.8.8</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -135,7 +135,7 @@
     </panel>
 
     <panel>
-      <title>Total Number of Armis Collectors with a Single DNS setting = 8.8.8.8 Percentage</title>
+      <title>📈 DNS = 8.8.8.8 (%)</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -152,7 +152,7 @@
 
   <row>
     <panel>
-      <title>DNS Inventory Table</title>
+      <title>📋 DNS Inventory (Including Blank)</title>
       <table>
         <search base="base_collectors">
           <query><![CDATA[
@@ -169,7 +169,7 @@
 
   <row>
     <panel>
-      <title>Total Number of Armis Collectors with Proxy set to http://vzproxy.verizon.com:9290</title>
+      <title>🛰️ Proxy = http://vzproxy.verizon.com:9290</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -181,7 +181,7 @@
     </panel>
 
     <panel>
-      <title>Total Number of Armis Collectors with Proxy set to http://vzproxy.verizon.com:9290 Percentage</title>
+      <title>📈 Proxy vzproxy (%)</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -197,7 +197,7 @@
 
   <row>
     <panel>
-      <title>Proxy Inventory (Including Blank)</title>
+      <title>📋 Proxy Inventory (Including Blank)</title>
       <table>
         <search base="base_collectors">
           <query><![CDATA[
@@ -214,7 +214,7 @@
 
   <row>
     <panel>
-      <title>Collectors Using Microsoft APIPA Range (169.254.x.x)</title>
+      <title>⚠️ Microsoft APIPA Range (169.254.x.x)</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -226,7 +226,7 @@
     </panel>
 
     <panel>
-      <title>Blank Default Gateway Count</title>
+      <title>🚫 Blank Default Gateway</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -242,7 +242,7 @@
 
   <row>
     <panel>
-      <title>Collector Detailed Listing with Age</title>
+      <title>📋 Collector Detailed Listing with Age</title>
       <table>
         <search base="base_collectors">
           <query><![CDATA[
