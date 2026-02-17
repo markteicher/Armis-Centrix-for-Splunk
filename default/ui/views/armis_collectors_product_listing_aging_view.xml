@@ -59,14 +59,14 @@
 
   <row>
     <panel>
-      <title>📊 Collectors – Age Breakdown</title>
+      <title>📊 Collectors - Age Breakdown</title>
       <table>
         <search base="base_collectors">
           <query>
 | eval bucket=case(
     age_days>1095,"3 Years",
-    age_days>=365 AND age_days<=1095,"1–3 Years",
-    age_days<365,"< 1 Year"
+    age_days>=365 AND age_days<=1095,"1-3 Years",
+    age_days<365,"Under 1 Year"
 )
 | stats count by bucket
           </query>
@@ -145,7 +145,7 @@
     </panel>
 
     <panel>
-      <title>☠️ Collectors – Proxy Not Set</title>
+      <title>☠️ Collectors - Proxy Not Set</title>
       <single>
         <search base="base_collectors">
           <query>
@@ -157,7 +157,7 @@
     </panel>
 
     <panel>
-      <title>⚠️ Collectors – Proxy Set but NOT vzproxy</title>
+      <title>⚠️ Collectors - Proxy Set but NOT vzproxy</title>
       <single>
         <search base="base_collectors">
           <query>
@@ -186,7 +186,7 @@
 
   <row>
     <panel>
-      <title>☠️ Collectors – Default Gateway Blank</title>
+      <title>☠️ Collectors - Default Gateway Blank</title>
       <single>
         <search base="base_collectors">
           <query>
@@ -198,7 +198,7 @@
     </panel>
 
     <panel>
-      <title>⚠️ Collectors – Using 169.254.x.x (APIPA)</title>
+      <title>⚠️ Collectors - Using 169.254.x.x (APIPA)</title>
       <single>
         <search base="base_collectors">
           <query>
