@@ -109,7 +109,10 @@
       <table>
         <search base="base_collectors">
           <query><![CDATA[
-| eval ntp_display=if(ntp_clean="","(blank)",ntp_clean)
+| eval ntp_display=case(
+    isnull(ntp_clean) OR ntp_clean="","(blank)",
+    true(),ntp_clean
+)
 | stats count by ntp_display
 | sort -count
           ]]></query>
@@ -156,7 +159,10 @@
       <table>
         <search base="base_collectors">
           <query><![CDATA[
-| eval dns_display=if(dns_clean="","(blank)",dns_clean)
+| eval dns_display=case(
+    isnull(dns_clean) OR dns_clean="","(blank)",
+    true(),dns_clean
+)
 | stats count by dns_display
 | sort -count
           ]]></query>
@@ -197,11 +203,70 @@
 
   <row>
     <panel>
+      <title>⚠️ Proxy Set but NOT vzproxy (Count)</title>
+      <single>
+        <search base="base_collectors">
+          <query><![CDATA[
+| where proxy_clean!="" AND proxy_clean!="http://vzproxy.verizon.com:9290"
+| stats count
+          ]]></query>
+        </search>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚠️ Proxy Set but NOT vzproxy (%)</title>
+      <single>
+        <search base="base_collectors">
+          <query><![CDATA[
+| eval flag=if(proxy_clean!="" AND proxy_clean!="http://vzproxy.verizon.com:9290",1,0)
+| stats sum(flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
+          ]]></query>
+        </search>
+      </single>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>☠️ Proxy Not Set (Count)</title>
+      <single>
+        <search base="base_collectors">
+          <query><![CDATA[
+| where isnull(proxy_clean) OR proxy_clean=""
+| stats count
+          ]]></query>
+        </search>
+      </single>
+    </panel>
+
+    <panel>
+      <title>☠️ Proxy Not Set (%)</title>
+      <single>
+        <search base="base_collectors">
+          <query><![CDATA[
+| eval flag=if(isnull(proxy_clean) OR proxy_clean="",1,0)
+| stats sum(flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
+          ]]></query>
+        </search>
+      </single>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
       <title>📋 Proxy Inventory (Including Blank)</title>
       <table>
         <search base="base_collectors">
           <query><![CDATA[
-| eval proxy_display=if(proxy_clean="","(blank)",proxy_clean)
+| eval proxy_display=case(
+    isnull(proxy_clean) OR proxy_clean="","(blank)",
+    true(),proxy_clean
+)
 | stats count by proxy_display
 | sort -count
           ]]></query>
