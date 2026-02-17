@@ -20,6 +20,8 @@
     ]]></query>
   </search>
 
+  <!-- ===================== TOP METRICS ===================== -->
+
   <row>
     <panel>
       <title>📦 Total Collectors</title>
@@ -59,54 +61,11 @@
     </panel>
   </row>
 
-  <row>
-    <panel>
-      <title>📊 Collectors - Age Breakdown</title>
-      <table>
-        <search base="base_collectors">
-          <query><![CDATA[
-| eval bucket=case(
-    age_days>1095,"3 Years",
-    age_days>=365 AND age_days<=1095,"1-3 Years",
-    age_days<365,"Under 1 Year"
-)
-| stats count by bucket
-          ]]></query>
-        </search>
-      </table>
-    </panel>
-  </row>
+  <!-- ===================== DNS VALIDATION ===================== -->
 
   <row>
     <panel>
-      <title>⏱️ Single NTP = time.cloudflare.com</title>
-      <single>
-        <search base="base_collectors">
-          <query><![CDATA[
-| eval ntp_count=mvcount(split(ntp_clean,","))
-| where ntp_count=1 AND ntp_clean="time.cloudflare.com"
-| stats count
-          ]]></query>
-        </search>
-      </single>
-    </panel>
-
-    <panel>
-      <title>💤 Blank NTP Servers</title>
-      <single>
-        <search base="base_collectors">
-          <query><![CDATA[
-| where isnull(ntp_clean) OR ntp_clean=""
-| stats count
-          ]]></query>
-        </search>
-      </single>
-    </panel>
-  </row>
-
-  <row>
-    <panel>
-      <title>🌐 Single DNS = 8.8.8.8</title>
+      <title>🌐 Single DNS = 8.8.8.8 (Count)</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -119,27 +78,30 @@
     </panel>
 
     <panel>
-      <title>🔢 Collectors with Single DNS Entry</title>
+      <title>🌐 Single DNS = 8.8.8.8 (%)</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
-| where dns_clean!=""
 | eval dns_count=mvcount(split(dns_clean,","))
-| where dns_count=1
-| stats count
+| eval flag=if(dns_count=1 AND dns_clean="8.8.8.8",1,0)
+| stats sum(flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
           ]]></query>
         </search>
       </single>
     </panel>
   </row>
 
+  <!-- ===================== PROXY METRICS ===================== -->
+
   <row>
     <panel>
-      <title>🛰️ Collectors Using https://vzproxy.verizon.com:9290</title>
+      <title>🛰️ Proxy = http://vzproxy.verizon.com:9290 (Count)</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
-| where proxy_clean="https://vzproxy.verizon.com:9290"
+| where proxy_clean="http://vzproxy.verizon.com:9290"
 | stats count
           ]]></query>
         </search>
@@ -147,7 +109,21 @@
     </panel>
 
     <panel>
-      <title>☠️ Collectors - Proxy Not Set</title>
+      <title>🛰️ Proxy = http://vzproxy.verizon.com:9290 (%)</title>
+      <single>
+        <search base="base_collectors">
+          <query><![CDATA[
+| eval flag=if(proxy_clean="http://vzproxy.verizon.com:9290",1,0)
+| stats sum(flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
+          ]]></query>
+        </search>
+      </single>
+    </panel>
+
+    <panel>
+      <title>☠️ Proxy Not Set (Count)</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -159,12 +135,40 @@
     </panel>
 
     <panel>
-      <title>⚠️ Collectors - Proxy Set but NOT vzproxy</title>
+      <title>☠️ Proxy Not Set (%)</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
-| where proxy_clean!="" AND proxy_clean!="https://vzproxy.verizon.com:9290"
+| eval flag=if(isnull(proxy_clean) OR proxy_clean="",1,0)
+| stats sum(flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
+          ]]></query>
+        </search>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚠️ Proxy Set but NOT vzproxy (Count)</title>
+      <single>
+        <search base="base_collectors">
+          <query><![CDATA[
+| where proxy_clean!="" AND proxy_clean!="http://vzproxy.verizon.com:9290"
 | stats count
+          ]]></query>
+        </search>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚠️ Proxy Set but NOT vzproxy (%)</title>
+      <single>
+        <search base="base_collectors">
+          <query><![CDATA[
+| eval flag=if(proxy_clean!="" AND proxy_clean!="http://vzproxy.verizon.com:9290",1,0)
+| stats sum(flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
           ]]></query>
         </search>
       </single>
@@ -177,7 +181,11 @@
       <table>
         <search base="base_collectors">
           <query><![CDATA[
-| eval proxy_display=if(proxy_clean="","(blank)",proxy_clean)
+| eval proxy_display=case(
+    isnull('Https Proxy'),"(blank)",
+    trim('Https Proxy')="","(blank)",
+    true(),trim('Https Proxy')
+)
 | stats count by proxy_display
 | sort -count
           ]]></query>
@@ -186,31 +194,7 @@
     </panel>
   </row>
 
-  <row>
-    <panel>
-      <title>☠️ Collectors - Default Gateway Blank</title>
-      <single>
-        <search base="base_collectors">
-          <query><![CDATA[
-| where isnull('Default Gateway') OR trim('Default Gateway')=""
-| stats count
-          ]]></query>
-        </search>
-      </single>
-    </panel>
-
-    <panel>
-      <title>⚠️ Collectors - Using 169.254.x.x (APIPA)</title>
-      <single>
-        <search base="base_collectors">
-          <query><![CDATA[
-| where like('IP Address',"169.254.%")
-| stats count
-          ]]></query>
-        </search>
-      </single>
-    </panel>
-  </row>
+  <!-- ===================== STATUS BREAKDOWN ===================== -->
 
   <row>
     <panel>
@@ -219,8 +203,8 @@
         <search base="base_collectors">
           <query><![CDATA[
 | stats count by Status
-| eventstats sum(count) as Total
-| eval Percentage=round((count/Total)*100,2)."%"
+| eventstats sum(count) as total
+| eval Percentage=round((count/total)*100,2)."%"
 | table Status Percentage
 | sort -Percentage
           ]]></query>
@@ -228,6 +212,8 @@
       </table>
     </panel>
   </row>
+
+  <!-- ===================== DETAILED LISTING ===================== -->
 
   <row>
     <panel>
