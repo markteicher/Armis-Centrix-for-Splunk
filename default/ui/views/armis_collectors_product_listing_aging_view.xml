@@ -10,14 +10,14 @@
   <!-- ===================== DETAILED LISTING ===================== -->
 
   <search id="base_collectors">
-    <query>
+    <query><![CDATA[
 | inputlookup armis_collectors_fixed.csv
 | eval creation_epoch=strptime('Creation Date (GMT -4)',"%Y-%m-%d %H:%M:%S")
 | eval age_days=round((now()-creation_epoch)/86400,0)
 | eval proxy_clean=trim('Https Proxy')
 | eval dns_clean=trim('DNS Servers')
 | eval ntp_clean=trim('NTP Servers')
-    </query>
+    ]]></query>
   </search>
 
   <row>
@@ -25,7 +25,9 @@
       <title>📦 Total Collectors</title>
       <single>
         <search base="base_collectors">
-          <query>| stats count</query>
+          <query><![CDATA[
+| stats count
+          ]]></query>
         </search>
       </single>
     </panel>
@@ -34,11 +36,11 @@
       <title>🧓 Oldest Collector</title>
       <table>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | sort creation_epoch
 | head 1
 | table Name "Collector ID" "Creation Date (GMT -4)"
-          </query>
+          ]]></query>
         </search>
       </table>
     </panel>
@@ -47,11 +49,11 @@
       <title>🆕 Newest Collector</title>
       <table>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | sort -creation_epoch
 | head 1
 | table Name "Collector ID" "Creation Date (GMT -4)"
-          </query>
+          ]]></query>
         </search>
       </table>
     </panel>
@@ -62,14 +64,14 @@
       <title>📊 Collectors - Age Breakdown</title>
       <table>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | eval bucket=case(
     age_days>1095,"3 Years",
     age_days>=365 AND age_days<=1095,"1-3 Years",
     age_days<365,"Under 1 Year"
 )
 | stats count by bucket
-          </query>
+          ]]></query>
         </search>
       </table>
     </panel>
@@ -80,11 +82,11 @@
       <title>⏱️ Single NTP = time.cloudflare.com</title>
       <single>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | eval ntp_count=mvcount(split(ntp_clean,","))
 | where ntp_count=1 AND ntp_clean="time.cloudflare.com"
 | stats count
-          </query>
+          ]]></query>
         </search>
       </single>
     </panel>
@@ -93,10 +95,10 @@
       <title>💤 Blank NTP Servers</title>
       <single>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | where isnull(ntp_clean) OR ntp_clean=""
 | stats count
-          </query>
+          ]]></query>
         </search>
       </single>
     </panel>
@@ -107,11 +109,11 @@
       <title>🌐 Single DNS = 8.8.8.8</title>
       <single>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | eval dns_count=mvcount(split(dns_clean,","))
 | where dns_count=1 AND dns_clean="8.8.8.8"
 | stats count
-          </query>
+          ]]></query>
         </search>
       </single>
     </panel>
@@ -120,12 +122,12 @@
       <title>🔢 Collectors with Single DNS Entry</title>
       <single>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | where dns_clean!=""
 | eval dns_count=mvcount(split(dns_clean,","))
 | where dns_count=1
 | stats count
-          </query>
+          ]]></query>
         </search>
       </single>
     </panel>
@@ -136,10 +138,10 @@
       <title>🛰️ Collectors Using https://vzproxy.verizon.com:9290</title>
       <single>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | where proxy_clean="https://vzproxy.verizon.com:9290"
 | stats count
-          </query>
+          ]]></query>
         </search>
       </single>
     </panel>
@@ -148,10 +150,10 @@
       <title>☠️ Collectors - Proxy Not Set</title>
       <single>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | where isnull(proxy_clean) OR proxy_clean=""
 | stats count
-          </query>
+          ]]></query>
         </search>
       </single>
     </panel>
@@ -160,10 +162,10 @@
       <title>⚠️ Collectors - Proxy Set but NOT vzproxy</title>
       <single>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | where proxy_clean!="" AND proxy_clean!="https://vzproxy.verizon.com:9290"
 | stats count
-          </query>
+          ]]></query>
         </search>
       </single>
     </panel>
@@ -174,11 +176,11 @@
       <title>🌐 Proxy Inventory (Including Blank)</title>
       <table>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | eval proxy_display=if(proxy_clean="","(blank)",proxy_clean)
 | stats count by proxy_display
 | sort -count
-          </query>
+          ]]></query>
         </search>
       </table>
     </panel>
@@ -189,10 +191,10 @@
       <title>☠️ Collectors - Default Gateway Blank</title>
       <single>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | where isnull('Default Gateway') OR trim('Default Gateway')=""
 | stats count
-          </query>
+          ]]></query>
         </search>
       </single>
     </panel>
@@ -201,10 +203,10 @@
       <title>⚠️ Collectors - Using 169.254.x.x (APIPA)</title>
       <single>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | where like('IP Address',"169.254.%")
 | stats count
-          </query>
+          ]]></query>
         </search>
       </single>
     </panel>
@@ -215,13 +217,13 @@
       <title>📊 Collector Status Distribution (%)</title>
       <table>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | stats count by Status
 | eventstats sum(count) as Total
 | eval Percentage=round((count/Total)*100,2)."%"
 | table Status Percentage
 | sort -Percentage
-          </query>
+          ]]></query>
         </search>
       </table>
     </panel>
@@ -232,7 +234,7 @@
       <title>📋 Collector Detailed Listing with Age</title>
       <table>
         <search base="base_collectors">
-          <query>
+          <query><![CDATA[
 | eval age_seconds=now()-creation_epoch
 | eval years=floor(age_seconds/31536000)
 | eval months=floor((age_seconds%31536000)/2592000)
@@ -243,7 +245,7 @@
 | eval Age=years." years, ".months." months, ".weeks." weeks, ".days." days, ".hours.":".minutes
 | table "Collector ID" "Creation Date (GMT -4)" "Last Seen (GMT -4)" Age "System Vendor" "Product Serial" "Name" "MAC Address" "IP Address" "Default Gateway" "Subnet" "NTP Servers" "DNS Servers" "Https Proxy" Status
 | sort -creation_epoch
-          </query>
+          ]]></query>
         </search>
       </table>
     </panel>
