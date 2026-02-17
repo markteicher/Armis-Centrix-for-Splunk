@@ -275,6 +275,64 @@
     </panel>
   </row>
 
+  <row>
+  <panel>
+    <title>🧮 Total Number of Armis Collectors with a Single DNS Entry</title>
+    <single>
+      <search base="base_collectors">
+        <query><![CDATA[
+| eval dns_count=mvcount(split(dns_clean,","))
+| where dns_clean!=""
+| where dns_count=1
+| stats count
+        ]]></query>
+      </search>
+    </single>
+  </panel>
+
+  <panel>
+    <title>📈 Single DNS Entry (%)</title>
+    <single>
+      <search base="base_collectors">
+        <query><![CDATA[
+| eval dns_count=mvcount(split(dns_clean,","))
+| eval flag=if(dns_clean!="" AND dns_count=1,1,0)
+| stats sum(flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
+        ]]></query>
+      </search>
+    </single>
+  </panel>
+</row>
+
+<row>
+  <panel>
+    <title>💤 Blank DNS Servers (Count)</title>
+    <single>
+      <search base="base_collectors">
+        <query><![CDATA[
+| where isnull(dns_clean) OR dns_clean=""
+| stats count
+        ]]></query>
+      </search>
+    </single>
+  </panel>
+
+  <panel>
+    <title>📈 Blank DNS Servers (%)</title>
+    <single>
+      <search base="base_collectors">
+        <query><![CDATA[
+| eval flag=if(isnull(dns_clean) OR dns_clean="",1,0)
+| stats sum(flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
+        ]]></query>
+      </search>
+    </single>
+  </panel>
+</row>
   <!-- ===================== NETWORK VALIDATION ===================== -->
 
   <row>
