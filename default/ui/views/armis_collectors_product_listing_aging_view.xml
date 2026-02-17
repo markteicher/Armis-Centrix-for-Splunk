@@ -303,6 +303,64 @@
     </panel>
   </row>
 
+<row>
+  <panel>
+    <title>🧮 Total Number of Armis Collectors with a Single NTP Entry</title>
+    <single>
+      <search base="base_collectors">
+        <query><![CDATA[
+| eval ntp_count=mvcount(split(ntp_clean,","))
+| where ntp_clean!=""
+| where ntp_count=1
+| stats count
+        ]]></query>
+      </search>
+    </single>
+  </panel>
+
+  <panel>
+    <title>📈 Single NTP Entry (%)</title>
+    <single>
+      <search base="base_collectors">
+        <query><![CDATA[
+| eval ntp_count=mvcount(split(ntp_clean,","))
+| eval flag=if(ntp_clean!="" AND ntp_count=1,1,0)
+| stats sum(flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
+        ]]></query>
+      </search>
+    </single>
+  </panel>
+</row>
+
+<row>
+  <panel>
+    <title>💤 Blank NTP Servers (Count)</title>
+    <single>
+      <search base="base_collectors">
+        <query><![CDATA[
+| where isnull(ntp_clean) OR ntp_clean=""
+| stats count
+        ]]></query>
+      </search>
+    </single>
+  </panel>
+
+  <panel>
+    <title>📈 Blank NTP Servers (%)</title>
+    <single>
+      <search base="base_collectors">
+        <query><![CDATA[
+| eval flag=if(isnull(ntp_clean) OR ntp_clean="",1,0)
+| stats sum(flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
+        ]]></query>
+      </search>
+    </single>
+  </panel>
+</row>
   <!-- ===================== DETAILED LISTING ===================== -->
 
   <row>
