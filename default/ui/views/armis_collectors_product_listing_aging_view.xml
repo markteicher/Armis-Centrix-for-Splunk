@@ -10,25 +10,60 @@
   <!-- ===================== DETAILED LISTING ===================== -->
 
   <search id="base_collectors">
-    <query><![CDATA[
+    <query>
+      <![CDATA[
 | inputlookup armis_collectors_fixed.csv
 | eval creation_epoch=strptime('Creation Date (GMT -4)',"%Y-%m-%d %H:%M:%S")
 | eval age_days=round((now()-creation_epoch)/86400,0)
 | eval proxy_clean=trim('Https Proxy')
 | eval dns_clean=trim('DNS Servers')
 | eval ntp_clean=trim('NTP Servers')
-    ]]></query>
+      ]]>
+    </query>
   </search>
+
+  <!-- ===================== TOP METRICS ===================== -->
 
   <row>
     <panel>
       <title>📦 Total Collectors</title>
       <single>
         <search base="base_collectors">
-          <query><![CDATA[| stats count]]></query>
+          <query><![CDATA[ | stats count ]]></query>
         </search>
       </single>
     </panel>
+
+    <panel>
+      <title>🧓 Oldest Collector</title>
+      <table>
+        <search base="base_collectors">
+          <query><![CDATA[
+| sort creation_epoch
+| head 1
+| table Name "Collector ID" "Creation Date (GMT -4)"
+          ]]></query>
+        </search>
+      </table>
+    </panel>
+
+    <panel>
+      <title>🆕 Newest Collector</title>
+      <table>
+        <search base="base_collectors">
+          <query><![CDATA[
+| sort -creation_epoch
+| head 1
+| table Name "Collector ID" "Creation Date (GMT -4)"
+          ]]></query>
+        </search>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ===================== STATUS BREAKDOWN ===================== -->
+
+  <row>
     <panel>
       <title>📊 Collector Status Distribution (%)</title>
       <table>
@@ -49,7 +84,7 @@
 
   <row>
     <panel>
-      <title>⏱️ Single NTP = time.cloudflare.com (Count)</title>
+      <title>Total Number of Armis Collectors with a Single NTP Setting = time.cloudflare.com</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -60,8 +95,9 @@
         </search>
       </single>
     </panel>
+
     <panel>
-      <title>⏱️ Single NTP = time.cloudflare.com (%)</title>
+      <title>Total Number of Armis Collectors with a Single NTP Setting = time.cloudflare.com Percentage</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -76,38 +112,11 @@
     </panel>
   </row>
 
-  <row>
-    <panel>
-      <title>💤 Blank NTP Servers (Count)</title>
-      <single>
-        <search base="base_collectors">
-          <query><![CDATA[
-| where isnull(ntp_clean) OR ntp_clean=""
-| stats count
-          ]]></query>
-        </search>
-      </single>
-    </panel>
-    <panel>
-      <title>💤 Blank NTP Servers (%)</title>
-      <single>
-        <search base="base_collectors">
-          <query><![CDATA[
-| eval flag=if(isnull(ntp_clean) OR ntp_clean="",1,0)
-| stats sum(flag) as affected count as total
-| eval pct=round((affected/total)*100,2)."%"
-| table pct
-          ]]></query>
-        </search>
-      </single>
-    </panel>
-  </row>
-
   <!-- ===================== DNS VALIDATION ===================== -->
 
   <row>
     <panel>
-      <title>🌐 Single DNS = 8.8.8.8 (Count)</title>
+      <title>Total Number of Armis Collectors with a Single DNS setting = 8.8.8.8</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -118,8 +127,9 @@
         </search>
       </single>
     </panel>
+
     <panel>
-      <title>🌐 Single DNS = 8.8.8.8 (%)</title>
+      <title>Total Number of Armis Collectors with a Single DNS setting = 8.8.8.8 Percentage</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -138,7 +148,7 @@
 
   <row>
     <panel>
-      <title>🛰️ Proxy = http://vzproxy.verizon.com:9290 (Count)</title>
+      <title>Total Number of Armis Collectors with Proxy set to http://vzproxy.verizon.com:9290</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
@@ -148,12 +158,41 @@
         </search>
       </single>
     </panel>
+
     <panel>
-      <title>🛰️ Proxy = http://vzproxy.verizon.com:9290 (%)</title>
+      <title>Total Number of Armis Collectors with Proxy set to http://vzproxy.verizon.com:9290 Percentage</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
 | eval flag=if(proxy_clean="http://vzproxy.verizon.com:9290",1,0)
+| stats sum(flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
+          ]]></query>
+        </search>
+      </single>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>⚠️ Proxy Set but NOT vzproxy (Count)</title>
+      <single>
+        <search base="base_collectors">
+          <query><![CDATA[
+| where proxy_clean!="" AND proxy_clean!="http://vzproxy.verizon.com:9290"
+| stats count
+          ]]></query>
+        </search>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚠️ Proxy Set but NOT vzproxy (%)</title>
+      <single>
+        <search base="base_collectors">
+          <query><![CDATA[
+| eval flag=if(proxy_clean!="" AND proxy_clean!="http://vzproxy.verizon.com:9290",1,0)
 | stats sum(flag) as affected count as total
 | eval pct=round((affected/total)*100,2)."%"
 | table pct
@@ -175,6 +214,7 @@
         </search>
       </single>
     </panel>
+
     <panel>
       <title>☠️ Proxy Not Set (%)</title>
       <single>
@@ -190,29 +230,31 @@
     </panel>
   </row>
 
+  <row>
+    <panel>
+      <title>🌐 Proxy Inventory (Including Blank)</title>
+      <table>
+        <search base="base_collectors">
+          <query><![CDATA[
+| eval proxy_display=if(isnull(proxy_clean) OR proxy_clean="","(blank)",proxy_clean)
+| stats count by proxy_display
+| sort -count
+          ]]></query>
+        </search>
+      </table>
+    </panel>
+  </row>
+
   <!-- ===================== NETWORK VALIDATION ===================== -->
 
   <row>
     <panel>
-      <title>⚠️ Microsoft 169.254.x.x IP Address (Count)</title>
+      <title>⚠️ Collectors Using Microsoft APIPA Range (169.254.x.x)</title>
       <single>
         <search base="base_collectors">
           <query><![CDATA[
 | where like('IP Address',"169.254.%")
 | stats count
-          ]]></query>
-        </search>
-      </single>
-    </panel>
-    <panel>
-      <title>⚠️ Microsoft 169.254.x.x IP Address (%)</title>
-      <single>
-        <search base="base_collectors">
-          <query><![CDATA[
-| eval flag=if(like('IP Address',"169.254.%"),1,0)
-| stats sum(flag) as affected count as total
-| eval pct=round((affected/total)*100,2)."%"
-| table pct
           ]]></query>
         </search>
       </single>
