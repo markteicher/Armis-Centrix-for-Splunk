@@ -1,0 +1,20 @@
+<row>
+  <panel>
+    <title>TimeZone Configuration Status</title>
+    <table>
+      <search>
+        <query>
+          | inputlookup tvm_exclusions.csv
+          | rename "exclusions/schedule/timezone" AS TimeZone
+          | eval TimeZone = if(isnull(TimeZone) OR TimeZone="", "☠️ Not Set", TimeZone)
+          | stats count BY TimeZone
+          | sort - count
+        </query>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </search>
+      <option name="count">10</option>
+      <option name="drilldown">none</option>
+    </table>
+  </panel>
+</row>
