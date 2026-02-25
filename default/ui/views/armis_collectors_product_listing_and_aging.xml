@@ -1,0 +1,119 @@
+<!--
+=============================================================================
+ File: default/data/ui/views/armis_collectors_product_listing_and_aging.xml
+
+ Description:
+ Armis Collectors – Product Listing and Aging View
+
+ Provides operational visibility into collector inventory, lifecycle age,
+ network configuration posture, proxy compliance, and detailed system
+ attributes within the Splunk App.
+=============================================================================
+-->
+
+# Armis Collectors – Product Listing and Aging View  
+## Operational Visibility Overview
+
+This Splunk view provides centralized visibility into all deployed Armis Collectors, combining lifecycle tracking, configuration validation, network posture review, and proxy compliance into a single operational dashboard.
+
+---
+
+## 1️⃣ Collector Inventory & Lifecycle Monitoring
+
+The view displays:
+
+- Total number of collectors
+- Identification of:
+  - Oldest collector
+  - Newest collector
+- Detailed aging metrics (years / months / days / minutes)
+- Per-collector metadata:
+  - Creation date
+  - Last seen timestamp
+  - System vendor
+  - Product serial number
+  - MAC address
+  - IP address
+  - Subnet
+  - Default gateway
+
+### Operational Value
+- Identifies aging collectors
+- Detects collectors that may no longer be reporting
+- Supports lifecycle management planning
+- Provides authoritative inventory validation
+
+---
+
+## 2️⃣ Network Configuration Visibility
+
+The dashboard surfaces configuration conditions such as:
+
+- Collectors using Microsoft APIPA addresses (169.254.x.x)
+- Collectors with blank default gateways
+- Collectors configured with:
+  - Single DNS entries
+  - Specific DNS (e.g., 8.8.8.8)
+  - NTP set to time.cloudflare.com
+- Percentage-based distribution of DNS and NTP configurations
+
+### Operational Value
+- Detects network misconfiguration
+- Highlights non-standard DNS/NTP settings
+- Supports configuration standard enforcement
+- Reduces risk of time synchronization or resolution issues
+
+---
+
+## 3️⃣ Proxy Configuration & Egress Control
+
+The view provides visibility into:
+
+- Number of collectors using the approved enterprise proxy
+- Percentage using the approved proxy
+- Percentage using a proxy that is not approved
+- Count of collectors violating proxy standards
+
+### Operational Value
+- Validates outbound inspection enforcement
+- Detects unauthorized egress configurations
+- Supports network security governance
+
+---
+
+## 4️⃣ Operational Status Distribution
+
+Collector status categories displayed:
+
+- Active
+- Collector Received
+- Inactive
+- In Shipping
+
+### Operational Value
+- Identifies non-reporting systems
+- Highlights deployment pipeline state
+- Supports readiness tracking
+
+---
+
+## 5️⃣ Detailed Collector Listing
+
+The detailed table provides:
+
+- Collector ID
+- Hostname
+- Vendor
+- Serial number
+- MAC address
+- IP address
+- Subnet
+- Default gateway
+- DNS servers
+- NTP servers
+- Exact calculated age
+
+### Operational Value
+- Enables rapid troubleshooting
+- Supports hardware traceability
+- Provides configuration verification at the individual system level
