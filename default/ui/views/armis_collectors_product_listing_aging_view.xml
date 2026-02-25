@@ -80,23 +80,64 @@
   </row>
   <row>
     <panel>
-      <title>📋 NTP Inventory (Including Blank)</title>
-      <table>
+      <title>🧮 Total Number of Armis Collectors with a Single DNS Entry</title>
+      <single>
         <search base="base_collectors">
           <query>
             <![CDATA[
-| eval ntp_display=case(
-    isnull(ntp_clean) OR ntp_clean="","(blank)",
-    true(),ntp_clean
-)
-| stats count by ntp_display
-| sort -count
+| eval dns_count=mvcount(split(dns_clean,","))
+| where dns_clean!=""
+| where dns_count=1
+| stats count
+        ]]>
+          </query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <title>⚠️ Microsoft APIPA Range (169.254.x.x)</title>
+      <single>
+        <search base="base_collectors">
+          <query>
+            <![CDATA[
+| where like('IP Address',"169.254.%")
+| stats count
           ]]>
           </query>
         </search>
-        <option name="count">20</option>
-      </table>
+      </single>
     </panel>
+    <panel>
+      <title>🚫 Blank Default Gateway</title>
+      <single>
+        <search base="base_collectors">
+          <query>
+            <![CDATA[
+| where isnull('Default Gateway') OR trim('Default Gateway')=""
+| stats count
+          ]]>
+          </query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <title>📈 Single DNS Entry (%)</title>
+      <single>
+        <search base="base_collectors">
+          <query>
+            <![CDATA[
+| eval dns_count=mvcount(split(dns_clean,","))
+| eval flag=if(dns_clean!="" AND dns_count=1,1,0)
+| stats sum(flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
+        ]]>
+          </query>
+        </search>
+      </single>
+    </panel>
+  </row>
+  <row>
     <panel>
       <title>⏱️ Total Number of Armis Collectors with a Single NTP Setting = time.cloudflare.com</title>
       <single>
@@ -126,25 +167,6 @@
           </query>
         </search>
       </single>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <title>📋 DNS Inventory (Including Blank)</title>
-      <table>
-        <search base="base_collectors">
-          <query>
-            <![CDATA[
-| eval dns_display=case(
-    isnull(dns_clean) OR dns_clean="","(blank)",
-    true(),dns_clean
-)
-| stats count by dns_display
-| sort -count
-          ]]>
-          </query>
-        </search>
-      </table>
     </panel>
     <panel>
       <title>🌐 Total Number of Armis Collectors with a Single DNS setting = 8.8.8.8</title>
@@ -179,23 +201,6 @@
   </row>
   <row>
     <panel>
-      <title>📋 Proxy Inventory (Including Blank)</title>
-      <table>
-        <search base="base_collectors">
-          <query>| eval proxy_display=case(
-    isnull(proxy_clean) OR proxy_clean="","(blank)",
-    true(),proxy_clean
-)
-| stats count by proxy_display
-| rename proxy_display AS "Proxy Setting"
-| sort -count</query>
-        </search>
-        <option name="refresh.display">progressbar</option>
-      </table>
-    </panel>
-  </row>
-  <row>
-    <panel>
       <title>🛰️ Total Number of Armis Collectors using Proxy = http://vzproxy.verizon.com:9290</title>
       <single>
         <search base="base_collectors">
@@ -224,19 +229,6 @@
       </single>
     </panel>
     <panel>
-      <title>⚠️ Total Number of Armis Collectors Count Proxy Set but NOT vzproxy (Count)</title>
-      <single>
-        <search base="base_collectors">
-          <query>
-            <![CDATA[
-| where proxy_clean!="" AND proxy_clean!="http://vzproxy.verizon.com:9290"
-| stats count
-          ]]>
-          </query>
-        </search>
-      </single>
-    </panel>
-    <panel>
       <title>⚠️ Percentage of Armis Collectors Proxy Set but NOT vzproxy (%)</title>
       <single>
         <search base="base_collectors">
@@ -246,6 +238,19 @@
 | stats sum(flag) as affected count as total
 | eval pct=round((affected/total)*100,2)."%"
 | table pct
+          ]]>
+          </query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <title>⚠️ Total Number of Armis Collectors Count Proxy Set but NOT vzproxy (Count)</title>
+      <single>
+        <search base="base_collectors">
+          <query>
+            <![CDATA[
+| where proxy_clean!="" AND proxy_clean!="http://vzproxy.verizon.com:9290"
+| stats count
           ]]>
           </query>
         </search>
@@ -284,93 +289,54 @@
   </row>
   <row>
     <panel>
-      <title>🧮 Total Number of Armis Collectors with a Single DNS Entry</title>
-      <single>
+      <title>📋 NTP Inventory (Including Blank)</title>
+      <table>
         <search base="base_collectors">
           <query>
             <![CDATA[
-| eval dns_count=mvcount(split(dns_clean,","))
-| where dns_clean!=""
-| where dns_count=1
-| stats count
-        ]]>
-          </query>
-        </search>
-      </single>
-    </panel>
-    <panel>
-      <title>📈 Single DNS Entry (%)</title>
-      <single>
-        <search base="base_collectors">
-          <query>
-            <![CDATA[
-| eval dns_count=mvcount(split(dns_clean,","))
-| eval flag=if(dns_clean!="" AND dns_count=1,1,0)
-| stats sum(flag) as affected count as total
-| eval pct=round((affected/total)*100,2)."%"
-| table pct
-        ]]>
-          </query>
-        </search>
-      </single>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <title>💤 Blank DNS Servers (Count)</title>
-      <single>
-        <search base="base_collectors">
-          <query>
-            <![CDATA[
-| where isnull(dns_clean) OR dns_clean=""
-| stats count
-        ]]>
-          </query>
-        </search>
-      </single>
-    </panel>
-    <panel>
-      <title>📈 Blank DNS Servers (%)</title>
-      <single>
-        <search base="base_collectors">
-          <query>
-            <![CDATA[
-| eval flag=if(isnull(dns_clean) OR dns_clean="",1,0)
-| stats sum(flag) as affected count as total
-| eval pct=round((affected/total)*100,2)."%"
-| table pct
-        ]]>
-          </query>
-        </search>
-      </single>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <title>⚠️ Microsoft APIPA Range (169.254.x.x)</title>
-      <single>
-        <search base="base_collectors">
-          <query>
-            <![CDATA[
-| where like('IP Address',"169.254.%")
-| stats count
+| eval ntp_display=case(
+    isnull(ntp_clean) OR ntp_clean="","(blank)",
+    true(),ntp_clean
+)
+| stats count by ntp_display
+| sort -count
           ]]>
           </query>
         </search>
-      </single>
+        <option name="count">20</option>
+      </table>
     </panel>
     <panel>
-      <title>🚫 Blank Default Gateway</title>
-      <single>
+      <title>📋 DNS Inventory (Including Blank)</title>
+      <table>
         <search base="base_collectors">
           <query>
             <![CDATA[
-| where isnull('Default Gateway') OR trim('Default Gateway')=""
-| stats count
+| eval dns_display=case(
+    isnull(dns_clean) OR dns_clean="","(blank)",
+    true(),dns_clean
+)
+| stats count by dns_display
+| sort -count
           ]]>
           </query>
         </search>
-      </single>
+      </table>
+    </panel>
+    <panel>
+      <title>📋 Proxy Inventory (Including Blank)</title>
+      <table>
+        <search base="base_collectors">
+          <query>| eval proxy_display=case(
+    isnull(proxy_clean) OR proxy_clean="","(blank)",
+    true(),proxy_clean
+)
+| stats count by proxy_display
+| rename proxy_display AS "Proxy Setting"
+| sort -count</query>
+        </search>
+        <option name="refresh.display">progressbar</option>
+      </table>
     </panel>
   </row>
   <row>
@@ -378,9 +344,7 @@
       <title>📋 Collector Detailed Listing with Age</title>
       <table>
         <search base="base_collectors">
-          <query>
-            <![CDATA[
-| eval age_seconds=now()-creation_epoch
+          <query>| eval age_seconds=now()-creation_epoch
 | eval years=floor(age_seconds/31536000)
 | eval months=floor((age_seconds%31536000)/2592000)
 | eval weeks=floor((age_seconds%2592000)/604800)
@@ -388,11 +352,10 @@
 | eval hours=floor((age_seconds%86400)/3600)
 | eval minutes=floor((age_seconds%3600)/60)
 | eval Age=years." years, ".months." months, ".weeks." weeks, ".days." days, ".hours.":".minutes
-| table "Collector ID" "Creation Date (GMT -4)" "Last Seen (GMT -4)" Age "System Vendor" "Product Serial" "Name" "MAC Address" "IP Address" "Default Gateway" "Subnet" "NTP Servers" "DNS Servers" "Https Proxy" Status
-| sort -creation_epoch
-          ]]>
-          </query>
+| table "Collector ID" "Creation Date (GMT -4)" "Last Seen (GMT -4)" Age "Name","System Vendor" ,"Product Serial","MAC Address" "IP Address" "Default Gateway" "Subnet" "NTP Servers" "DNS Servers" "Https Proxy" Status
+| sort -creation_epoch</query>
         </search>
+        <option name="refresh.display">progressbar</option>
       </table>
     </panel>
   </row>
