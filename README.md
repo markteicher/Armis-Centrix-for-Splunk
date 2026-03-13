@@ -239,7 +239,7 @@ Run a Splunk search:
 
 # Directory Structure
 
-
+```
 Armis_Centrix_For_Splunk_App/
 ├── app.manifest
 ├── LICENSE
@@ -280,7 +280,7 @@ Armis_Centrix_For_Splunk_App/
 ├── appIcon.png
 └── appIcon_2x.png
 
-
+```
 
 ---
 
