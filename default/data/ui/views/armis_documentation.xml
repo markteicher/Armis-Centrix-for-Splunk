@@ -1,0 +1,152 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_documentation.xml
+ Armis Centrix™ for Splunk App
+ Documentation Hub
+=============================================================================
+
+PURPOSE
+
+Centralized documentation hub for Armis Centrix™ platform concepts,
+APIs, and Splunk App usage. This view provides direct links to
+authoritative Armis documentation and related technical references.
+
+=============================================================================
+-->
+
+<dashboard version="1.1" theme="light">
+  <label>📚 Documentation</label>
+
+  <!-- =============================================================== -->
+  <!-- ROW 1: ARMIS DOCUMENTATION                                      -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>🧠 Armis Centrix Platform Documentation</title>
+      <html>
+        <ul>
+          <li>
+            <a href="https://www.armis.com/platform/" target="_blank">
+              Armis Centrix Platform Overview
+            </a>
+          </li>
+          <li>
+            <a href="https://www.armis.com/solutions/" target="_blank">
+              Armis Security Solutions
+            </a>
+          </li>
+          <li>
+            <a href="https://www.armis.com/resources/" target="_blank">
+              Armis Resource Library
+            </a>
+          </li>
+          <li>
+            <a href="https://www.armis.com/blog/" target="_blank">
+              Armis Security Blog
+            </a>
+          </li>
+        </ul>
+      </html>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- ROW 2: SECURITY FRAMEWORKS & ANALYSIS                           -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>🛡️ Security Concepts & Frameworks</title>
+      <html>
+        <ul>
+          <li>
+            <a href="https://owasp.org/www-project-top-ten/" target="_blank">
+              OWASP Top 10 Web Application Risks
+            </a>
+          </li>
+          <li>
+            <a href="https://www.first.org/cvss/" target="_blank">
+              Common Vulnerability Scoring System (CVSS)
+            </a>
+          </li>
+          <li>
+            <a href="https://attack.mitre.org/" target="_blank">
+              MITRE ATT&amp;CK Framework
+            </a>
+          </li>
+          <li>
+            <a href="https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final" target="_blank">
+              NIST SP 800-53 Security Controls
+            </a>
+          </li>
+        </ul>
+      </html>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- ROW 3: EXPOSURE MANAGEMENT & DEVICE SECURITY                    -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>🌐 Cyber Exposure & Device Security</title>
+      <html>
+        <ul>
+          <li>
+            <a href="https://www.armis.com/what-is-cyber-exposure-management/" target="_blank">
+              Cyber Exposure Management
+            </a>
+          </li>
+          <li>
+            <a href="https://www.armis.com/solutions/iot-security/" target="_blank">
+              IoT Security
+            </a>
+          </li>
+          <li>
+            <a href="https://www.armis.com/solutions/operational-technology-security/" target="_blank">
+              Operational Technology Security
+            </a>
+          </li>
+          <li>
+            <a href="https://www.armis.com/solutions/healthcare/" target="_blank">
+              Medical Device Security
+            </a>
+          </li>
+        </ul>
+      </html>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- ROW 4: SPLUNK REFERENCES                                        -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>🧰 Splunk References</title>
+      <html>
+        <ul>
+          <li>
+            <a href="https://docs.splunk.com/Documentation/Splunk/latest/Viz/XMLDashboardReference" target="_blank">
+              Splunk Classic XML Dashboard Reference
+            </a>
+          </li>
+          <li>
+            <a href="https://docs.splunk.com/Documentation/Splunk/latest/Admin/Propsconf" target="_blank">
+              props.conf Reference
+            </a>
+          </li>
+          <li>
+            <a href="https://docs.splunk.com/Documentation/Splunk/latest/Admin/Transformsconf" target="_blank">
+              transforms.conf Reference
+            </a>
+          </li>
+          <li>
+            <a href="https://docs.splunk.com/Documentation/Splunk/latest/SearchReference/SearchCommands" target="_blank">
+              Splunk Search Command Reference
+            </a>
+          </li>
+        </ul>
+      </html>
+    </panel>
+  </row>
+
+</dashboard>
