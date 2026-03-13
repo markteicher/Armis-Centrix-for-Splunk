@@ -1,0 +1,386 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_help.xml
+ Armis Centrix™ for Splunk App
+ Help & API Reference
+=============================================================================
+
+PURPOSE
+
+Operational help and API reference for the Armis Centrix platform.
+
+This page provides administrators, analysts, and engineers with guidance
+on interacting with the Armis API, understanding core data domains,
+and mapping Armis functionality into Splunk dashboards and searches.
+
+Content is derived from the Armis API Guide.
+
+=============================================================================
+-->
+
+<dashboard version="1.1" theme="light">
+  <label>Help</label>
+
+  <!-- =============================================================== -->
+  <!-- PLATFORM OVERVIEW                                               -->
+  <!-- =============================================================== -->
+
+  <row>
+    <panel>
+      <title>🧠 Armis Centrix Platform Overview</title>
+      <html>
+        <![CDATA[
+        <p>
+        Armis Centrix™ provides cyber exposure management by discovering,
+        classifying, and monitoring assets across IT, OT, IoT, and IoMT
+        environments.
+        </p>
+
+        <p>
+        The Armis API allows external systems such as Splunk to retrieve
+        asset intelligence, alerts, vulnerabilities, and operational data
+        from the Armis platform.
+        </p>
+
+        <p>
+        This Splunk application uses those APIs to ingest Armis telemetry
+        and present operational dashboards, analytics, and reporting.
+        </p>
+        ]]>
+      </html>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- API AUTHENTICATION                                              -->
+  <!-- =============================================================== -->
+
+  <row>
+    <panel>
+      <title>🔐 API Authentication</title>
+      <html>
+        <![CDATA[
+        <p>
+        All Armis API requests require authentication using a temporary
+        access token.
+        </p>
+
+        <p>
+        The token is generated using the following endpoint:
+        </p>
+
+        <pre>
+POST /api/v1/access_token/
+        </pre>
+
+        <p>
+        Required parameter:
+        </p>
+
+        <ul>
+        <li>secret-key</li>
+        </ul>
+
+        <p>
+        The API returns:
+        </p>
+
+        <ul>
+        <li>access_token</li>
+        <li>expiration_utc</li>
+        </ul>
+
+        <p>
+        The token must be included in all API requests using the
+        Authorization header.
+        </p>
+        ]]>
+      </html>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- SEARCH AND ASQ                                                  -->
+  <!-- =============================================================== -->
+
+  <row>
+    <panel>
+      <title>🔎 Armis Search API (ASQ)</title>
+      <html>
+        <![CDATA[
+        <p>
+        The primary API used to retrieve information from Armis is the
+        Search API.
+        </p>
+
+        <p>
+        Searches are executed using Armis Standard Query (ASQ).
+        </p>
+
+        <pre>
+GET /api/v1/search/?aql=in:devices
+GET /api/v1/search/?aql=in:alerts
+GET /api/v1/search/?aql=in:activity
+        </pre>
+
+        <p>
+        ASQ supports time filtering:
+        </p>
+
+        <pre>
+in:alerts after:2022-03-11T14:00:00 before:2022-03-16T14:00:00
+        </pre>
+
+        <p>
+        ASQ queries can be used to retrieve alerts, devices, activity,
+        and other telemetry from the Armis platform.
+        </p>
+        ]]>
+      </html>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- ALERTS                                                          -->
+  <!-- =============================================================== -->
+
+  <row>
+    <panel>
+      <title>🚨 Alerts API</title>
+      <html>
+        <![CDATA[
+        <p>
+        Alerts represent security events or anomalies detected within
+        the Armis environment.
+        </p>
+
+        <pre>
+GET /api/v1/search/?aql=in:alerts
+        </pre>
+
+        <p>
+        Example alert fields include:
+        </p>
+
+        <ul>
+        <li>alertId</li>
+        <li>severity</li>
+        <li>status</li>
+        <li>time</li>
+        <li>title</li>
+        <li>type</li>
+        <li>deviceIds</li>
+        <li>connectionIds</li>
+        </ul>
+
+        <p>
+        Alerts may represent anomalous behavior, security violations,
+        or suspicious activity detected by Armis.
+        </p>
+        ]]>
+      </html>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- DEVICES                                                         -->
+  <!-- =============================================================== -->
+
+  <row>
+    <panel>
+      <title>💻 Devices API</title>
+      <html>
+        <![CDATA[
+        <p>
+        Devices represent discovered assets in the environment including
+        IT devices, OT equipment, IoT devices, and unmanaged systems.
+        </p>
+
+        <pre>
+GET /api/v1/search/?aql=in:devices
+        </pre>
+
+        <p>
+        Device retrieval supports pagination parameters:
+        </p>
+
+        <ul>
+        <li>length — number of records returned</li>
+        <li>from — starting offset for pagination</li>
+        </ul>
+
+        <p>
+        The Armis API supports page sizes up to 5000 records.
+        </p>
+        ]]>
+      </html>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- ACTIVITY EVENTS                                                 -->
+  <!-- =============================================================== -->
+
+  <row>
+    <panel>
+      <title>📡 Activity Events</title>
+      <html>
+        <![CDATA[
+        <p>
+        Activity events represent network or device behavior detected
+        by Armis sensors and collectors.
+        </p>
+
+        <pre>
+GET /api/v1/search/?aql=in:activity
+        </pre>
+
+        <p>
+        Example activity fields include:
+        </p>
+
+        <ul>
+        <li>activityUUID</li>
+        <li>title</li>
+        <li>content</li>
+        <li>protocol</li>
+        <li>deviceIds</li>
+        <li>connectionIds</li>
+        <li>sensor.name</li>
+        <li>time</li>
+        </ul>
+        ]]>
+      </html>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- DEVICE TAGGING                                                  -->
+  <!-- =============================================================== -->
+
+  <row>
+    <panel>
+      <title>🏷️ Device Tags</title>
+      <html>
+        <![CDATA[
+        <p>
+        Device tags allow administrators to assign labels to assets
+        for grouping and operational management.
+        </p>
+
+        <pre>
+POST /api/v1/devices_tags/
+        </pre>
+
+        <p>
+        Example parameters:
+        </p>
+
+        <ul>
+        <li>ips</li>
+        <li>macs</li>
+        <li>tags</li>
+        <li>remove</li>
+        </ul>
+
+        <p>
+        Tags can be applied or removed for sets of devices.
+        </p>
+        ]]>
+      </html>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- INTEGRATIONS                                                    -->
+  <!-- =============================================================== -->
+
+  <row>
+    <panel>
+      <title>🔗 Integrations</title>
+      <html>
+        <![CDATA[
+        <p>
+        Integrations connect the Armis platform with external systems
+        such as SIEMs, ticketing systems, or enforcement platforms.
+        </p>
+
+        <pre>
+GET /api/v2/integrations/
+        </pre>
+
+        <p>
+        Integration records include:
+        </p>
+
+        <ul>
+        <li>id</li>
+        <li>instance</li>
+        <li>integrationState</li>
+        <li>creationTime</li>
+        <li>changeTime</li>
+        <li>collectorId</li>
+        </ul>
+        ]]>
+      </html>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- PAGINATION                                                      -->
+  <!-- =============================================================== -->
+
+  <row>
+    <panel>
+      <title>📄 Pagination</title>
+      <html>
+        <![CDATA[
+        <p>
+        Large datasets must be retrieved using pagination parameters.
+        </p>
+
+        <ul>
+        <li>length — number of results per page</li>
+        <li>from — starting record offset</li>
+        </ul>
+
+        <p>
+        Example:
+        </p>
+
+        <pre>
+GET /api/v1/search/?aql=in:devices&length=100
+GET /api/v1/search/?aql=in:devices&length=100&from=100
+        </pre>
+
+        <p>
+        The response returns metadata including total record counts
+        and the next pagination offset.
+        </p>
+        ]]>
+      </html>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- API BEST PRACTICES                                              -->
+  <!-- =============================================================== -->
+
+  <row>
+    <panel>
+      <title>⚙️ API Best Practices</title>
+      <html>
+        <![CDATA[
+        <ul>
+        <li>Always authenticate using an access token.</li>
+        <li>Use pagination for large data sets.</li>
+        <li>Filter queries by time when possible.</li>
+        <li>Use ASQ queries to retrieve targeted datasets.</li>
+        <li>Validate API responses and error codes.</li>
+        </ul>
+        ]]>
+      </html>
+    </panel>
+  </row>
+
+</dashboard>
