@@ -225,6 +225,28 @@ Use of this software is **not covered by any Armis license, warranty, or support
 
 ---
 
+### Collector Operational Telemetry
+
+Armis collectors provide operational telemetry related to sensor deployment,
+network configuration, and collector lifecycle status.
+
+- Collector ID
+- Name
+- Creation Date (GMT -4)
+- Last Seen (GMT -4)
+- Status
+- IP Address
+- MAC Address
+- Default Gateway
+- Subnet
+- DNS Servers
+- NTP Servers
+- Https Proxy
+- System Vendor
+- Product Serial
+
+---
+
 # Supported Environments
 
 Armis Centrix supports monitoring across a broad range of environments including:
