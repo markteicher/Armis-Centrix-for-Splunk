@@ -240,7 +240,45 @@ Run a Splunk search:
 # Directory Structure
 
 
-
+Armis_Centrix_For_Splunk_App/
+├── app.manifest
+├── LICENSE
+├── README.md
+├── default/
+│   ├── app.conf
+│   ├── inputs.conf
+│   ├── props.conf
+│   ├── transforms.conf
+│   ├── macros.conf
+│   ├── restmap.conf
+│   ├── savedsearches.conf
+│   ├── web.conf
+│   └── data/
+│       └── ui/
+│           ├── nav/
+│           │   └── default.xml
+│           └── views/
+│               ├── setup.xml
+│               ├── armis_overview.xml
+│               ├── armis_assets.xml
+│               ├── armis_alerts.xml
+│               ├── armis_vulnerabilities.xml
+│               ├── armis_exposure.xml
+│               ├── armis_reports.xml
+│               ├── armis_logs.xml
+│               ├── armis_documentation.xml
+│               ├── armis_support.xml
+│               └── armis_about.xml
+├── bin/
+│   ├── armis_input.py
+│   ├── armis_setup_handler.py
+│   └── armis_validation.py
+├── metadata/
+│   ├── default.meta
+│   └── local.meta
+└── static/
+├── appIcon.png
+└── appIcon_2x.png
 
 
 
