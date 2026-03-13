@@ -231,3 +231,56 @@ Apps → Manage Apps
 ## Step 3 — Verify Data Collection
 
 Run a Splunk search:
+
+---
+
+
+---
+
+# Directory Structure
+
+
+
+
+
+
+---
+
+# Requirements
+
+- Splunk Enterprise or Splunk Cloud
+- Network connectivity to Armis Centrix platform
+- Valid Armis API credentials
+- Python 3.10+
+
+---
+
+# AppInspect Compliance
+
+- Standard Splunk app directory structure
+- Inputs disabled by default
+- Secure credential handling
+- No hardcoded secrets
+- JSON-based ingestion
+- MIT License
+
+---
+
+# References
+
+Armis Centrix documentation  
+https://www.armis.com
+
+Splunk documentation  
+https://docs.splunk.com
+
+---
+
+# MIT License
+
+Copyright (c) 2026 Mark Teicher
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files to deal in the Software
+without restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies of the Software.
