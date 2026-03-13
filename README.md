@@ -1,2 +1,2 @@
-# Armis_Centrix_Utilities
-Open Source Armis Centrix Utilities
+# Armis Centrix for Splunk App
+
