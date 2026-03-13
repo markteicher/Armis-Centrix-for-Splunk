@@ -465,3 +465,200 @@ Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files to deal in the Software
 without restriction, including without limitation the rights to use, copy,
 modify, merge, publish, distribute, sublicense, and/or sell copies of the Software.
+
+
+## Dashboards
+
+| Dashboard | Description |
+|-----------|-------------|
+| 🧭 Overview | Global cyber exposure posture across all discovered assets |
+| 🖥️ Assets | Complete asset inventory discovered by Armis across IT, OT, IoT, IoMT, and cloud |
+| 🧠 Asset Intelligence | Device classification, behavioral fingerprinting, and asset context |
+| 🌐 Asset Communications | Device-to-device communication analysis and network interaction mapping |
+| 🚨 Alerts | Active Armis alerts and threat detections |
+| 🔥 Alerts — By Severity | Alerts grouped by severity for rapid triage |
+| 🧬 Vulnerabilities | Vulnerabilities detected across discovered assets |
+| 🎯 VIPR Prioritization | Vulnerabilities prioritized by Armis VIPR exploitability intelligence |
+| 📊 Exposure Analytics | Cyber exposure metrics and attack surface analysis |
+| 📈 Exposure Trends | Exposure posture changes over time |
+| 🏷️ Asset Tags | Asset tagging and classification metadata |
+| 🧠 Threat Intelligence | Armis threat intelligence insights and exploit context |
+| 👤 Users | Platform users and access visibility |
+| ⏳ User Activity | User login activity and access history |
+| 🔐 Roles | Role definitions and privilege assignments |
+| 🛡️ Permissions | Role-to-permission mappings |
+| 🔑 API Keys | API credential inventory |
+| 🔗 Integrations | External security platform integrations |
+| ⚙️ Configuration | Platform configuration telemetry |
+| 📄 Reports | Armis-generated reports and exposure summaries |
+| 📜 Audit Logs | Administrative audit events |
+| ⚠️ Error Logs | Ingestion and API error logs |
+| ❤️ System Health | Platform operational health indicators |
+| 🏷️ Version | Armis Centrix platform version information |
+| 📚 Documentation | Embedded product documentation |
+| 🛟 Support | Support resources and troubleshooting |
+| ℹ️ About | Application integration information |
+
+---
+
+## Data Collected
+
+### Asset Inventory
+
+Armis continuously discovers and profiles all devices connected to the network.
+
+- asset_id  
+- device_name  
+- device_type  
+- device_category  
+- ip_address  
+- mac_address  
+- manufacturer  
+- model  
+- operating_system  
+- firmware_version  
+- asset_risk_level  
+- asset_tags  
+- network_zone  
+- location  
+- first_seen  
+- last_seen  
+
+---
+
+### Alerts & Security Events
+
+Armis generates alerts when abnormal device behavior, policy violations, or known threat patterns are detected.
+
+- alert_id  
+- alert_type  
+- severity  
+- category  
+- description  
+- impacted_assets  
+- detection_source  
+- attack_vector  
+- recommended_action  
+- status  
+- timestamps  
+
+---
+
+### Vulnerabilities
+
+Armis identifies vulnerabilities associated with assets and prioritizes them using VIPR.
+
+- vulnerability_id  
+- cve  
+- severity  
+- cvss_score  
+- exploitability_score  
+- affected_assets  
+- remediation  
+- discovery_timestamp  
+
+---
+
+### Exposure Intelligence
+
+Exposure analytics evaluates risk across the entire attack surface.
+
+- exposure_score  
+- risk_level  
+- attack_surface_size  
+- asset_risk_rating  
+- vulnerability_count  
+- exploitable_vulnerabilities  
+
+---
+
+### Asset Communications
+
+Armis analyzes communication patterns between devices.
+
+- source_asset  
+- destination_asset  
+- protocol  
+- communication_frequency  
+- anomalous_behavior  
+
+---
+
+## Data Ingestion Model
+
+The **Armis Centrix™ for Splunk App** retrieves telemetry from the Armis Centrix platform using the **Armis REST APIs**.
+
+The integration performs scheduled polling of platform datasets including:
+
+- asset inventory
+- alerts
+- vulnerabilities
+- exposure intelligence
+- communications telemetry
+- audit logs
+- platform metadata
+
+Each dataset is ingested into Splunk and preserved in **raw JSON format** to maintain complete fidelity with the source platform.
+
+### Ingestion Characteristics
+
+- Polling-based REST API ingestion
+- Raw JSON event storage
+- Dataset-specific sourcetypes
+- User-configurable Splunk index
+- Secure credential storage
+- API pagination support
+- Fault-tolerant ingestion
+
+---
+
+## UI → API → Splunk Data Mapping
+
+| Armis UI Area | API Endpoint | HTTP Method | Splunk Sourcetype |
+|----------------|--------------|-------------|-------------------|
+| Assets | `/api/v1/assets` | GET | `armis:assets` |
+| Asset Intelligence | `/api/v1/assets/{id}` | GET | `armis:assets` |
+| Alerts | `/api/v1/alerts` | GET | `armis:alerts` |
+| Vulnerabilities | `/api/v1/vulnerabilities` | GET | `armis:vulnerabilities` |
+| Exposure Intelligence | `/api/v1/exposure` | GET | `armis:exposure` |
+| Communications | `/api/v1/communications` | GET | `armis:network` |
+| Users | `/api/v1/users` | GET | `armis:users` |
+| Audit Logs | `/api/v1/audit` | GET | `armis:audit` |
+| Reports | `/api/v1/reports` | GET | `armis:reports` |
+| Platform Version | `/api/v1/version` | GET | `armis:meta` |
+| System Health | `/api/v1/status` | GET | `armis:meta` |
+
+---
+
+## Splunk Data Structure
+
+The integration assigns each dataset a dedicated **Splunk sourcetype**.
+
+| Dataset | Sourcetype |
+|--------|-------------|
+| Asset Inventory | `armis:assets` |
+| Alerts | `armis:alerts` |
+| Vulnerabilities | `armis:vulnerabilities` |
+| Exposure Intelligence | `armis:exposure` |
+| Communications | `armis:network` |
+| Users | `armis:users` |
+| Audit Logs | `armis:audit` |
+| Reports | `armis:reports` |
+| Platform Metadata | `armis:meta` |
+
+All events are stored as **raw JSON** allowing Splunk users to perform flexible analytics, correlation, and reporting.
+
+---
+
+## Splunk Integration Benefits
+
+Using Armis telemetry inside Splunk enables organizations to:
+
+- correlate Armis data with SIEM events  
+- enrich threat investigations with device intelligence  
+- monitor cyber exposure across the enterprise  
+- generate executive exposure reports  
+- track vulnerabilities and exploitability trends  
+- analyze device communications and behavior
+
+  
