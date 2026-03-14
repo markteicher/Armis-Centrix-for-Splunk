@@ -1,0 +1,275 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_alerts.xml
+ Armis Centrix™ for Splunk App
+ Alerts Monitoring & Comparative Trend Analysis
+=============================================================================
+
+Purpose:
+Provide operational visibility into Armis alerts while replicating the
+core analytical layout of the native Armis Alerts Overview dashboard.
+This dashboard also introduces enterprise comparative analytics
+including Day-over-Day, Week-over-Week, Month-over-Month,
+Quarter-over-Quarter, and Year-over-Year alert trends.
+
+Data Source:
+Armis REST API
+GET /api/v1/alerts/
+
+Splunk Source:
+index=$index$
+sourcetype=armis_alerts
+
+Expected Fields:
+id
+title
+severity
+category
+status
+device
+deviceType
+site
+latestActivity
+_time
+
+Design Standards:
+• Enterprise base-search architecture
+• Post-process searches for panel efficiency
+• No spath usage
+• Dynamic field discovery (no hard-coded severity values)
+• Structured operational sections
+• Comparative trend analysis
+
+=============================================================================
+-->
+
+<dashboard version="1.1">
+
+<label>🚨 Armis Alerts</label>
+<description>Operational visibility and comparative trend analysis of Armis alerts</description>
+
+<init>
+  <set token="index">armis</set>
+</init>
+
+<!-- ========================================================= -->
+<!-- Base Search -->
+<!-- ========================================================= -->
+
+<search id="base_alerts">
+  <query>
+index=$index$ sourcetype=armis_alerts
+| dedup id
+  </query>
+  <earliest>-1y
+  </earliest>
+  <latest>now</latest>
+</search>
+
+<!-- ========================================================= -->
+<!-- 🚨 Alert Overview -->
+<!-- ========================================================= -->
+
+<row>
+
+<panel>
+<title>🚨 Total Alerts</title>
+<single>
+<search base="base_alerts">
+<query>
+| stats count as Total_Alerts
+</query>
+</search>
+<option name="drilldown">none</option>
+</single>
+</panel>
+
+<panel>
+<title>📊 Alerts by Severity</title>
+<chart>
+<search base="base_alerts">
+<query>
+| stats count by severity
+| sort -count
+</query>
+</search>
+<option name="charting.chart">pie</option>
+<option name="drilldown">none</option>
+</chart>
+</panel>
+
+<panel>
+<title>📊 Alerts by Title</title>
+<chart>
+<search base="base_alerts">
+<query>
+| stats count by title
+| sort -count
+</query>
+</search>
+<option name="charting.chart">pie</option>
+<option name="drilldown">none</option>
+</chart>
+</panel>
+
+</row>
+
+<!-- ========================================================= -->
+<!-- 📈 Alerts Over Time -->
+<!-- ========================================================= -->
+
+<row>
+
+<panel>
+<title>📈 Alerts Over Time by Severity</title>
+<chart>
+<search base="base_alerts">
+<query>
+| timechart span=1d count by severity
+</query>
+</search>
+<option name="charting.chart">line</option>
+</chart>
+</panel>
+
+</row>
+
+<!-- ========================================================= -->
+<!-- 📊 Alert Context -->
+<!-- ========================================================= -->
+
+<row>
+
+<panel>
+<title>📊 Alerts by Device Type</title>
+<chart>
+<search base="base_alerts">
+<query>
+| stats count by deviceType severity
+| sort -count
+</query>
+</search>
+<option name="charting.chart">bar</option>
+</chart>
+</panel>
+
+<panel>
+<title>📊 Alerts by Site</title>
+<chart>
+<search base="base_alerts">
+<query>
+| stats count by site severity
+| sort -count
+</query>
+</search>
+<option name="charting.chart">bar</option>
+</chart>
+</panel>
+
+</row>
+
+<!-- ========================================================= -->
+<!-- 📉 Comparative Alert Trends -->
+<!-- ========================================================= -->
+
+<row>
+
+<panel>
+<title>📉 Day-over-Day Alerts</title>
+<chart>
+<search base="base_alerts">
+<query>
+| timechart span=1d count as Alerts
+</query>
+</search>
+<option name="charting.chart">line</option>
+</chart>
+</panel>
+
+<panel>
+<title>📉 Week-over-Week Alerts</title>
+<chart>
+<search base="base_alerts">
+<query>
+| timechart span=1w count as Alerts
+</query>
+</search>
+<option name="charting.chart">line</option>
+</chart>
+</panel>
+
+</row>
+
+<row>
+
+<panel>
+<title>📉 Month-over-Month Alerts</title>
+<chart>
+<search base="base_alerts">
+<query>
+| timechart span=1mon count as Alerts
+</query>
+</search>
+<option name="charting.chart">line</option>
+</chart>
+</panel>
+
+<panel>
+<title>📉 Quarter-over-Quarter Alerts</title>
+<chart>
+<search base="base_alerts">
+<query>
+| timechart span=1q count as Alerts
+</query>
+</search>
+<option name="charting.chart">line</option>
+</chart>
+</panel>
+
+</row>
+
+<row>
+
+<panel>
+<title>📉 Year-over-Year Alerts</title>
+<chart>
+<search base="base_alerts">
+<query>
+| timechart span=1y count as Alerts
+</query>
+</search>
+<option name="charting.chart">line</option>
+</chart>
+</panel>
+
+</row>
+
+<!-- ========================================================= -->
+<!-- 📋 Recent Alerts -->
+<!-- ========================================================= -->
+
+<row>
+
+<panel>
+<title>📋 Recent Alerts</title>
+
+<table>
+
+<search base="base_alerts">
+<query>
+| sort -_time
+| table _time severity title status latestActivity device site
+</query>
+</search>
+
+<option name="count">20</option>
+<option name="rowNumbers">true</option>
+<option name="wrap">true</option>
+
+</table>
+
+</panel>
+
+</row>
+
+</dashboard>
