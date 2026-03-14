@@ -10,6 +10,62 @@ PURPOSE
 Provides information about the Armis Centrix™ platform and the
 Armis Centrix™ for Splunk App integration.
 
+
+<!--
+=============================================================================
+ default/data/ui/views/armis_help.xml
+ Armis Centrix™ for Splunk App
+ Platform Help & API Reference
+=============================================================================
+
+• Devices
+• Brands
+• Models
+• Device Categories
+• Device Subcategories
+• Device Profiles
+• Operating Systems
+• Software
+• Firmware
+• Services
+• Ports
+• Interfaces
+• Alerts
+• Notifications
+• Activity Events
+• Connections
+• Networks
+• Boundaries
+• Tags
+• Policies
+• Integrations
+• Collectors
+• Sensors
+• Users
+• Roles
+• Permissions
+• User Activity
+• Audit Logs
+• Sites
+• Risk Factors
+• Enforcement
+• Vulnerabilities
+• VIPR
+• CVE Intelligence (cve.armis.com)
+• Threat Intelligence
+• Asset Intelligence Engine
+• Exposure Analytics
+• Platform Health
+• Reporting
+• Configuration
+• Platform Version
+• API Authentication
+• Search API
+• Armis Standard Query (ASQ)
+• Pagination
+=============================================================================
+-->
+
 =============================================================================
 -->
 
