@@ -1,0 +1,111 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_certificate.xml
+ Armis Centrix™ for Splunk App
+ Tenant Root CA Certificate
+=============================================================================
+
+Purpose:
+Display the Armis tenant Root Certificate Authority (CA) certificate
+retrieved from the Armis API endpoint:
+
+    GET /api/v1/certificates/root_ca/
+
+The certificate is returned as a PEM formatted certificate and is
+typically used when integrating external systems that require trust
+of the Armis platform.
+
+Data Source:
+Armis REST API
+GET /api/v1/certificates/root_ca/
+
+Splunk Source:
+index=$index$
+sourcetype=armis_certificate
+
+Displayed Fields:
+certificate
+
+Notes:
+This view is informational and intended to allow administrators to
+inspect and copy the tenant root CA certificate stored within Splunk.
+
+=============================================================================
+-->
+
+<dashboard version="1.1">
+
+<label>🔐 Armis Root CA Certificate</label>
+<description>Tenant Root Certificate Authority used by the Armis platform</description>
+
+<init>
+  <set token="index">armis</set>
+</init>
+
+<!-- ========================================================= -->
+<!-- Root Certificate -->
+<!-- ========================================================= -->
+
+<row>
+
+<panel>
+
+<title>📜 Tenant Root CA Certificate (PEM)</title>
+
+<table>
+
+<search>
+<query>
+index=$index$ sourcetype=armis_certificate
+| table certificate
+</query>
+<earliest>0</earliest>
+<latest>now</latest>
+</search>
+
+<option name="wrap">true</option>
+<option name="rowNumbers">false</option>
+
+</table>
+
+</panel>
+
+</row>
+
+<!-- ========================================================= -->
+<!-- Certificate Context -->
+<!-- ========================================================= -->
+
+<row>
+
+<panel>
+
+<html>
+
+<h2>📚 About the Armis Root CA Certificate</h2>
+
+<p>
+The Armis Root Certificate Authority (CA) certificate is used to establish
+trust between external systems and the Armis platform. This certificate is
+typically required when configuring integrations that perform secure
+communications with Armis services.
+</p>
+
+<p>
+The certificate is returned in <strong>PEM format</strong> by the Armis API
+endpoint <code>/api/v1/certificates/root_ca/</code>.
+</p>
+
+<p>
+Administrators may copy the certificate content from the table above and
+install it in systems that require validation of the Armis platform's
+certificate chain.
+</p>
+
+</html>
+
+</panel>
+
+</row>
+
+</dashboard>
