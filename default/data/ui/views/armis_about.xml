@@ -5,29 +5,51 @@
  Platform Help & API Reference
 =============================================================================
 
-PURPOSE
-
-Operational help and technical reference for the Armis Centrix™ platform.
-
-Covered platform domains include:
-
-• Platform overview
-• API authentication
-• Armis Standard Query (ASQ)
 • Devices
+• Brands
+• Models
+• Device Categories
+• Device Subcategories
+• Device Profiles
+• Operating Systems
+• Software
+• Firmware
+• Services
+• Ports
+• Interfaces
 • Alerts
-• Activity events
-• Collectors
+• Notifications
+• Activity Events
+• Connections
 • Networks
 • Boundaries
-• Device tagging
+• Tags
 • Policies
 • Integrations
+• Collectors
+• Sensors
+• Users
+• Roles
+• Permissions
+• User Activity
+• Audit Logs
+• Sites
+• Risk Factors
+• Enforcement
+• Vulnerabilities
+• VIPR
+• CVE Intelligence
+• Threat Intelligence
+• Asset Intelligence Engine
+• Exposure Analytics
+• Platform Health
+• Reporting
+• Configuration
+• Platform Version
+• API Authentication
+• Search API
+• Armis Standard Query (ASQ)
 • Pagination
-• Vulnerability intelligence
-• VIPR prioritization
-• CVE intelligence portal
-
 =============================================================================
 -->
 
@@ -35,90 +57,101 @@ Covered platform domains include:
 <label>Help</label>
 
 <!-- =============================================================== -->
-<!-- PLATFORM OVERVIEW                                               -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>🧠 Armis Centrix Platform Overview</title>
-<html><![CDATA[
-
-<p>
-Armis Centrix™ is an AI-powered cyber exposure management platform
-that provides visibility across the enterprise attack surface.
-</p>
-
-<p>
-The platform discovers and monitors assets across IT, OT, IoT,
-IoMT, and cloud infrastructure without requiring agents.
-</p>
-
-<p>
-Armis analyzes device behavior, vulnerabilities,
-communications, and environmental context to identify
-security exposures across connected assets.
-</p>
-
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
 <!-- API AUTHENTICATION                                              -->
 <!-- =============================================================== -->
 
 <row>
 <panel>
-<title>🔐 API Authentication</title>
+<title>API Authentication</title>
 <html><![CDATA[
 
-<p>All Armis API requests require authentication.</p>
-
-<pre>
 POST /api/v1/access_token/
-</pre>
 
-<p>
-API credentials are generated from:
-</p>
+URI Parameters
 
-<ul>
-<li>Armis Console → Settings → API Management</li>
-</ul>
+secret-key (string)
 
-<p>
-The returned access token must be included
-in the Authorization header of subsequent API requests.
-</p>
+Response
+
+{
+ "data": {
+  "access_token": "<token>",
+  "expiration_utc": "<timestamp>"
+ },
+ "success": true
+}
+
+HTTP Status Codes
+
+200 OK
+400 Bad request
 
 ]]></html>
 </panel>
 </row>
 
 <!-- =============================================================== -->
-<!-- ARMIS STANDARD QUERY (ASQ)                                      -->
+<!-- SEARCH API                                                      -->
 <!-- =============================================================== -->
 
 <row>
 <panel>
-<title>🔎 Armis Standard Query (ASQ)</title>
+<title>Search API</title>
 <html><![CDATA[
 
-<p>
-The Armis Standard Query language retrieves datasets
-through the Armis Search API.
-</p>
+GET /api/v1/search/?aql=<query>
 
-<pre>
+Datasets
+
+in:devices
+in:alerts
+in:activity
+in:connections
+in:auditLog
+
+Query Parameters
+
+aql
+includeTotal
+includeSample
+length
+from
+
+Example
+
 GET /api/v1/search/?aql=in:devices
-GET /api/v1/search/?aql=in:alerts
-GET /api/v1/search/?aql=in:activity
-</pre>
 
-<p>
-ASQ supports filtering using dataset attributes,
-time constraints, and device characteristics.
-</p>
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- ARMIS STANDARD QUERY                                            -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Armis Standard Query (ASQ)</title>
+<html><![CDATA[
+
+Examples
+
+in:devices
+in:alerts
+in:activity
+in:auditLog
+
+Example
+
+in:devices after:2022-03-10
+
+Example
+
+in:alerts after:2022-03-11T14:00:00 before:2022-03-16T14:00:00
+
+Example
+
+in:auditLog timeFrame:"7 Days" user:"John"
 
 ]]></html>
 </panel>
@@ -130,23 +163,222 @@ time constraints, and device characteristics.
 
 <row>
 <panel>
-<title>💻 Devices</title>
+<title>Devices</title>
 <html><![CDATA[
 
-<p>
-Devices represent assets discovered and classified
-by the Armis platform.
-</p>
-
-<pre>
 GET /api/v1/search/?aql=in:devices
-</pre>
 
-<p>
-Assets may include enterprise IT systems,
-industrial equipment, IoT devices,
-medical equipment, and unmanaged infrastructure.
-</p>
+Device attributes returned
+
+id
+name
+ipAddress
+macAddress
+manufacturer
+model
+category
+type
+operatingSystem
+firstSeen
+lastSeen
+riskLevel
+tags
+networkId
+siteId
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- BRANDS                                                          -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Brands</title>
+<html><![CDATA[
+
+manufacturer
+vendor
+productFamily
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- MODELS                                                          -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Models</title>
+<html><![CDATA[
+
+model
+modelNumber
+hardwareVersion
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- DEVICE CATEGORIES                                               -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Device Categories</title>
+<html><![CDATA[
+
+IT
+OT
+IoT
+IoMT
+Network Infrastructure
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- DEVICE SUBCATEGORIES                                            -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Device Subcategories</title>
+<html><![CDATA[
+
+Server
+Router
+PLC
+Medical Imaging
+Camera
+Printer
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- DEVICE PROFILES                                                 -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Device Profiles</title>
+<html><![CDATA[
+
+Device fingerprint profiles
+
+protocol behavior
+service fingerprints
+network activity patterns
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- OPERATING SYSTEMS                                               -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Operating Systems</title>
+<html><![CDATA[
+
+os
+osVersion
+kernelVersion
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- SOFTWARE                                                        -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Software</title>
+<html><![CDATA[
+
+applicationName
+applicationVersion
+vendor
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- FIRMWARE                                                        -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Firmware</title>
+<html><![CDATA[
+
+firmwareVersion
+firmwareBuild
+firmwareVendor
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- SERVICES                                                        -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Services</title>
+<html><![CDATA[
+
+serviceName
+protocol
+port
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- PORTS                                                           -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Ports</title>
+<html><![CDATA[
+
+port
+protocol
+service
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- INTERFACES                                                      -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Interfaces</title>
+<html><![CDATA[
+
+macAddress
+ipAddress
+networkInterface
 
 ]]></html>
 </panel>
@@ -158,22 +390,41 @@ medical equipment, and unmanaged infrastructure.
 
 <row>
 <panel>
-<title>🚨 Alerts</title>
+<title>Alerts</title>
 <html><![CDATA[
 
-<p>
-Alerts represent detections generated by
-Armis behavioral analytics.
-</p>
+PATCH /api/v1/alerts/{alert_id}
 
-<pre>
-GET /api/v1/search/?aql=in:alerts
-</pre>
+Fields
 
-<p>
-Alerts may indicate suspicious activity,
-policy violations, or anomalous device behavior.
-</p>
+alertId
+title
+description
+severity
+status
+type
+deviceIds
+connectionIds
+activityUUIDs
+time
+lastAlertUpdateTime
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- NOTIFICATIONS                                                   -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Notifications</title>
+<html><![CDATA[
+
+Alert notifications
+policy notifications
+integration notifications
 
 ]]></html>
 </panel>
@@ -185,62 +436,46 @@ policy violations, or anomalous device behavior.
 
 <row>
 <panel>
-<title>📡 Activity Events</title>
+<title>Activity Events</title>
 <html><![CDATA[
 
-<p>
-Activity events represent telemetry generated from
-device communications and network interactions.
-</p>
-
-<pre>
 GET /api/v1/search/?aql=in:activity
-</pre>
 
-<p>
-Activity telemetry provides visibility into
-device communications, protocols, and behavior.
-</p>
+Fields
+
+activityUUID
+deviceId
+protocol
+sourceIp
+destinationIp
+sourcePort
+destinationPort
+connectionId
+time
 
 ]]></html>
 </panel>
 </row>
 
 <!-- =============================================================== -->
-<!-- COLLECTORS                                                      -->
+<!-- CONNECTIONS                                                     -->
 <!-- =============================================================== -->
 
 <row>
 <panel>
-<title>📡 Armis Collectors</title>
+<title>Connections</title>
 <html><![CDATA[
 
-<p>
-Collectors provide passive monitoring capabilities
-and forward telemetry to the Armis platform.
-</p>
+GET /api/v1/search/?aql=in:connections
 
-<p>
-Collector metadata includes configuration and
-operational attributes such as:
-</p>
+Fields
 
-<ul>
-<li>Collector ID</li>
-<li>Name</li>
-<li>Status</li>
-<li>Creation Date</li>
-<li>Last Seen</li>
-<li>System Vendor</li>
-<li>Product Serial</li>
-<li>MAC Address</li>
-<li>IP Address</li>
-<li>Default Gateway</li>
-<li>Subnet</li>
-<li>NTP Servers</li>
-<li>DNS Servers</li>
-<li>Https Proxy</li>
-</ul>
+connectionId
+sourceDeviceId
+destinationDeviceId
+protocol
+port
+time
 
 ]]></html>
 </panel>
@@ -252,22 +487,14 @@ operational attributes such as:
 
 <row>
 <panel>
-<title>🌐 Networks</title>
+<title>Networks</title>
 <html><![CDATA[
 
-<p>
-Networks represent monitored network segments
-observed by the Armis platform.
-</p>
-
-<pre>
-GET /api/v1/search/?aql=in:networks
-</pre>
-
-<p>
-Network records provide context for device
-placement, segmentation, and connectivity.
-</p>
+networkId
+subnet
+gateway
+vlan
+siteId
 
 ]]></html>
 </panel>
@@ -279,50 +506,34 @@ placement, segmentation, and connectivity.
 
 <row>
 <panel>
-<title>🧭 Boundaries</title>
+<title>Boundaries</title>
 <html><![CDATA[
 
-<p>
-Boundaries define logical segmentation scopes
-within the Armis platform.
-</p>
-
-<pre>
-GET /api/v1/search/?aql=in:boundaries
-</pre>
-
-<p>
-Boundaries may represent operational zones,
-production environments, or infrastructure segments.
-</p>
+boundaryId
+name
+type
 
 ]]></html>
 </panel>
 </row>
 
 <!-- =============================================================== -->
-<!-- DEVICE TAGGING                                                  -->
+<!-- TAGS                                                            -->
 <!-- =============================================================== -->
 
 <row>
 <panel>
-<title>🏷️ Device Tagging</title>
+<title>Tags</title>
 <html><![CDATA[
 
-<p>
-Device tags allow administrators to classify
-and group assets.
-</p>
+POST /api/v1/devices_tags/
 
-<pre>
-GET /api/v1/search/?aql=in:tags
-</pre>
+Fields
 
-<p>
-Tags support grouping by ownership,
-environment, risk classification,
-or operational role.
-</p>
+ips
+macs
+tags
+remove
 
 ]]></html>
 </panel>
@@ -334,22 +545,14 @@ or operational role.
 
 <row>
 <panel>
-<title>📜 Policies</title>
+<title>Policies</title>
 <html><![CDATA[
 
-<p>
-Policies define behavioral and security rules
-that monitor device activity.
-</p>
-
-<pre>
-GET /api/v1/search/?aql=in:policies
-</pre>
-
-<p>
-Policy rules evaluate device communications,
-behavior patterns, and configuration states.
-</p>
+policyId
+policyTitle
+policyLabels
+policyType
+policyStatus
 
 ]]></html>
 </panel>
@@ -361,71 +564,231 @@ behavior patterns, and configuration states.
 
 <row>
 <panel>
-<title>🔗 Integrations</title>
+<title>Integrations</title>
 <html><![CDATA[
 
-<p>
-Integrations connect Armis with external
-security and operations platforms.
-</p>
+GET /api/v2/integrations/
 
-<pre>
-GET /api/v1/search/?aql=in:integrations
-</pre>
+Parameters
 
-<p>
-Integrations enable automated workflows
-and telemetry sharing.
-</p>
+from
+length
+
+Fields
+
+id
+instance
+integrationState
+collectorId
+creationTime
+changeTime
 
 ]]></html>
 </panel>
 </row>
 
 <!-- =============================================================== -->
-<!-- PAGINATION                                                      -->
+<!-- COLLECTORS                                                      -->
 <!-- =============================================================== -->
 
 <row>
 <panel>
-<title>📄 Pagination</title>
+<title>Collectors</title>
 <html><![CDATA[
 
-<p>
-Large datasets may require pagination parameters.
-</p>
-
-<ul>
-<li>length — number of records returned</li>
-<li>from — starting offset</li>
-</ul>
-
-<pre>
-GET /api/v1/search/?aql=in:devices&length=100
-</pre>
+collectorId
+collectorName
+ipAddress
+deploymentType
+status
 
 ]]></html>
 </panel>
 </row>
 
 <!-- =============================================================== -->
-<!-- VULNERABILITY INTELLIGENCE                                      -->
+<!-- SENSORS                                                         -->
 <!-- =============================================================== -->
 
 <row>
 <panel>
-<title>🛡️ Vulnerability Intelligence</title>
+<title>Sensors</title>
 <html><![CDATA[
 
-<p>
-Armis identifies vulnerabilities affecting
-connected assets across enterprise environments.
-</p>
+sensorId
+sensorName
+collectorId
+sensorStatus
 
-<p>
-Exposure analysis incorporates asset intelligence,
-threat intelligence, and environmental context.
-</p>
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- USERS                                                           -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Users</title>
+<html><![CDATA[
+
+userId
+username
+email
+roles
+boundaries
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- ROLES                                                           -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Roles</title>
+<html><![CDATA[
+
+roleId
+roleName
+permissions
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- PERMISSIONS                                                     -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Permissions</title>
+<html><![CDATA[
+
+read
+write
+admin
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- USER ACTIVITY                                                   -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>User Activity</title>
+<html><![CDATA[
+
+user actions
+login attempts
+configuration changes
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- AUDIT LOGS                                                      -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Audit Logs</title>
+<html><![CDATA[
+
+GET /api/v1/search/?aql=in:auditLog
+
+Filters
+
+timeFrame
+action
+user
+
+Fields
+
+id
+action
+time
+timeUtc
+trigger
+user
+userIp
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- SITES                                                           -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Sites</title>
+<html><![CDATA[
+
+siteId
+siteName
+location
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- RISK FACTORS                                                    -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Risk Factors</title>
+<html><![CDATA[
+
+riskLevel
+riskScore
+riskCategory
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- ENFORCEMENT                                                     -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Enforcement</title>
+<html><![CDATA[
+
+network enforcement
+policy enforcement
+integration enforcement
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- VULNERABILITIES                                                 -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Vulnerabilities</title>
+<html><![CDATA[
+
+cveId
+severity
+cvss
+affectedDevices
 
 ]]></html>
 </panel>
@@ -437,19 +800,14 @@ threat intelligence, and environmental context.
 
 <row>
 <panel>
-<title>⚡ VIPR — Vulnerability Prioritization</title>
+<title>VIPR</title>
 <html><![CDATA[
 
-<p>
-VIPR prioritizes vulnerabilities based on
-exploitability, exposure, and threat context.
-</p>
+Vulnerability Prioritization and Remediation
 
-<p>
-This prioritization helps organizations
-focus remediation efforts on vulnerabilities
-that represent the greatest operational risk.
-</p>
+exploitability
+exposure
+threat intelligence correlation
 
 ]]></html>
 </panel>
@@ -461,23 +819,145 @@ that represent the greatest operational risk.
 
 <row>
 <panel>
-<title>🌐 CVE Intelligence Portal</title>
+<title>CVE Intelligence</title>
 <html><![CDATA[
 
-<p>
-Armis provides a public vulnerability intelligence
-portal for researching vulnerabilities affecting
-connected assets.
-</p>
-
-<pre>
 https://cve.armis.com
-</pre>
 
-<p>
-The portal provides CVE research,
-exploit context, and device exposure analysis.
-</p>
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- THREAT INTELLIGENCE                                             -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Threat Intelligence</title>
+<html><![CDATA[
+
+threat actors
+malware indicators
+attack campaigns
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- ASSET INTELLIGENCE ENGINE                                       -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Asset Intelligence Engine</title>
+<html><![CDATA[
+
+device fingerprinting
+behavioral analysis
+classification engine
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- EXPOSURE ANALYTICS                                              -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Exposure Analytics</title>
+<html><![CDATA[
+
+asset exposure metrics
+attack surface analysis
+risk posture insights
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- PLATFORM HEALTH                                                 -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Platform Health</title>
+<html><![CDATA[
+
+collector status
+sensor status
+system uptime
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- REPORTING                                                       -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Reporting</title>
+<html><![CDATA[
+
+GET /api/v1/report-results/{report_id}
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- CONFIGURATION                                                   -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Configuration</title>
+<html><![CDATA[
+
+system configuration
+integration configuration
+collector configuration
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- PLATFORM VERSION                                                -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Platform Version</title>
+<html><![CDATA[
+
+Armis Centrix platform version information
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- PAGINATION                                                      -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>Pagination</title>
+<html><![CDATA[
+
+from
+length
+
+Example
+
+GET /api/v1/search/?aql=in:devices&length=100&from=0
 
 ]]></html>
 </panel>
