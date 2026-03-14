@@ -6,11 +6,15 @@
 =============================================================================
 
 Purpose:
-Provide operational visibility into Armis alerts while replicating the
-core analytical layout of the native Armis Alerts Overview dashboard.
-This dashboard also introduces enterprise comparative analytics
-including Day-over-Day, Week-over-Week, Month-over-Month,
-Quarter-over-Quarter, and Year-over-Year alert trends.
+Provide operational visibility into Armis alerts while aligning with the
+native Armis Alerts Overview dashboard structure. This dashboard extends
+the native experience by adding enterprise comparative analytics including:
+
+• Day-over-Day alert trends
+• Week-over-Week alert trends
+• Month-over-Month alert trends
+• Quarter-over-Quarter alert trends
+• Year-over-Year alert trends
 
 Data Source:
 Armis REST API
@@ -34,11 +38,12 @@ _time
 
 Design Standards:
 • Enterprise base-search architecture
-• Post-process searches for panel efficiency
+• Post-process panel searches
 • No spath usage
-• Dynamic field discovery (no hard-coded severity values)
+• Dynamic field discovery
+• Global filters for site and time
+• Comparative analytics
 • Structured operational sections
-• Comparative trend analysis
 
 =============================================================================
 -->
@@ -46,24 +51,48 @@ Design Standards:
 <dashboard version="1.1">
 
 <label>🚨 Armis Alerts</label>
-<description>Operational visibility and comparative trend analysis of Armis alerts</description>
+<description>Operational monitoring and comparative analysis of Armis alerts</description>
 
 <init>
-  <set token="index">armis</set>
+    <set token="index">armis</set>
 </init>
+
+<!-- ========================================================= -->
+<!-- Global Filters -->
+<!-- ========================================================= -->
+
+<input type="time" token="time_range">
+<label>Time Range</label>
+<default>
+<earliest>-30d@d</earliest>
+<latest>now</latest>
+</default>
+</input>
+
+<input type="dropdown" token="site_filter">
+<label>Site</label>
+<choice value="*">All Sites</choice>
+<fieldForLabel>site</fieldForLabel>
+<fieldForValue>site</fieldForValue>
+<search>
+<query>
+index=$index$ sourcetype=armis_alerts
+| stats count by site
+</query>
+</search>
+</input>
 
 <!-- ========================================================= -->
 <!-- Base Search -->
 <!-- ========================================================= -->
 
 <search id="base_alerts">
-  <query>
-index=$index$ sourcetype=armis_alerts
+<query>
+index=$index$ sourcetype=armis_alerts site="$site_filter$"
 | dedup id
-  </query>
-  <earliest>-1y
-  </earliest>
-  <latest>now</latest>
+</query>
+<earliest>$time_range.earliest$</earliest>
+<latest>$time_range.latest$</latest>
 </search>
 
 <!-- ========================================================= -->
@@ -94,7 +123,19 @@ index=$index$ sourcetype=armis_alerts
 </query>
 </search>
 <option name="charting.chart">pie</option>
-<option name="drilldown">none</option>
+</chart>
+</panel>
+
+<panel>
+<title>📊 Alerts by Status</title>
+<chart>
+<search base="base_alerts">
+<query>
+| stats count by status
+| sort -count
+</query>
+</search>
+<option name="charting.chart">pie</option>
 </chart>
 </panel>
 
@@ -105,10 +146,10 @@ index=$index$ sourcetype=armis_alerts
 <query>
 | stats count by title
 | sort -count
+| head 10
 </query>
 </search>
 <option name="charting.chart">pie</option>
-<option name="drilldown">none</option>
 </chart>
 </panel>
 
@@ -149,7 +190,7 @@ index=$index$ sourcetype=armis_alerts
 | sort -count
 </query>
 </search>
-<option name="charting.chart">bar</option>
+<option name="charting.chart">column</option>
 </chart>
 </panel>
 
@@ -162,8 +203,36 @@ index=$index$ sourcetype=armis_alerts
 | sort -count
 </query>
 </search>
-<option name="charting.chart">bar</option>
+<option name="charting.chart">column</option>
 </chart>
+</panel>
+
+</row>
+
+<row>
+
+<panel>
+<title>📊 Alerts by Category</title>
+<chart>
+<search base="base_alerts">
+<query>
+| stats count by category
+| sort -count
+</query>
+</search>
+<option name="charting.chart">column</option>
+</chart>
+</panel>
+
+<panel>
+<title>📊 Devices Impacted by Alerts</title>
+<single>
+<search base="base_alerts">
+<query>
+| stats dc(device) as Devices_Impacted
+</query>
+</search>
+</single>
 </panel>
 
 </row>
@@ -258,7 +327,7 @@ index=$index$ sourcetype=armis_alerts
 <search base="base_alerts">
 <query>
 | sort -_time
-| table _time severity title status latestActivity device site
+| table _time severity title category status latestActivity device site
 </query>
 </search>
 
