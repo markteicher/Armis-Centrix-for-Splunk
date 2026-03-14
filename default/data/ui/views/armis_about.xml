@@ -1,209 +1,490 @@
 <!--
 =============================================================================
- default/data/ui/views/armis_about.xml
- Armis Centrix™ for Splunk App
- About
-=============================================================================
-
-PURPOSE
-
-Provides information about the Armis Centrix™ platform and the
-Armis Centrix™ for Splunk App integration.
-
-
-<!--
-=============================================================================
  default/data/ui/views/armis_help.xml
  Armis Centrix™ for Splunk App
  Platform Help & API Reference
 =============================================================================
 
+PURPOSE
+
+Operational help and technical reference for the Armis Centrix™ platform
+integration with Splunk.
+
+This view provides structured documentation for analysts and administrators
+working with Armis telemetry inside Splunk.
+
+Covered platform domains include:
+
+• Platform overview
+• API authentication
+• Armis Standard Query (ASQ)
 • Devices
-• Brands
-• Models
-• Device Categories
-• Device Subcategories
-• Device Profiles
-• Operating Systems
-• Software
-• Firmware
-• Services
-• Ports
-• Interfaces
 • Alerts
-• Notifications
-• Activity Events
-• Connections
+• Activity events
+• Collectors
 • Networks
 • Boundaries
-• Tags
+• Device tagging
 • Policies
 • Integrations
-• Collectors
-• Sensors
-• Users
-• Roles
-• Permissions
-• User Activity
-• Audit Logs
-• Sites
-• Risk Factors
-• Enforcement
-• Vulnerabilities
-• VIPR
-• CVE Intelligence (cve.armis.com)
-• Threat Intelligence
-• Asset Intelligence Engine
-• Exposure Analytics
-• Platform Health
-• Reporting
-• Configuration
-• Platform Version
-• API Authentication
-• Search API
-• Armis Standard Query (ASQ)
 • Pagination
-=============================================================================
--->
+• Vulnerability intelligence
+• VIPR prioritization
+• CVE intelligence portal
 
 =============================================================================
 -->
 
 <dashboard version="1.1" theme="light">
-  <label>ℹ️ About</label>
+<label>Help</label>
 
-  <!-- =============================================================== -->
-  <!-- ROW 1: VERSION / PLATFORM INFORMATION                           -->
-  <!-- =============================================================== -->
-  <row>
+<!-- =============================================================== -->
+<!-- PLATFORM OVERVIEW                                               -->
+<!-- =============================================================== -->
 
-    <panel>
-      <title>🧩 Application Information</title>
-      <html>
-        <p><strong>Application Name:</strong> Armis Centrix™ for Splunk App</p>
-        <p><strong>Build Type:</strong> Standalone Splunk Application</p>
-        <p><strong>Integration Method:</strong> Armis Centrix REST API</p>
-      </html>
-    </panel>
+<row>
+<panel>
+<title>🧠 Armis Centrix Platform Overview</title>
+<html><![CDATA[
 
-    <panel>
-      <title>☁️ Platform Overview</title>
-      <html>
-        <p>
-        <strong>Armis Centrix™</strong> is an AI-powered, cloud-native cyber exposure
-        management platform designed to provide real-time visibility and security
-        across an organization's entire attack surface.
-        </p>
+<p>
+Armis Centrix™ is an AI-powered cyber exposure management platform
+that provides visibility across the entire enterprise attack surface.
+</p>
 
-        <p>
-        The platform discovers and analyzes all connected assets across IT,
-        OT, IoT, IoMT, and cloud environments to eliminate blind spots and
-        improve cyber risk visibility.
-        </p>
-      </html>
-    </panel>
+<p>
+The platform discovers and monitors assets across IT, OT, IoT,
+IoMT, and cloud infrastructure without requiring agents.
+</p>
 
-  </row>
+<p>
+Armis continuously analyzes device behavior, vulnerabilities,
+communications, and environmental context to identify security
+exposures across connected assets.
+</p>
 
-  <!-- =============================================================== -->
-  <!-- ROW 2: PLATFORM CAPABILITIES                                    -->
-  <!-- =============================================================== -->
-  <row>
+]]></html>
+</panel>
+</row>
 
-    <panel>
-      <title>🧠 Key Capabilities</title>
-      <html>
-        <ul>
-          <li>AI-driven cyber exposure management</li>
-          <li>Complete asset discovery across IT, OT, IoT, IoMT, and cloud</li>
-          <li>Vulnerability prioritization using VIPR intelligence</li>
-          <li>Threat detection and behavioral anomaly monitoring</li>
-          <li>Agentless device discovery and monitoring</li>
-        </ul>
-      </html>
-    </panel>
+<!-- =============================================================== -->
+<!-- API AUTHENTICATION                                              -->
+<!-- =============================================================== -->
 
-    <panel>
-      <title>🛰️ Platform Intelligence</title>
-      <html>
-        <p>
-        Armis Centrix is powered by the <strong>Armis Asset Intelligence Engine</strong>,
-        a global intelligence database tracking billions of devices worldwide.
-        </p>
+<row>
+<panel>
+<title>🔐 API Authentication</title>
+<html><![CDATA[
 
-        <p>
-        This intelligence enables accurate device identification,
-        behavioral anomaly detection, and cyber exposure analysis.
-        </p>
-      </html>
-    </panel>
+<p>All Armis API requests require authentication.</p>
 
-  </row>
+<pre>
+POST /api/v1/access_token/
+</pre>
 
-  <!-- =============================================================== -->
-  <!-- ROW 3: DATA SOURCES                                             -->
-  <!-- =============================================================== -->
-  <row>
+<p>
+API credentials are generated from:
+</p>
 
-    <panel>
-      <title>📊 Data Sources</title>
-      <html>
-        <ul>
-          <li>Asset inventory and device intelligence</li>
-          <li>Security alerts and threat detections</li>
-          <li>Vulnerability intelligence and exposure risk</li>
-          <li>Collector operational telemetry</li>
-          <li>User and access activity</li>
-          <li>Audit and platform metadata</li>
-        </ul>
-      </html>
-    </panel>
+<ul>
+<li>Armis Console → Settings → API Management</li>
+</ul>
 
-    <panel>
-      <title>🔗 Integration Model</title>
-      <html>
-        <p>
-        The Armis Centrix™ for Splunk App retrieves platform telemetry
-        using the <strong>Armis REST APIs</strong>.
-        </p>
+<p>
+The access token returned by the API must be included
+in the Authorization header of subsequent requests.
+</p>
 
-        <p>
-        Data is ingested into a user-configurable Splunk index and
-        stored as <strong>raw JSON events</strong>.
-        </p>
-      </html>
-    </panel>
+]]></html>
+</panel>
+</row>
 
-  </row>
+<!-- =============================================================== -->
+<!-- ARMIS STANDARD QUERY (ASQ)                                      -->
+<!-- =============================================================== -->
 
-  <!-- =============================================================== -->
-  <!-- ROW 4: REFERENCES                                               -->
-  <!-- =============================================================== -->
-  <row>
+<row>
+<panel>
+<title>🔎 Armis Standard Query (ASQ)</title>
+<html><![CDATA[
 
-    <panel>
-      <title>🔗 References</title>
-      <html>
-        <ul>
-          <li>
-            <a href="https://www.armis.com/" target="_blank">
-              Armis Platform Overview
-            </a>
-          </li>
-          <li>
-            <a href="https://www.armis.com/platform/" target="_blank">
-              Armis Centrix Platform
-            </a>
-          </li>
-          <li>
-            <a href="https://docs.splunk.com" target="_blank">
-              Splunk Documentation
-            </a>
-          </li>
-        </ul>
-      </html>
-    </panel>
+<p>
+The Armis Standard Query language is used to retrieve datasets
+using the Armis Search API.
+</p>
 
-  </row>
+<pre>
+GET /api/v1/search/?aql=in:devices
+GET /api/v1/search/?aql=in:alerts
+GET /api/v1/search/?aql=in:activity
+</pre>
+
+<p>
+ASQ supports filtering by time, attributes, and dataset type.
+</p>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- DEVICES                                                         -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>💻 Devices</title>
+<html><![CDATA[
+
+<p>
+Devices represent assets discovered and classified by the
+Armis platform.
+</p>
+
+<pre>
+GET /api/v1/search/?aql=in:devices
+</pre>
+
+<p>
+Devices may include enterprise IT systems, industrial
+equipment, IoT devices, medical equipment, and unmanaged
+network infrastructure.
+</p>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- ALERTS                                                          -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>🚨 Alerts</title>
+<html><![CDATA[
+
+<p>
+Alerts represent security detections generated by
+Armis behavioral analytics.
+</p>
+
+<pre>
+GET /api/v1/search/?aql=in:alerts
+</pre>
+
+<p>
+Alerts may indicate suspicious behavior, policy violations,
+or anomalous network activity.
+</p>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- ACTIVITY EVENTS                                                 -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>📡 Activity Events</title>
+<html><![CDATA[
+
+<p>
+Activity events represent telemetry collected from device
+communications and network interactions.
+</p>
+
+<pre>
+GET /api/v1/search/?aql=in:activity
+</pre>
+
+<p>
+Activity telemetry provides insight into device communications,
+protocol usage, and behavioral patterns.
+</p>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- COLLECTORS                                                      -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>📡 Armis Collectors</title>
+<html><![CDATA[
+
+<p>
+Collectors provide passive monitoring capabilities and forward
+telemetry to the Armis Centrix platform.
+</p>
+
+<p>
+Collector metadata includes configuration and operational
+details such as:
+</p>
+
+<ul>
+<li>Collector ID</li>
+<li>Name</li>
+<li>Status</li>
+<li>Creation Date</li>
+<li>Last Seen</li>
+<li>System Vendor</li>
+<li>Product Serial</li>
+<li>MAC Address</li>
+<li>IP Address</li>
+<li>Default Gateway</li>
+<li>Subnet</li>
+<li>NTP Servers</li>
+<li>DNS Servers</li>
+<li>Https Proxy</li>
+</ul>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- NETWORKS                                                        -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>🌐 Networks</title>
+<html><![CDATA[
+
+<p>
+Networks represent monitored network segments within
+the Armis platform.
+</p>
+
+<pre>
+GET /api/v1/networks/
+</pre>
+
+<p>
+Network records provide context for device location,
+segmentation, and connectivity.
+</p>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- BOUNDARIES                                                      -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>🧭 Boundaries</title>
+<html><![CDATA[
+
+<p>
+Boundaries define logical scopes used to segment environments
+within the Armis platform.
+</p>
+
+<pre>
+GET /api/v1/boundaries/
+</pre>
+
+<p>
+Boundaries may represent production networks, industrial
+zones, healthcare environments, or other segmented
+operational areas.
+</p>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- DEVICE TAGGING                                                  -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>🏷️ Device Tagging</title>
+<html><![CDATA[
+
+<p>
+Device tags allow administrators to classify and group assets.
+</p>
+
+<pre>
+POST /api/v1/devices_tags/
+</pre>
+
+<p>
+Tags enable grouping of devices by ownership,
+environment, risk classification, or operational role.
+</p>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- POLICIES                                                        -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>📜 Policies</title>
+<html><![CDATA[
+
+<p>
+Policies define behavioral and security rules that monitor
+device activity across the environment.
+</p>
+
+<pre>
+GET /api/v1/policies/
+</pre>
+
+<p>
+Policy rules evaluate device behavior, communication
+patterns, and configuration conditions.
+</p>
+
+<p>
+When violations occur, alerts or integrations may be triggered.
+</p>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- INTEGRATIONS                                                    -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>🔗 Integrations</title>
+<html><![CDATA[
+
+<p>
+Integrations connect Armis with external platforms such as
+SIEM, SOAR, vulnerability management, and ticketing systems.
+</p>
+
+<pre>
+GET /api/v2/integrations/
+</pre>
+
+<p>
+Integrations enable automated response workflows and
+security telemetry sharing.
+</p>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- PAGINATION                                                      -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>📄 Pagination</title>
+<html><![CDATA[
+
+<p>
+Large datasets require pagination parameters.
+</p>
+
+<ul>
+<li>length — page size</li>
+<li>from — record offset</li>
+</ul>
+
+<pre>
+GET /api/v1/search/?aql=in:devices&length=100
+</pre>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- VULNERABILITY INTELLIGENCE                                      -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>🛡️ Vulnerability Intelligence</title>
+<html><![CDATA[
+
+<p>
+Armis identifies vulnerabilities affecting discovered assets
+across enterprise environments.
+</p>
+
+<p>
+Exposure analysis combines asset intelligence,
+threat intelligence, and environmental context.
+</p>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- VIPR                                                            -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>⚡ VIPR — Vulnerability Prioritization</title>
+<html><![CDATA[
+
+<p>
+VIPR prioritizes vulnerabilities based on exploitability,
+exposure, and threat intelligence context.
+</p>
+
+<p>
+This prioritization helps organizations focus remediation
+efforts on vulnerabilities that represent the greatest risk.
+</p>
+
+]]></html>
+</panel>
+</row>
+
+<!-- =============================================================== -->
+<!-- CVE INTELLIGENCE                                                -->
+<!-- =============================================================== -->
+
+<row>
+<panel>
+<title>🌐 CVE Intelligence Portal</title>
+<html><![CDATA[
+
+<p>
+Armis provides a public vulnerability intelligence portal
+for researching vulnerabilities affecting connected devices.
+</p>
+
+<pre>
+https://cve.armis.com
+</pre>
+
+<p>
+The portal provides CVE intelligence, exploit context,
+and device exposure analysis.
+</p>
+
+]]></html>
+</panel>
+</row>
 
 </dashboard>
