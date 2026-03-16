@@ -34,6 +34,7 @@
             <![CDATA[ | stats count ]]>
           </query>
         </search>
+        <option name="drilldown">all</option>
       </single>
     </panel>
     <panel>
@@ -92,6 +93,7 @@
         ]]>
           </query>
         </search>
+        <option name="drilldown">all</option>
       </single>
     </panel>
     <panel>
@@ -105,6 +107,7 @@
           ]]>
           </query>
         </search>
+        <option name="drilldown">all</option>
       </single>
     </panel>
     <panel>
@@ -118,6 +121,8 @@
           ]]>
           </query>
         </search>
+        <option name="drilldown">all</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
       </single>
     </panel>
     <panel>
@@ -150,6 +155,7 @@
           ]]>
           </query>
         </search>
+        <option name="drilldown">all</option>
       </single>
     </panel>
     <panel>
@@ -180,6 +186,7 @@
           ]]>
           </query>
         </search>
+        <option name="drilldown">all</option>
       </single>
     </panel>
     <panel>
@@ -211,6 +218,7 @@
           ]]>
           </query>
         </search>
+        <option name="drilldown">all</option>
       </single>
     </panel>
     <panel>
@@ -254,6 +262,7 @@
           ]]>
           </query>
         </search>
+        <option name="drilldown">all</option>
       </single>
     </panel>
   </row>
@@ -269,6 +278,7 @@
           ]]>
           </query>
         </search>
+        <option name="drilldown">all</option>
       </single>
     </panel>
     <panel>
@@ -321,6 +331,7 @@
           ]]>
           </query>
         </search>
+        <option name="count">20</option>
       </table>
     </panel>
     <panel>
