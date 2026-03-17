@@ -4,92 +4,6 @@
 
 ## Overview
 
-**Armis Centrix™** is an **AI-powered, cloud-native cyber exposure management platform** designed to provide real-time visibility, security posture analysis, and threat detection across an organization's entire **attack surface**.
-
-Unlike traditional security tools that focus on a limited set of device categories, Armis Centrix is built to discover and secure **everything connected to a network**, including:
-
-- Traditional IT infrastructure
-- Internet of Things (IoT)
-- Operational Technology (OT)
-- Industrial Control Systems (ICS)
-- Medical devices (IoMT)
-- Cloud workloads
-- Virtual infrastructure
-- Unmanaged or unknown devices
-
-The platform continuously discovers, profiles, and monitors assets across enterprise environments to eliminate security blind spots and provide organizations with a **single source of truth for cyber exposure**.
-
-The **Armis Centrix™ for Splunk App** integrates Armis telemetry directly into Splunk using the **Armis Centrix REST APIs**, allowing organizations to analyze device intelligence, exposure risk, vulnerabilities, alerts, and security posture directly within the Splunk analytics platform.
-
-All telemetry is ingested into a user-specified Splunk index and stored in **raw JSON format**, preserving the original structure of Armis platform data.
-
-This enables security teams, analysts, and executives to:
-
-- Monitor enterprise device exposure
-- Investigate security alerts
-- Analyze vulnerabilities and exploitability
-- Track asset posture and behavior
-- Generate security and exposure reports
-- Correlate Armis intelligence with other security telemetry in Splunk
-
----
-
-### Asset Management & Security
-
-
-Assets discovered include:
-
-- managed devices
-- unmanaged devices
-- IT systems
-- IoT devices
-- OT equipment
-- medical devices
-- cloud workloads
-- virtual machines
-
-
----
-
-### Vulnerability Management (VIPR)
-
-Armis Centrix includes **Vulnerability Intelligence Prioritization and Remediation (VIPR)**.
-
-
-- prioritizes vulnerabilities based on exploitability
-- identifies which vulnerabilities are actually **reachable within your environment**
-- evaluates **real-world threat intelligence and exploit trends**
-- reduces alert noise so security teams can focus on **high-risk exposures**
-
----
-
-### OT / IoT Security
-
-
-Capabilities include:
-
-- asset identification across ICS and OT environments
-- monitoring industrial protocols
-- behavioral anomaly detection
-- network segmentation analysis
-
-
----
-
-### Medical Device Security
-
-
-Capabilities include:
-
-- discovery of medical and IoMT devices
-- device risk assessment
-- vulnerability analysis
-- regulatory compliance support
-
-
----
-
-
 The **Armis Centrix™ for Splunk App** integrates Armis telemetry directly into Splunk, enabling security teams, analysts, and executives to analyze exposure risk, vulnerabilities, alerts, and asset intelligence from a centralized analytics platform.
 
 The application uses the **Armis Centrix REST API** to ingest operational telemetry, asset inventory, vulnerabilities, alerts, and exposure intelligence into Splunk.
@@ -104,6 +18,12 @@ This enables Splunk users to:
 - Track asset posture
 - Generate reports
 - Correlate Armis telemetry with other enterprise security data
+
+- asset identification across ICS and OT environments
+- monitoring industrial protocols
+- behavioral anomaly detection
+- network segmentation analysis
+
 
 ---
 
