@@ -1,4 +1,4 @@
-# Armis Centrix for Splunk App
+# Armis Centrix™ for Splunk App
 
 ---
 
