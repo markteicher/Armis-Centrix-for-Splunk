@@ -99,20 +99,6 @@ network configuration, and collector lifecycle status.
 
 ---
 
-# Supported Environments
-
-Armis Centrix supports monitoring across a broad range of environments including:
-
-- Enterprise IT networks
-- IoT deployments
-- Operational Technology (OT)
-- Medical device environments
-- Industrial environments
-- Cloud infrastructure
-- Hybrid enterprise networks
-
----
-
 # Device Categories Supported
 
 Armis identifies and classifies a wide range of device types including:
@@ -126,7 +112,6 @@ Armis identifies and classifies a wide range of device types including:
 - Printers
 - Security cameras
 - Smart building systems
-- Cloud workloads
 - Virtual machines
 - Mobile devices
 
@@ -185,16 +170,6 @@ Armis identifies and classifies a wide range of device types including:
 - attack_surface
 - device_risk_rating
 - vulnerability_count
-
----
-
-# Data Ingestion Model
-
-The **Armis Centrix for Splunk App** retrieves data from Armis using the **Armis Centrix REST API**.
-
-Data is ingested on a scheduled polling basis and stored as raw JSON events in Splunk.
-
-Each dataset is mapped to a dedicated Splunk **sourcetype** for analytics and dashboard use.
 
 ---
 
