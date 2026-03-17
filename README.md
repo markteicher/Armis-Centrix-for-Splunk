@@ -1,8 +1,6 @@
 # Armis Centrix for Splunk App
 
-
 ---
-
 
 ## Overview
 
@@ -36,13 +34,8 @@ This enables security teams, analysts, and executives to:
 
 ---
 
-## Key Capabilities
-
-Armis Centrix is built as a **modular cyber exposure management platform**. Organizations can deploy specific capabilities depending on operational requirements.
-
 ### Asset Management & Security
 
-Armis acts as a **single source of truth for asset inventory** by discovering and classifying every connected asset across the environment.
 
 Assets discovered include:
 
@@ -55,7 +48,6 @@ Assets discovered include:
 - cloud workloads
 - virtual machines
 
-This eliminates visibility gaps and ensures organizations understand **what is actually connected to their networks**.
 
 ---
 
@@ -63,7 +55,6 @@ This eliminates visibility gaps and ensures organizations understand **what is a
 
 Armis Centrix includes **Vulnerability Intelligence Prioritization and Remediation (VIPR)**.
 
-Instead of overwhelming teams with thousands of vulnerability alerts, VIPR:
 
 - prioritizes vulnerabilities based on exploitability
 - identifies which vulnerabilities are actually **reachable within your environment**
@@ -74,7 +65,6 @@ Instead of overwhelming teams with thousands of vulnerability alerts, VIPR:
 
 ### OT / IoT Security
 
-Armis Centrix provides dedicated protection for **industrial and operational technology environments**.
 
 Capabilities include:
 
@@ -83,13 +73,11 @@ Capabilities include:
 - behavioral anomaly detection
 - network segmentation analysis
 
-The platform operates **agentlessly**, ensuring sensitive operational equipment is **not disrupted**.
 
 ---
 
 ### Medical Device Security
 
-Armis provides specialized security for **healthcare environments and clinical devices**.
 
 Capabilities include:
 
@@ -98,66 +86,9 @@ Capabilities include:
 - vulnerability analysis
 - regulatory compliance support
 
-This helps healthcare organizations maintain **patient safety and operational reliability**.
 
 ---
 
-### Application Security
-
-Armis Centrix also supports **application security analysis**, including:
-
-- vulnerability scanning of application codebases
-- CI/CD pipeline security analysis
-- detection of vulnerabilities introduced by **AI-generated code**
-- software supply chain risk visibility
-
----
-
-## How Armis Centrix Works
-
-### AI-Driven Intelligence
-
-The platform is powered by the **Armis Asset Intelligence Engine**, a global knowledge base tracking **billions of devices worldwide**.
-
-This intelligence enables Armis to:
-
-- identify device types
-- detect abnormal behavior
-- recognize attack patterns
-- understand normal communication baselines
-
----
-
-### Agentless Architecture
-
-Armis Centrix operates without requiring agents on devices.
-
-Instead it uses:
-
-- passive network monitoring
-- behavioral analytics
-- safe active queries
-
-This allows the platform to discover devices **without installing software or disrupting production systems**.
-
----
-
-### Early Threat Detection
-
-Armis Centrix provides an **early warning system for emerging threats**.
-
-The platform analyzes:
-
-- exploit development trends
-- threat actor behavior
-- dark web activity
-- vulnerability weaponization patterns
-
-This enables organizations to respond to threats **before public disclosure or widespread exploitation**.
-
----
-
-Armis discovers and analyzes assets across networks without requiring agents. The platform continuously monitors device behavior, communication patterns, and vulnerabilities to identify risks and potential attack paths.
 
 The **Armis Centrix™ for Splunk App** integrates Armis telemetry directly into Splunk, enabling security teams, analysts, and executives to analyze exposure risk, vulnerabilities, alerts, and asset intelligence from a centralized analytics platform.
 
