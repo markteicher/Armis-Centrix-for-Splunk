@@ -29,7 +29,7 @@ Content is derived from the Armis API Guide.
     <panel>
       <title>🧠 Armis Centrix Platform Overview</title>
       <html>
-        <![CDATA[
+      
         <p>
         Armis Centrix™ provides cyber exposure management by discovering,
         classifying, and monitoring assets across IT, OT, IoT, and IoMT
@@ -46,7 +46,7 @@ Content is derived from the Armis API Guide.
         This Splunk application uses those APIs to ingest Armis telemetry
         and present operational dashboards, analytics, and reporting.
         </p>
-        ]]>
+       
       </html>
     </panel>
   </row>
@@ -59,7 +59,7 @@ Content is derived from the Armis API Guide.
     <panel>
       <title>🔐 API Authentication</title>
       <html>
-        <![CDATA[
+        
         <p>
         All Armis API requests require authentication using a temporary
         access token.
@@ -94,7 +94,7 @@ POST /api/v1/access_token/
         The token must be included in all API requests using the
         Authorization header.
         </p>
-        ]]>
+       
       </html>
     </panel>
   </row>
@@ -107,7 +107,7 @@ POST /api/v1/access_token/
     <panel>
       <title>🔎 Armis Search API (ASQ)</title>
       <html>
-        <![CDATA[
+       
         <p>
         The primary API used to retrieve information from Armis is the
         Search API.
@@ -135,7 +135,7 @@ in:alerts after:2022-03-11T14:00:00 before:2022-03-16T14:00:00
         ASQ queries can be used to retrieve alerts, devices, activity,
         and other telemetry from the Armis platform.
         </p>
-        ]]>
+       
       </html>
     </panel>
   </row>
@@ -148,7 +148,7 @@ in:alerts after:2022-03-11T14:00:00 before:2022-03-16T14:00:00
     <panel>
       <title>🚨 Alerts API</title>
       <html>
-        <![CDATA[
+       
         <p>
         Alerts represent security events or anomalies detected within
         the Armis environment.
@@ -177,7 +177,7 @@ GET /api/v1/search/?aql=in:alerts
         Alerts may represent anomalous behavior, security violations,
         or suspicious activity detected by Armis.
         </p>
-        ]]>
+       
       </html>
     </panel>
   </row>
@@ -190,7 +190,7 @@ GET /api/v1/search/?aql=in:alerts
     <panel>
       <title>💻 Devices API</title>
       <html>
-        <![CDATA[
+        
         <p>
         Devices represent discovered assets in the environment including
         IT devices, OT equipment, IoT devices, and unmanaged systems.
@@ -212,7 +212,7 @@ GET /api/v1/search/?aql=in:devices
         <p>
         The Armis API supports page sizes up to 5000 records.
         </p>
-        ]]>
+       
       </html>
     </panel>
   </row>
@@ -225,7 +225,7 @@ GET /api/v1/search/?aql=in:devices
     <panel>
       <title>📡 Activity Events</title>
       <html>
-        <![CDATA[
+       
         <p>
         Activity events represent network or device behavior detected
         by Armis sensors and collectors.
@@ -249,7 +249,7 @@ GET /api/v1/search/?aql=in:activity
         <li>sensor.name</li>
         <li>time</li>
         </ul>
-        ]]>
+       
       </html>
     </panel>
   </row>
@@ -262,7 +262,7 @@ GET /api/v1/search/?aql=in:activity
     <panel>
       <title>🏷️ Device Tags</title>
       <html>
-        <![CDATA[
+       
         <p>
         Device tags allow administrators to assign labels to assets
         for grouping and operational management.
@@ -286,7 +286,7 @@ POST /api/v1/devices_tags/
         <p>
         Tags can be applied or removed for sets of devices.
         </p>
-        ]]>
+      
       </html>
     </panel>
   </row>
@@ -299,7 +299,7 @@ POST /api/v1/devices_tags/
     <panel>
       <title>🔗 Integrations</title>
       <html>
-        <![CDATA[
+        
         <p>
         Integrations connect the Armis platform with external systems
         such as SIEMs, ticketing systems, or enforcement platforms.
@@ -321,7 +321,7 @@ GET /api/v2/integrations/
         <li>changeTime</li>
         <li>collectorId</li>
         </ul>
-        ]]>
+       
       </html>
     </panel>
   </row>
@@ -334,7 +334,7 @@ GET /api/v2/integrations/
     <panel>
       <title>📄 Pagination</title>
       <html>
-        <![CDATA[
+        
         <p>
         Large datasets must be retrieved using pagination parameters.
         </p>
@@ -357,7 +357,7 @@ GET /api/v1/search/?aql=in:devices&length=100&from=100
         The response returns metadata including total record counts
         and the next pagination offset.
         </p>
-        ]]>
+       
       </html>
     </panel>
   </row>
@@ -370,7 +370,7 @@ GET /api/v1/search/?aql=in:devices&length=100&from=100
     <panel>
       <title>⚙️ API Best Practices</title>
       <html>
-        <![CDATA[
+      
         <ul>
         <li>Always authenticate using an access token.</li>
         <li>Use pagination for large data sets.</li>
@@ -378,7 +378,7 @@ GET /api/v1/search/?aql=in:devices&length=100&from=100
         <li>Use ASQ queries to retrieve targeted datasets.</li>
         <li>Validate API responses and error codes.</li>
         </ul>
-        ]]>
+       
       </html>
     </panel>
   </row>
