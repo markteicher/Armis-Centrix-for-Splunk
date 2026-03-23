@@ -41,238 +41,47 @@ Design Principles:
 • Inventory transparency
 
 =============================================================================
--->
-
-<dashboard version="1.1">
-
-<label>🛡️ Armis Boundaries</label>
-<description>Visibility and operational insight into Armis boundary definitions</description>
-
-<init>
-  <set token="index">armis</set>
-</init>
-
-<!-- ========================================================= -->
-<!-- Base Search -->
-<!-- ========================================================= -->
-
-<search id="base_boundaries">
-  <query>
+--><dashboard version="1.1" theme="light">
+  <label>🛡️ Armis Boundaries</label>
+  <description>Visibility and operational insight into Armis boundary definitions</description>
+  <init>
+    <set token="index">armis</set>
+  </init>
+  <!-- ========================================================= -->
+  <!-- Base Search -->
+  <!-- ========================================================= -->
+  <search id="base_boundaries">
+    <query>
 index=$index$ sourcetype=armis_boundaries
 | dedup id
   </query>
-  <earliest>0</earliest>
-  <latest>now</latest>
-</search>
-
-<!-- ========================================================= -->
-<!-- 📊 Boundary Overview -->
-<!-- ========================================================= -->
-
-<row>
-
-<panel>
-<title>📊 Total Boundaries</title>
-<single>
-<search base="base_boundaries">
-<query>
-| stats count as Total_Boundaries
-</query>
-</search>
-</single>
-</panel>
-
-<panel>
-<title>⚙️ Boundaries Using AQL Rules</title>
-<single>
-<search base="base_boundaries">
-<query>
-| where ruleAql!=""
-| stats count as Rule_Based_Boundaries
-</query>
-</search>
-</single>
-</panel>
-
-<panel>
-<title>🌐 Site Scoped Boundaries</title>
-<single>
-<search base="base_boundaries">
-<query>
-| where affectedSites!=""
-| stats count as Site_Scoped_Boundaries
-</query>
-</search>
-</single>
-</panel>
-
-<panel>
-<title>🌍 Global Boundaries</title>
-<single>
-<search base="base_boundaries">
-<query>
-| where affectedSites=""
-| stats count as Global_Boundaries
-</query>
-</search>
-</single>
-</panel>
-
-</row>
-
-<!-- ========================================================= -->
-<!-- ⚠️ Boundary Configuration Validation -->
-<!-- ========================================================= -->
-
-<row>
-
-<panel>
-<title>⚠️ Boundaries Without AQL Rules</title>
-<table>
-<search base="base_boundaries">
-<query>
-| where ruleAql=""
-| table id name affectedSites
-| sort name
-</query>
-</search>
-<option name="count">10</option>
-<option name="rowNumbers">true</option>
-</table>
-</panel>
-
-<panel>
-<title>⚠️ Boundaries Without Site Scope</title>
-<table>
-<search base="base_boundaries">
-<query>
-| where affectedSites=""
-| table id name ruleAql
-| sort name
-</query>
-</search>
-<option name="count">10</option>
-<option name="rowNumbers">true</option>
-</table>
-</panel>
-
-</row>
-
-<!-- ========================================================= -->
-<!-- 📈 Boundary Distribution -->
-<!-- ========================================================= -->
-
-<row>
-
-<panel>
-<title>📊 Boundaries by Site Scope</title>
-<chart>
-<search base="base_boundaries">
-<query>
-| eval site_scope=if(affectedSites="", "Global", affectedSites)
-| stats count by site_scope
-| sort -count
-</query>
-</search>
-<option name="charting.chart">pie</option>
-</chart>
-</panel>
-
-<panel>
-<title>📊 Boundary Rule Utilization</title>
-<chart>
-<search base="base_boundaries">
-<query>
-| eval rule_type=if(ruleAql="", "No Rule", "AQL Rule")
-| stats count by rule_type
-</query>
-</search>
-<option name="charting.chart">column</option>
-</chart>
-</panel>
-
-</row>
-
-<!-- ========================================================= -->
-<!-- 📋 Boundary Inventory -->
-<!-- ========================================================= -->
-
-<row>
-
-<panel>
-<title>📋 Complete Boundary Inventory</title>
-<table>
-<search base="base_boundaries">
-<query>
-| table id name affectedSites ruleAql
-| sort id
-</query>
-</search>
-
-<option name="count">25</option>
-<option name="rowNumbers">true</option>
-<option name="wrap">true</option>
-<option name="drilldown">row</option>
-
-</table>
-</panel>
-
-</row>
-
-<!-- ========================================================= -->
-<!-- 🔎 Boundary Rule Inspection -->
-<!-- ========================================================= -->
-
-<row>
-
-<panel>
-<title>🔎 Boundary Rule Definitions</title>
-<table>
-<search base="base_boundaries">
-<query>
-| where ruleAql!=""
-| table id name ruleAql
-| sort name
-</query>
-</search>
-
-<option name="count">20</option>
-<option name="rowNumbers">true</option>
-<option name="wrap">true</option>
-
-</table>
-</panel>
-
-</row>
-
-<!-- ========================================================= -->
-<!-- 📡 Armis API Status -->
-<!-- ========================================================= -->
-
-<row>
-
-<panel>
-<title>📡 Boundary API Status</title>
-<single>
-<search base="base_boundaries">
-<query>
-| stats latest(success) as API_Status
-</query>
-</search>
-</single>
-</panel>
-
-</row>
-
-<!-- ========================================================= -->
-<!-- 📚 Boundary Context -->
-<!-- ========================================================= -->
-
-<row>
-
-<panel>
-
-<html>
+    <earliest>0</earliest>
+    <latest>now</latest>
+  </search>
+  <!-- ========================================================= -->
+  <!-- 📊 Boundary Overview -->
+  <!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- ⚠️ Boundary Configuration Validation -->
+  <!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- 📈 Boundary Distribution -->
+  <!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- 📋 Boundary Inventory -->
+  <!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- 🔎 Boundary Rule Inspection -->
+  <!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- 📡 Armis API Status -->
+  <!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- 📚 Boundary Context -->
+  <!-- ========================================================= -->
+  <row>
+    <panel>
+      <html>
 
 <h2>📚 Armis Boundary Context</h2>
 
@@ -293,9 +102,201 @@ and rule usage retrieved through the Armis API integration.
 </p>
 
 </html>
+    </panel>
+    <panel>
+      <html>
 
-</panel>
+<h2>📚 Purpose</h2>
 
-</row>
+<p>
+Provide operational visibility into Armis Boundary definitions retrieved
+from the Armis API endpoint:
 
+    GET /api/v1/boundaries/
+
+Boundaries represent logical segmentation constructs defined through
+Armis Query Language (AQL). These definitions determine how assets
+are grouped within the Armis platform.
+
+</p>
+
+<p>
+<strong>Dashboard Capabilities:</strong></p>
+<p>• Boundary inventory visibility</p>
+<p>• Boundary rule inspection</p>
+<p>• Segmentation scope distribution</p>
+<p>• Boundary configuration validation</p>
+<p>• Operational metrics</p>
+
+
+<p>
+<strong>Splunk Data Source:</strong></p>
+<p>index=$index$</p>
+<p>sourcetype=armis_boundaries</p>
+
+<p><strong>Expected Fields:</strong></p>
+<p>id</p>
+<p>name</p>
+<p>affectedSites</p>
+<p>ruleAql</p>
+<p>success</p>
+<p>
+<strong>Design Principles:</strong></p>
+<p>• Enterprise base-search architecture</p>
+<p>• Post-process panel searches</p>
+<p>• No spath usage</p>
+<p>• Operational visibility first</p>
+<p>• Inventory transparency</p>
+
+</html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>📊 Total Boundaries</title>
+      <single>
+        <search base="base_boundaries">
+          <query>
+| stats count as Total_Boundaries
+</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <title>⚙️ Boundaries Using AQL Rules</title>
+      <single>
+        <search base="base_boundaries">
+          <query>
+| where ruleAql!=""
+| stats count as Rule_Based_Boundaries
+</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <title>🌐 Site Scoped Boundaries</title>
+      <single>
+        <search base="base_boundaries">
+          <query>
+| where affectedSites!=""
+| stats count as Site_Scoped_Boundaries
+</query>
+        </search>
+      </single>
+    </panel>
+    <panel>
+      <title>🌍 Global Boundaries</title>
+      <single>
+        <search base="base_boundaries">
+          <query>
+| where affectedSites=""
+| stats count as Global_Boundaries
+</query>
+        </search>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>⚠️ Boundaries Without AQL Rules</title>
+      <table>
+        <search base="base_boundaries">
+          <query>
+| where ruleAql=""
+| table id name affectedSites
+| sort name
+</query>
+        </search>
+        <option name="count">10</option>
+        <option name="rowNumbers">true</option>
+      </table>
+    </panel>
+    <panel>
+      <title>⚠️ Boundaries Without Site Scope</title>
+      <table>
+        <search base="base_boundaries">
+          <query>
+| where affectedSites=""
+| table id name ruleAql
+| sort name
+</query>
+        </search>
+        <option name="count">10</option>
+        <option name="rowNumbers">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>📊 Boundaries by Site Scope</title>
+      <chart>
+        <search base="base_boundaries">
+          <query>
+| eval site_scope=if(affectedSites="", "Global", affectedSites)
+| stats count by site_scope
+| sort -count
+</query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>📊 Boundary Rule Utilization</title>
+      <chart>
+        <search base="base_boundaries">
+          <query>
+| eval rule_type=if(ruleAql="", "No Rule", "AQL Rule")
+| stats count by rule_type
+</query>
+        </search>
+        <option name="charting.chart">column</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>📋 Complete Boundary Inventory</title>
+      <table>
+        <search base="base_boundaries">
+          <query>
+| table id name affectedSites ruleAql
+| sort id
+</query>
+        </search>
+        <option name="count">25</option>
+        <option name="rowNumbers">true</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>🔎 Boundary Rule Definitions</title>
+      <table>
+        <search base="base_boundaries">
+          <query>
+| where ruleAql!=""
+| table id name ruleAql
+| sort name
+</query>
+        </search>
+        <option name="count">20</option>
+        <option name="rowNumbers">true</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>📡 Boundary API Status</title>
+      <single>
+        <search base="base_boundaries">
+          <query>
+| stats latest(success) as API_Status
+</query>
+        </search>
+      </single>
+    </panel>
+  </row>
 </dashboard>
