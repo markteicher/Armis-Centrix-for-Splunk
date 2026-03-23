@@ -1,7 +1,28 @@
 <nav color="3C4B68">
-  <view name="alerts" default="true"/>
-  <view name="alerts_api" />
+   <collection label="Armis Collectors">
+ <!-- =================================================================== -->
+ <!-- Armis Collectors                                                           -->
+ <!-- =================================================================== -->
+ 
+<view name="armis_collectors_product_listing_aging_view"/>  
+
+</collection>
+  <view name="alerts"/>
+  
+
+
   <view name="devices"/>
   <view name="vulnerability"/>
-  <view name="armis_about"/>
+    <view name="armis_boundaries"/>
+     <view name="armis_certificate"/>
+
+ 
+  <collection label="Armis Help">
+ <!-- =================================================================== -->
+ <!-- ABOUT                                                               -->
+ <!-- =================================================================== -->
+   <view name="armis_help"/>  
+  <view name="armis_about"/>  
+  <view name="armis_documentation"/>
+     </collection>
 </nav>
