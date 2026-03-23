@@ -9,11 +9,15 @@ PURPOSE
 
 Operational help and API reference for the Armis Centrix platform.
 
+This page provides administrators, analysts, and engineers with guidance
+on interacting with the Armis API, understanding core data domains,
+and mapping Armis functionality into Splunk dashboards and searches.
+
 Content is derived from the Armis API Guide.
 
 =============================================================================
 --><dashboard version="1.1" theme="light">
-  <label>Armis Centrix™ for Splunk App Help Page</label>
+  <label>🔎 Armis Centrix™ for Splunk App Help Page</label>
   <!-- =============================================================== -->
   <!-- PLATFORM OVERVIEW                                               -->
   <!-- =============================================================== -->
