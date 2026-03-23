@@ -9,25 +9,44 @@ PURPOSE
 
 Operational help and API reference for the Armis Centrix platform.
 
-This page provides administrators, analysts, and engineers with guidance
-on interacting with the Armis API, understanding core data domains,
-and mapping Armis functionality into Splunk dashboards and searches.
-
 Content is derived from the Armis API Guide.
 
 =============================================================================
--->
-
-<dashboard version="1.1" theme="light">
-  <label>Help</label>
-
+--><dashboard version="1.1" theme="light">
+  <label>Armis Centrix™ for Splunk App Help Page</label>
   <!-- =============================================================== -->
   <!-- PLATFORM OVERVIEW                                               -->
   <!-- =============================================================== -->
-
+  <!-- =============================================================== -->
+  <!-- API AUTHENTICATION                                              -->
+  <!-- =============================================================== -->
+  <!-- =============================================================== -->
+  <!-- SEARCH AND ASQ                                                  -->
+  <!-- =============================================================== -->
+  <!-- =============================================================== -->
+  <!-- ALERTS                                                          -->
+  <!-- =============================================================== -->
+  <!-- =============================================================== -->
+  <!-- DEVICES                                                         -->
+  <!-- =============================================================== -->
+  <!-- =============================================================== -->
+  <!-- ACTIVITY EVENTS                                                 -->
+  <!-- =============================================================== -->
+  <!-- =============================================================== -->
+  <!-- DEVICE TAGGING                                                  -->
+  <!-- =============================================================== -->
+  <!-- =============================================================== -->
+  <!-- INTEGRATIONS                                                    -->
+  <!-- =============================================================== -->
+  <!-- =============================================================== -->
+  <!-- PAGINATION                                                      -->
+  <!-- =============================================================== -->
+  <!-- =============================================================== -->
+  <!-- API BEST PRACTICES                                              -->
+  <!-- =============================================================== -->
   <row>
     <panel>
-      <title>🧠 Armis Centrix Platform Overview</title>
+      <title>🧠 Armis Centrix™ Platform Overview</title>
       <html>
       
         <p>
@@ -49,12 +68,21 @@ Content is derived from the Armis API Guide.
        
       </html>
     </panel>
+    <panel>
+      <title>⚙️ API Best Practices</title>
+      <html>
+      
+        <ul>
+        <li>Always authenticate using an access token.</li>
+        <li>Use pagination for large data sets.</li>
+        <li>Filter queries by time when possible.</li>
+        <li>Use ASQ queries to retrieve targeted datasets.</li>
+        <li>Validate API responses and error codes.</li>
+        </ul>
+       
+      </html>
+    </panel>
   </row>
-
-  <!-- =============================================================== -->
-  <!-- API AUTHENTICATION                                              -->
-  <!-- =============================================================== -->
-
   <row>
     <panel>
       <title>🔐 API Authentication</title>
@@ -97,12 +125,36 @@ POST /api/v1/access_token/
        
       </html>
     </panel>
+    <panel>
+      <title>📄 Pagination</title>
+      <html>
+        
+        <p>
+        Large datasets must be retrieved using pagination parameters.
+        </p>
+
+        <ul>
+        <li>length — number of results per page</li>
+        <li>from — starting record offset</li>
+        </ul>
+
+        <p>
+        Example:
+        </p>
+        <pre>
+GET /api/v1/search/?aql=in:devices and length=100
+GET /api/v1/search/?aql=in:devices and length=100 and from=100
+        </pre>
+  
+
+        <p>
+        The response returns metadata including total record counts
+        and the next pagination offset.
+        </p>
+       
+      </html>
+    </panel>
   </row>
-
-  <!-- =============================================================== -->
-  <!-- SEARCH AND ASQ                                                  -->
-  <!-- =============================================================== -->
-
   <row>
     <panel>
       <title>🔎 Armis Search API (ASQ)</title>
@@ -138,13 +190,34 @@ in:alerts after:2022-03-11T14:00:00 before:2022-03-16T14:00:00
        
       </html>
     </panel>
-  </row>
+    <panel>
+      <title>💻 Devices API</title>
+      <html>
+        
+        <p>
+        Devices represent discovered assets in the environment including
+        IT devices, OT equipment, IoT devices, and unmanaged systems.
+        </p>
 
-  <!-- =============================================================== -->
-  <!-- ALERTS                                                          -->
-  <!-- =============================================================== -->
+        <pre>
+GET /api/v1/search/?aql=in:devices
+        </pre>
 
-  <row>
+        <p>
+        Device retrieval supports pagination parameters:
+        </p>
+
+        <ul>
+        <li>length — number of records returned</li>
+        <li>from — starting offset for pagination</li>
+        </ul>
+
+        <p>
+        The Armis API supports page sizes up to 5000 records.
+        </p>
+       
+      </html>
+    </panel>
     <panel>
       <title>🚨 Alerts API</title>
       <html>
@@ -181,46 +254,6 @@ GET /api/v1/search/?aql=in:alerts
       </html>
     </panel>
   </row>
-
-  <!-- =============================================================== -->
-  <!-- DEVICES                                                         -->
-  <!-- =============================================================== -->
-
-  <row>
-    <panel>
-      <title>💻 Devices API</title>
-      <html>
-        
-        <p>
-        Devices represent discovered assets in the environment including
-        IT devices, OT equipment, IoT devices, and unmanaged systems.
-        </p>
-
-        <pre>
-GET /api/v1/search/?aql=in:devices
-        </pre>
-
-        <p>
-        Device retrieval supports pagination parameters:
-        </p>
-
-        <ul>
-        <li>length — number of records returned</li>
-        <li>from — starting offset for pagination</li>
-        </ul>
-
-        <p>
-        The Armis API supports page sizes up to 5000 records.
-        </p>
-       
-      </html>
-    </panel>
-  </row>
-
-  <!-- =============================================================== -->
-  <!-- ACTIVITY EVENTS                                                 -->
-  <!-- =============================================================== -->
-
   <row>
     <panel>
       <title>📡 Activity Events</title>
@@ -252,13 +285,6 @@ GET /api/v1/search/?aql=in:activity
        
       </html>
     </panel>
-  </row>
-
-  <!-- =============================================================== -->
-  <!-- DEVICE TAGGING                                                  -->
-  <!-- =============================================================== -->
-
-  <row>
     <panel>
       <title>🏷️ Device Tags</title>
       <html>
@@ -289,13 +315,6 @@ POST /api/v1/devices_tags/
       
       </html>
     </panel>
-  </row>
-
-  <!-- =============================================================== -->
-  <!-- INTEGRATIONS                                                    -->
-  <!-- =============================================================== -->
-
-  <row>
     <panel>
       <title>🔗 Integrations</title>
       <html>
@@ -325,62 +344,4 @@ GET /api/v2/integrations/
       </html>
     </panel>
   </row>
-
-  <!-- =============================================================== -->
-  <!-- PAGINATION                                                      -->
-  <!-- =============================================================== -->
-
-  <row>
-    <panel>
-      <title>📄 Pagination</title>
-      <html>
-        
-        <p>
-        Large datasets must be retrieved using pagination parameters.
-        </p>
-
-        <ul>
-        <li>length — number of results per page</li>
-        <li>from — starting record offset</li>
-        </ul>
-
-        <p>
-        Example:
-        </p>
-
-        <pre>
-GET /api/v1/search/?aql=in:devices&length=100
-GET /api/v1/search/?aql=in:devices&length=100&from=100
-        </pre>
-
-        <p>
-        The response returns metadata including total record counts
-        and the next pagination offset.
-        </p>
-       
-      </html>
-    </panel>
-  </row>
-
-  <!-- =============================================================== -->
-  <!-- API BEST PRACTICES                                              -->
-  <!-- =============================================================== -->
-
-  <row>
-    <panel>
-      <title>⚙️ API Best Practices</title>
-      <html>
-      
-        <ul>
-        <li>Always authenticate using an access token.</li>
-        <li>Use pagination for large data sets.</li>
-        <li>Filter queries by time when possible.</li>
-        <li>Use ASQ queries to retrieve targeted datasets.</li>
-        <li>Validate API responses and error codes.</li>
-        </ul>
-       
-      </html>
-    </panel>
-  </row>
-
 </dashboard>
