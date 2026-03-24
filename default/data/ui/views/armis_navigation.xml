@@ -87,6 +87,30 @@ Matches the same “portal tile” pattern used in the Documentation Hub.
           <a class="portal-link" href="armis_error_logs"><div class="portal-tile"><div class="portal-icon">⚠️</div><div class="portal-title">Error Logs</div></div></a>
           <a class="portal-link" href="armis_system_health"><div class="portal-tile"><div class="portal-icon">❤️</div><div class="portal-title">System Health</div></div></a>
 
+<!-- Collectors -->
+<a class="portal-link" href="armis_collectors">
+  <div class="portal-tile">
+    <div class="portal-icon">🛰️</div>
+    <div class="portal-title">Collectors</div>
+  </div>
+</a>
+
+<!-- Networks -->
+<a class="portal-link" href="armis_networks">
+  <div class="portal-tile">
+    <div class="portal-icon">🌐</div>
+    <div class="portal-title">Networks</div>
+  </div>
+</a>
+
+<!-- Boundaries -->
+<a class="portal-link" href="armis_boundaries">
+  <div class="portal-tile">
+    <div class="portal-icon">🛑</div>
+    <div class="portal-title">Boundaries</div>
+  </div>
+</a>
+         
         </div>
       </html>
     </panel>
