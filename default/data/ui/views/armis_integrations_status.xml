@@ -1,0 +1,90 @@
+<dashboard version="1.1" theme="light">
+  <label>Armis Integrations Status</label>
+  <row>
+    <panel>
+      <title>Total Count</title>
+      <single>
+        <search>
+          <query>|inputlookup armis_integrations_status.csv
+|stats count</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Armis Integrations by Name</title>
+      <table>
+        <search>
+          <query>|inputlookup armis_integrations_status.csv
+|stats count by Name</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Armis Integrations by Status</title>
+      <table>
+        <search>
+          <query>|inputlookup armis_integrations_status.csv
+|stats count by Status</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Armis Integrations by Current State</title>
+      <table>
+        <search>
+          <query>|inputlookup armis_integrations_status.csv
+|stats count by "Current State"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Armis Integrations by Types</title>
+      <table>
+        <search>
+          <query>|inputlookup armis_integrations_status.csv
+|stats count by Types</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>|inputlookup armis_integrations_status.csv
+|fields - "Host / Address"
+|table Collector, Instance, "Name", "Types", "Status First Reported", "Last Edit At", "Last Status Report", "Current State", "Status"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
