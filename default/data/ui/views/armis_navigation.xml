@@ -1,189 +1,82 @@
 <!--
 =============================================================================
  default/data/ui/views/armis_navigation.xml
- Armis Centrix™ for Splunk App – Navigation Hub
+ Armis Centrix™ – Feature Navigation Hub (tile layout)
 =============================================================================
 -->
-<dashboard version="1.1">
+<dashboard version="1.1" theme="light">
   <label>📚 Armis Centrix™ – Feature Navigation Hub</label>
 
-  <!-- ─────────────────────  ROW 1  ───────────────────── -->
   <row>
     <panel>
-      <title>🧭 Overview</title>
       <html>
-        <a href="armis_overview" target="_blank">Open view</a>
-      </html>
-    </panel>
 
-    <panel>
-      <title>🖥️ Assets</title>
-      <html>
-        <a href="armis_assets" target="_blank">Open view</a>
-      </html>
-    </panel>
+        <style>
+          .portal-grid{
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:22px;
+            margin-top:20px;
+          }
+          .portal-tile{
+            background:#fff;
+            border:1px solid #e5e5e5;
+            border-radius:8px;
+            padding:22px;
+            text-align:center;
+            transition:all .18s ease;
+          }
+          .portal-tile:hover{
+            box-shadow:0 4px 14px rgba(0,0,0,.18);
+            transform:translateY(-2px);
+          }
+          .portal-icon{font-size:34px;margin-bottom:10px;}
+          .portal-title{font-size:15px;font-weight:600;}
+          .portal-link{text-decoration:none;color:inherit;display:block;}
+        </style>
 
-    <panel>
-      <title>🧠 Asset Intelligence</title>
-      <html>
-        <a href="armis_asset_intel" target="_blank">Open view</a>
-      </html>
-    </panel>
+        <div class="portal-grid">
 
-    <panel>
-      <title>🌐 Asset Communications</title>
-      <html>
-        <a href="armis_asset_comms" target="_blank">Open view</a>
+          <!-- Overview -->
+          <a class="portal-link" href="armis_overview"><div class="portal-tile"><div class="portal-icon">🧭</div><div class="portal-title">Overview</div></div></a>
+
+          <!-- Assets & Intelligence -->
+          <a class="portal-link" href="armis_assets"><div class="portal-tile"><div class="portal-icon">🖥️</div><div class="portal-title">Assets</div></div></a>
+          <a class="portal-link" href="armis_asset_intel"><div class="portal-tile"><div class="portal-icon">🧠</div><div class="portal-title">Asset&nbsp;Intelligence</div></div></a>
+          <a class="portal-link" href="armis_asset_comms"><div class="portal-tile"><div class="portal-icon">🌐</div><div class="portal-title">Asset&nbsp;Communications</div></div></a>
+
+          <!-- Alerts & Vulnerabilities -->
+          <a class="portal-link" href="armis_alerts"><div class="portal-tile"><div class="portal-icon">🚨</div><div class="portal-title">Alerts</div></div></a>
+          <a class="portal-link" href="armis_alerts_severity"><div class="portal-tile"><div class="portal-icon">🔥</div><div class="portal-title">Alerts&nbsp;-&nbsp;Severity</div></div></a>
+          <a class="portal-link" href="armis_vulns"><div class="portal-tile"><div class="portal-icon">🧬</div><div class="portal-title">Vulnerabilities</div></div></a>
+          <a class="portal-link" href="armis_vipr"><div class="portal-tile"><div class="portal-icon">🎯</div><div class="portal-title">VIPR&nbsp;Prioritization</div></div></a>
+
+          <!-- Exposure -->
+          <a class="portal-link" href="armis_exposure_analytics"><div class="portal-tile"><div class="portal-icon">📊</div><div class="portal-title">Exposure&nbsp;Analytics</div></div></a>
+          <a class="portal-link" href="armis_exposure_trends"><div class="portal-tile"><div class="portal-icon">📈</div><div class="portal-title">Exposure&nbsp;Trends</div></div></a>
+          <a class="portal-link" href="armis_asset_tags"><div class="portal-tile"><div class="portal-icon">🏷️</div><div class="portal-title">Asset&nbsp;Tags</div></div></a>
+          <a class="portal-link" href="armis_threat_intel"><div class="portal-tile"><div class="portal-icon">🧠</div><div class="portal-title">Threat&nbsp;Intelligence</div></div></a>
+
+          <!-- Identity & Access -->
+          <a class="portal-link" href="armis_users"><div class="portal-tile"><div class="portal-icon">👤</div><div class="portal-title">Users</div></div></a>
+          <a class="portal-link" href="armis_user_activity"><div class="portal-tile"><div class="portal-icon">⏳</div><div class="portal-title">User&nbsp;Activity</div></div></a>
+          <a class="portal-link" href="armis_roles"><div class="portal-tile"><div class="portal-icon">🔐</div><div class="portal-title">Roles</div></div></a>
+          <a class="portal-link" href="armis_permissions"><div class="portal-tile"><div class="portal-icon">🛡️</div><div class="portal-title">Permissions</div></div></a>
+
+          <!-- API & Integrations -->
+          <a class="portal-link" href="armis_api_keys"><div class="portal-tile"><div class="portal-icon">🔑</div><div class="portal-title">API&nbsp;Keys</div></div></a>
+          <a class="portal-link" href="armis_integrations"><div class="portal-tile"><div class="portal-icon">🔗</div><div class="portal-title">Integrations</div></div></a>
+          <a class="portal-link" href="armis_config"><div class="portal-tile"><div class="portal-icon">⚙️</div><div class="portal-title">Configuration</div></div></a>
+          <a class="portal-link" href="armis_reports"><div class="portal-tile"><div class="portal-icon">📄</div><div class="portal-title">Reports</div></div></a>
+
+          <!-- Logs & Health -->
+          <a class="portal-link" href="armis_audit_logs"><div class="portal-tile"><div class="portal-icon">📜</div><div class="portal-title">Audit&nbsp;Logs</div></div></a>
+          <a class="portal-link" href="armis_error_logs"><div class="portal-tile"><div class="portal-icon">⚠️</div><div class="portal-title">Error&nbsp;Logs</div></div></a>
+          <a class="portal-link" href="armis_system_health"><div class="portal-tile"><div class="portal-icon">❤️</div><div class="portal-title">System&nbsp;Health</div></div></a>
+
+        </div>
+
       </html>
     </panel>
   </row>
-
-  <!-- ─────────────────────  ROW 2  ───────────────────── -->
-  <row>
-    <panel>
-      <title>🚨 Alerts</title>
-      <html>
-        <a href="armis_alerts" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>🔥 Alerts — By Severity</title>
-      <html>
-        <a href="armis_alerts_severity" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>🧬 Vulnerabilities</title>
-      <html>
-        <a href="armis_vulns" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>🎯 VIPR Prioritization</title>
-      <html>
-        <a href="armis_vipr" target="_blank">Open view</a>
-      </html>
-    </panel>
-  </row>
-
-  <!-- ─────────────────────  ROW 3  ───────────────────── -->
-  <row>
-    <panel>
-      <title>📊 Exposure Analytics</title>
-      <html>
-        <a href="armis_exposure_analytics" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>📈 Exposure Trends</title>
-      <html>
-        <a href="armis_exposure_trends" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>🏷️ Asset Tags</title>
-      <html>
-        <a href="armis_asset_tags" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>🧠 Threat Intelligence</title>
-      <html>
-        <a href="armis_threat_intel" target="_blank">Open view</a>
-      </html>
-    </panel>
-  </row>
-
-  <!-- ─────────────────────  ROW 4  ───────────────────── -->
-  <row>
-    <panel>
-      <title>👤 Users</title>
-      <html>
-        <a href="armis_users" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>⏳ User Activity</title>
-      <html>
-        <a href="armis_user_activity" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>🔐 Roles</title>
-      <html>
-        <a href="armis_roles" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>🛡️ Permissions</title>
-      <html>
-        <a href="armis_permissions" target="_blank">Open view</a>
-      </html>
-    </panel>
-  </row>
-
-  <!-- ─────────────────────  ROW 5  ───────────────────── -->
-  <row>
-    <panel>
-      <title>🔑 API Keys</title>
-      <html>
-        <a href="armis_api_keys" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>🔗 Integrations</title>
-      <html>
-        <a href="armis_integrations" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>⚙️ Configuration</title>
-      <html>
-        <a href="armis_config" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>📄 Reports</title>
-      <html>
-        <a href="armis_reports" target="_blank">Open view</a>
-      </html>
-    </panel>
-  </row>
-
-  <!-- ─────────────────────  ROW 6  ───────────────────── -->
-  <row>
-    <panel>
-      <title>📜 Audit Logs</title>
-      <html>
-        <a href="armis_audit_logs" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>⚠️ Error Logs</title>
-      <html>
-        <a href="armis_error_logs" target="_blank">Open view</a>
-      </html>
-    </panel>
-
-    <panel>
-      <title>❤️ System Health</title>
-      <html>
-        <a href="armis_system_health" target="_blank">Open view</a>
-      </html>
-    </panel>
-  </row>
-
 </dashboard>
