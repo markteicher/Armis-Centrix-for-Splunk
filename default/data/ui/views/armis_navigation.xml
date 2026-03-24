@@ -8,7 +8,9 @@
 PURPOSE
 
 Tile-based landing page linking to every functional view.
-Section-header tiles added for clearer grouping.
+Section-header tiles (grey, full-width) break the grid into logical
+groups.  Matches the same “portal tile” design used in the
+Documentation Hub.
 
 =============================================================================
 -->
@@ -19,6 +21,7 @@ Section-header tiles added for clearer grouping.
     <panel>
       <html>
 
+        <!-- ────────────── tile-grid styles ────────────── -->
         <style>
           .portal-grid{
             display:grid;
@@ -27,7 +30,7 @@ Section-header tiles added for clearer grouping.
             margin-top:20px;
           }
           .portal-tile{
-            background:#fff;
+            background:#ffffff;
             border:1px solid #e5e5e5;
             border-radius:8px;
             padding:22px;
@@ -40,80 +43,66 @@ Section-header tiles added for clearer grouping.
           }
           .portal-icon{font-size:34px;margin-bottom:10px;}
           .portal-title{font-size:15px;font-weight:600;}
+          .portal-link{text-decoration:none;color:inherit;display:block;}
 
-          /* header-only tiles (no hover, grey fill) */
+          /* section header tiles (not clickable) */
           .portal-header{
             background:#f5f5f5;
             border:1px solid #d0d0d0;
             cursor:default;
+            grid-column:span 4;
+            font-size:16px;
+            font-weight:700;
+            padding:18px 22px;
           }
-          .portal-link{text-decoration:none;color:inherit;display:block;}
         </style>
 
+        <!-- ───────────────────  GRID  ─────────────────── -->
         <div class="portal-grid">
 
-          <!-- ─── Overview ─── -->
-          <div class="portal-tile portal-header">
-            <div class="portal-title">Overview</div>
-          </div>
+          <!-- Overview -->
+          <div class="portal-tile portal-header">Overview</div>
           <a class="portal-link" href="armis_overview">
-            <div class="portal-tile">
-              <div class="portal-icon">🧭</div>
-              <div class="portal-title">Overview</div>
-            </div>
+            <div class="portal-tile"><div class="portal-icon">🧭</div><div class="portal-title">Overview</div></div>
           </a>
 
-          <!-- ─── Assets & Discovery ─── -->
-          <div class="portal-tile portal-header">
-            <div class="portal-title">Assets & Discovery</div>
-          </div>
+          <!-- Assets & Discovery -->
+          <div class="portal-tile portal-header">Assets and Discovery</div>
           <a class="portal-link" href="armis_assets"><div class="portal-tile"><div class="portal-icon">🖥️</div><div class="portal-title">Assets</div></div></a>
           <a class="portal-link" href="armis_collectors"><div class="portal-tile"><div class="portal-icon">🛰️</div><div class="portal-title">Collectors</div></div></a>
           <a class="portal-link" href="armis_networks"><div class="portal-tile"><div class="portal-icon">🌐</div><div class="portal-title">Networks</div></div></a>
           <a class="portal-link" href="armis_boundaries"><div class="portal-tile"><div class="portal-icon">🛑</div><div class="portal-title">Boundaries</div></div></a>
-          <a class="portal-link" href="armis_asset_intel"><div class="portal-tile"><div class="portal-icon">🧠</div><div class="portal-title">Asset Intelligence</div></div></a>
-          <a class="portal-link" href="armis_asset_comms"><div class="portal-tile"><div class="portal-icon">🔗</div><div class="portal-title">Asset Communications</div></div></a>
 
-          <!-- ─── Alerts & Vulnerabilities ─── -->
-          <div class="portal-tile portal-header">
-            <div class="portal-title">Alerts & Vulnerabilities</div>
-          </div>
+          <!-- Alerts & Vulnerabilities -->
+          <div class="portal-tile portal-header">Alerts and Vulnerabilities</div>
           <a class="portal-link" href="armis_alerts"><div class="portal-tile"><div class="portal-icon">🚨</div><div class="portal-title">Alerts</div></div></a>
-          <a class="portal-link" href="armis_alerts_severity"><div class="portal-tile"><div class="portal-icon">🔥</div><div class="portal-title">Alerts - Severity</div></div></a>
+          <a class="portal-link" href="armis_alerts_severity"><div class="portal-tile"><div class="portal-icon">🔥</div><div class="portal-title">Alerts – Severity</div></div></a>
           <a class="portal-link" href="armis_vulns"><div class="portal-tile"><div class="portal-icon">🧬</div><div class="portal-title">Vulnerabilities</div></div></a>
           <a class="portal-link" href="armis_vipr"><div class="portal-tile"><div class="portal-icon">🎯</div><div class="portal-title">VIPR Prioritization</div></div></a>
 
-          <!-- ─── Exposure ─── -->
-          <div class="portal-tile portal-header">
-            <div class="portal-title">Exposure</div>
-          </div>
+          <!-- Exposure -->
+          <div class="portal-tile portal-header">Exposure</div>
           <a class="portal-link" href="armis_exposure_analytics"><div class="portal-tile"><div class="portal-icon">📊</div><div class="portal-title">Exposure Analytics</div></div></a>
           <a class="portal-link" href="armis_exposure_trends"><div class="portal-tile"><div class="portal-icon">📈</div><div class="portal-title">Exposure Trends</div></div></a>
           <a class="portal-link" href="armis_asset_tags"><div class="portal-tile"><div class="portal-icon">🏷️</div><div class="portal-title">Asset Tags</div></div></a>
           <a class="portal-link" href="armis_threat_intel"><div class="portal-tile"><div class="portal-icon">🧠</div><div class="portal-title">Threat Intelligence</div></div></a>
 
-          <!-- ─── Identity & Access ─── -->
-          <div class="portal-tile portal-header">
-            <div class="portal-title">Identity & Access</div>
-          </div>
+          <!-- Identity & Access -->
+          <div class="portal-tile portal-header">Identity and Access</div>
           <a class="portal-link" href="armis_users"><div class="portal-tile"><div class="portal-icon">👤</div><div class="portal-title">Users</div></div></a>
           <a class="portal-link" href="armis_user_activity"><div class="portal-tile"><div class="portal-icon">⏳</div><div class="portal-title">User Activity</div></div></a>
           <a class="portal-link" href="armis_roles"><div class="portal-tile"><div class="portal-icon">🔐</div><div class="portal-title">Roles</div></div></a>
           <a class="portal-link" href="armis_permissions"><div class="portal-tile"><div class="portal-icon">🛡️</div><div class="portal-title">Permissions</div></div></a>
 
-          <!-- ─── API & Integrations ─── -->
-          <div class="portal-tile portal-header">
-            <div class="portal-title">API & Integrations</div>
-          </div>
+          <!-- API & Integrations -->
+          <div class="portal-tile portal-header">API and Integrations</div>
           <a class="portal-link" href="armis_api_keys"><div class="portal-tile"><div class="portal-icon">🔑</div><div class="portal-title">API Keys</div></div></a>
           <a class="portal-link" href="armis_integrations"><div class="portal-tile"><div class="portal-icon">🔗</div><div class="portal-title">Integrations</div></div></a>
           <a class="portal-link" href="armis_config"><div class="portal-tile"><div class="portal-icon">⚙️</div><div class="portal-title">Configuration</div></div></a>
           <a class="portal-link" href="armis_reports"><div class="portal-tile"><div class="portal-icon">📄</div><div class="portal-title">Reports</div></div></a>
 
-          <!-- ─── Logs & Health ─── -->
-          <div class="portal-tile portal-header">
-            <div class="portal-title">Logs & Health</div>
-          </div>
+          <!-- Logs & Health -->
+          <div class="portal-tile portal-header">Logs and Health</div>
           <a class="portal-link" href="armis_audit_logs"><div class="portal-tile"><div class="portal-icon">📜</div><div class="portal-title">Audit Logs</div></div></a>
           <a class="portal-link" href="armis_error_logs"><div class="portal-tile"><div class="portal-icon">⚠️</div><div class="portal-title">Error Logs</div></div></a>
           <a class="portal-link" href="armis_system_health"><div class="portal-tile"><div class="portal-icon">❤️</div><div class="portal-title">System Health</div></div></a>
