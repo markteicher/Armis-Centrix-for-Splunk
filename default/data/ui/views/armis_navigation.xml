@@ -1,10 +1,29 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_navigation.xml
+ Armis Centrix™ for Splunk App
+ Feature Navigation Hub
+=============================================================================
+
+PURPOSE
+
+Central, tile-based landing page linking to every functional view
+(assets, alerts, exposure, users, configuration, logs, etc.).
+Matches the same “portal tile” pattern used in the Documentation Hub.
+
+=============================================================================
+-->
 <dashboard version="1.1" theme="light">
   <label>📚 Armis Centrix™ – Feature Navigation Hub</label>
 
+  <!-- =============================================================== -->
+  <!-- ROW 1-6: PORTAL GRID (see embedded CSS)                         -->
+  <!-- =============================================================== -->
   <row>
     <panel>
       <html>
 
+        <!-- ---------- Tile-grid styling (reused across hubs) ---------- -->
         <style>
           .portal-grid{
             display:grid;
@@ -29,8 +48,8 @@
           .portal-link{text-decoration:none;color:inherit;display:block;}
         </style>
 
+        <!-- ---------------------- Tile grid ---------------------- -->
         <div class="portal-grid">
-
           <!-- Overview -->
           <a class="portal-link" href="armis_overview"><div class="portal-tile"><div class="portal-icon">🧭</div><div class="portal-title">Overview</div></div></a>
 
@@ -69,7 +88,6 @@
           <a class="portal-link" href="armis_system_health"><div class="portal-tile"><div class="portal-icon">❤️</div><div class="portal-title">System Health</div></div></a>
 
         </div>
-
       </html>
     </panel>
   </row>
