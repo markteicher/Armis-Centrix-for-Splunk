@@ -57,7 +57,27 @@
               <div class="portal-title">Armis Security Blog</div>
             </div>
           </a>
-
+          
+    <!-- Exposure & Device Security -->
+          <a class="portal-link" href="https://www.armis.com/videos/armis-centrix-for-vulnerability-management-detection-and-response-overview/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">🛡️</div>
+              <div class="portal-title">Armis Vulnerability MDR Overview</div>
+            </div>
+          </a>
+          <a class="portal-link" href="https://www.armis.com/platform/armis-centrix-for-ot-iot-security/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">🏭</div>
+              <div class="portal-title">Armis OT / IoT Security</div>
+            </div>
+          </a>
+          <a class="portal-link" href="https://www.armis.com/cybersecurity/health-and-medical/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">🏥</div>
+              <div class="portal-title">Armis Healthcare and Medical</div>
+            </div>
+          </a>
+          
           <!-- Security Frameworks -->
           <a class="portal-link" href="https://owasp.org/www-project-top-ten/" target="_blank">
             <div class="portal-tile">
@@ -68,7 +88,7 @@
           <a class="portal-link" href="https://attack.mitre.org/" target="_blank">
             <div class="portal-tile">
               <div class="portal-icon">🎯</div>
-              <div class="portal-title">MITRE ATT&CK</div>
+              <div class="portal-title">MITRE ATTACK</div>
             </div>
           </a>
           <a class="portal-link" href="https://www.first.org/cvss/" target="_blank">
@@ -84,25 +104,7 @@
             </div>
           </a>
 
-          <!-- Exposure & Device Security -->
-          <a class="portal-link" href="https://www.armis.com/videos/armis-centrix-for-vulnerability-management-detection-and-response-overview/" target="_blank">
-            <div class="portal-tile">
-              <div class="portal-icon">🛡️</div>
-              <div class="portal-title">Vulnerability MDR Overview</div>
-            </div>
-          </a>
-          <a class="portal-link" href="https://www.armis.com/platform/armis-centrix-for-ot-iot-security/" target="_blank">
-            <div class="portal-tile">
-              <div class="portal-icon">🏭</div>
-              <div class="portal-title">OT / IoT Security</div>
-            </div>
-          </a>
-          <a class="portal-link" href="https://www.armis.com/cybersecurity/health-and-medical/" target="_blank">
-            <div class="portal-tile">
-              <div class="portal-icon">🏥</div>
-              <div class="portal-title">Healthcare & Medical</div>
-            </div>
-          </a>
+      
 
           <!-- Splunk References -->
           <a class="portal-link" href="https://docs.splunk.com/Documentation/Splunk/latest/Viz/XMLDashboardReference" target="_blank">
