@@ -2,129 +2,136 @@
 =============================================================================
  default/data/ui/views/armis_documentation.xml
  Armis Centrix™ for Splunk App
- Documentation Hub
+ Documentation Hub (tile layout)
 =============================================================================
-
-PURPOSE
-
-Centralized documentation hub for Armis Centrix™ platform concepts,
-APIs, and Splunk App usage. This view provides direct links to
-authoritative Armis documentation and related technical references.
-
-=============================================================================
---><dashboard version="1.1" theme="light">
+-->
+<dashboard version="1.1" theme="light">
   <label>📚 Armis Centrix™ for Splunk App Documentation Hub</label>
-  <!-- =============================================================== -->
-  <!-- ROW 1: ARMIS DOCUMENTATION                                      -->
-  <!-- =============================================================== -->
-  <!-- =============================================================== -->
-  <!-- ROW 2: SECURITY FRAMEWORKS & ANALYSIS                           -->
-  <!-- =============================================================== -->
-  <!-- =============================================================== -->
-  <!-- ROW 3: EXPOSURE MANAGEMENT & DEVICE SECURITY                    -->
-  <!-- =============================================================== -->
-  <!-- =============================================================== -->
-  <!-- ROW 4: SPLUNK REFERENCES                                        -->
-  <!-- =============================================================== -->
+
   <row>
     <panel>
-      <title>🧠 Armis Centrix™ Platform Documentation</title>
       <html>
-        <ul>
-          <li>
-            <a href="https://www.armis.com/platform/" target="_blank">
-              Armis Centrix™ Platform Overview
-            </a>
-          </li>
-          <li>
-            <a href="https://www.armis.com/resources/" target="_blank">
-              Armis Resource Library
-            </a>
-          </li>
-          <li>
-            <a href="https://www.armis.com/blog/" target="_blank">
-              Armis Security Blog
-            </a>
-          </li>
-        </ul>
-      </html>
-    </panel>
-    <panel>
-      <title>🛡️ Security Concepts and Frameworks</title>
-      <html>
-        <ul>
-          <li>
-            <a href="https://owasp.org/www-project-top-ten/" target="_blank">
-              OWASP Top 10 Web Application Risks
-            </a>
-          </li>
-          <li>
-            <a href="https://www.first.org/cvss/" target="_blank">
-              Common Vulnerability Scoring System (CVSS)
-            </a>
-          </li>
-          <li>
-            <a href="https://attack.mitre.org/" target="_blank">
-              MITRE ATT&amp;CK Framework
-            </a>
-          </li>
-          <li>
-            <a href="https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final" target="_blank">
-              NIST SP 800-53 Security Controls
-            </a>
-          </li>
-        </ul>
-      </html>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <title>🌐 Cyber Exposure and Device Security</title>
-      <html>
-        <ul>
-          <li>
-            <a href="https://www.armis.com/videos/armis-centrix-for-vulnerability-management-detection-and-response-overview/" target="_blank">
-              Armis Centrix Vulnerability Management Detection and Response Overview
-            </a>
-          </li>
-          <li>
-            <a href="https://www.armis.com/platform/armis-centrix-for-ot-iot-security/" target="_blank">
-              Operations Technology/IoT Security
-            </a>
-          </li>
-          <li>
-            <a href="https://www.armis.com/cybersecurity/health-and-medical/" target="_blank">
-              Health and Medical
-            </a>
-          </li>
-        </ul>
-      </html>
-    </panel>
-    <panel>
-      <title>🧰 Splunk References</title>
-      <html>
-        <ul>
-          <li>
-            <a href="https://docs.splunk.com/Documentation/Splunk/latest/Viz/XMLDashboardReference" target="_blank">
-              Splunk Classic XML Dashboard Reference
-            </a>
-          </li>
-          <li>
-            <a href="https://docs.splunk.com/Documentation/Splunk/latest/Admin/Propsconf" target="_blank">
-              props.conf Reference
-            </a>
-          </li>
-          <li>
-            <a href="https://docs.splunk.com/Documentation/Splunk/latest/Admin/Transformsconf" target="_blank">
-              transforms.conf Reference
-            </a>
-          </li>
-          <li>
-            <a href="https://docs.splunk.com/Documentation/Splunk/latest/SearchReference/SearchCommands" target="_blank">
-              Splunk Search Command Reference
-            </a>
-          </li>
-        </ul>
+
+        <style>
+          .portal-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:22px;
+            margin-top:20px;
+          }
+          .portal-tile{
+            background:#ffffff;
+            border:1px solid #e5e5e5;
+            border-radius:8px;
+            padding:22px;
+            text-align:center;
+            transition:all .18s ease;
+          }
+          .portal-tile:hover{
+            box-shadow:0 4px 14px rgba(0,0,0,.18);
+            transform:translateY(-2px);
+          }
+          .portal-icon{font-size:34px;margin-bottom:10px;}
+          .portal-title{font-size:15px;font-weight:600;}
+          .portal-link{text-decoration:none;color:inherit;display:block;}
+        </style>
+
+        <div class="portal-grid">
+
+          <!-- Armis Platform -->
+          <a class="portal-link" href="https://www.armis.com/platform/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">🌐</div>
+              <div class="portal-title">Armis Centrix™ Platform</div>
+            </div>
+          </a>
+          <a class="portal-link" href="https://www.armis.com/resources/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">📘</div>
+              <div class="portal-title">Armis Resource Library</div>
+            </div>
+          </a>
+          <a class="portal-link" href="https://www.armis.com/blog/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">📝</div>
+              <div class="portal-title">Armis Security Blog</div>
+            </div>
+          </a>
+
+          <!-- Security Frameworks -->
+          <a class="portal-link" href="https://owasp.org/www-project-top-ten/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">🔒</div>
+              <div class="portal-title">OWASP Top 10</div>
+            </div>
+          </a>
+          <a class="portal-link" href="https://attack.mitre.org/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">🎯</div>
+              <div class="portal-title">MITRE ATT&CK</div>
+            </div>
+          </a>
+          <a class="portal-link" href="https://www.first.org/cvss/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">📊</div>
+              <div class="portal-title">CVSS Calculator</div>
+            </div>
+          </a>
+          <a class="portal-link" href="https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">📚</div>
+              <div class="portal-title">NIST SP 800-53</div>
+            </div>
+          </a>
+
+          <!-- Exposure & Device Security -->
+          <a class="portal-link" href="https://www.armis.com/videos/armis-centrix-for-vulnerability-management-detection-and-response-overview/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">🛡️</div>
+              <div class="portal-title">Vulnerability MDR Overview</div>
+            </div>
+          </a>
+          <a class="portal-link" href="https://www.armis.com/platform/armis-centrix-for-ot-iot-security/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">🏭</div>
+              <div class="portal-title">OT / IoT Security</div>
+            </div>
+          </a>
+          <a class="portal-link" href="https://www.armis.com/cybersecurity/health-and-medical/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">🏥</div>
+              <div class="portal-title">Healthcare & Medical</div>
+            </div>
+          </a>
+
+          <!-- Splunk References -->
+          <a class="portal-link" href="https://docs.splunk.com/Documentation/Splunk/latest/Viz/XMLDashboardReference" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">📊</div>
+              <div class="portal-title">Splunk XML Dashboards</div>
+            </div>
+          </a>
+          <a class="portal-link" href="https://docs.splunk.com/Documentation/Splunk/latest/Admin/Propsconf" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">⚙️</div>
+              <div class="portal-title">props.conf</div>
+            </div>
+          </a>
+          <a class="portal-link" href="https://docs.splunk.com/Documentation/Splunk/latest/Admin/Transformsconf" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">🔧</div>
+              <div class="portal-title">transforms.conf</div>
+            </div>
+          </a>
+          <a class="portal-link" href="https://dev.splunk.com/enterprise/docs/developapps/testvalidate/appinspect/" target="_blank">
+            <div class="portal-tile">
+              <div class="portal-icon">📦</div>
+              <div class="portal-title">Splunk AppInspect</div>
+            </div>
+          </a>
+
+        </div>
+
       </html>
     </panel>
   </row>
