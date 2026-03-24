@@ -12,17 +12,23 @@ APIs, and Splunk App usage. This view provides direct links to
 authoritative Armis documentation and related technical references.
 
 =============================================================================
--->
-
-<dashboard version="1.1" theme="light">
-  <label>📚 Documentation</label>
-
+--><dashboard version="1.1" theme="light">
+  <label>📚 Armis Centrix™ for Splunk App Documentation Hub</label>
   <!-- =============================================================== -->
   <!-- ROW 1: ARMIS DOCUMENTATION                                      -->
   <!-- =============================================================== -->
+  <!-- =============================================================== -->
+  <!-- ROW 2: SECURITY FRAMEWORKS & ANALYSIS                           -->
+  <!-- =============================================================== -->
+  <!-- =============================================================== -->
+  <!-- ROW 3: EXPOSURE MANAGEMENT & DEVICE SECURITY                    -->
+  <!-- =============================================================== -->
+  <!-- =============================================================== -->
+  <!-- ROW 4: SPLUNK REFERENCES                                        -->
+  <!-- =============================================================== -->
   <row>
     <panel>
-      <title>🧠 Armis Centrix Platform Documentation</title>
+      <title>🧠 Armis Centrix™ Platform Documentation</title>
       <html>
         <ul>
           <li>
@@ -48,12 +54,6 @@ authoritative Armis documentation and related technical references.
         </ul>
       </html>
     </panel>
-  </row>
-
-  <!-- =============================================================== -->
-  <!-- ROW 2: SECURITY FRAMEWORKS & ANALYSIS                           -->
-  <!-- =============================================================== -->
-  <row>
     <panel>
       <title>🛡️ Security Concepts and Frameworks</title>
       <html>
@@ -82,10 +82,6 @@ authoritative Armis documentation and related technical references.
       </html>
     </panel>
   </row>
-
-  <!-- =============================================================== -->
-  <!-- ROW 3: EXPOSURE MANAGEMENT & DEVICE SECURITY                    -->
-  <!-- =============================================================== -->
   <row>
     <panel>
       <title>🌐 Cyber Exposure and Device Security</title>
@@ -114,12 +110,6 @@ authoritative Armis documentation and related technical references.
         </ul>
       </html>
     </panel>
-  </row>
-
-  <!-- =============================================================== -->
-  <!-- ROW 4: SPLUNK REFERENCES                                        -->
-  <!-- =============================================================== -->
-  <row>
     <panel>
       <title>🧰 Splunk References</title>
       <html>
@@ -148,5 +138,4 @@ authoritative Armis documentation and related technical references.
       </html>
     </panel>
   </row>
-
 </dashboard>
