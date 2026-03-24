@@ -4,9 +4,17 @@
  <!-- Armis Collectors                                                           -->
  <!-- =================================================================== -->
  
-<view name="armis_collectors_product_listing_aging_view"/>  
+<view name="armis_collectors_product_listing_aging_view"/> 
+  </collection>
+     
+     
+ <collection label="Armis Users">
+ <!-- =================================================================== -->
+ <!-- ARMIS USERS                                                             -->
+ <!-- =================================================================== -->
 
-</collection>
+ </collection>     
+     
   <view name="alerts"/>
   
 
