@@ -1,3 +1,34 @@
+<!--
+
+=============================================================================
+
+ default/data/ui/views/armis_navigation.xml
+
+ Armis Centrix™ for Splunk App
+
+ Feature Navigation Hub
+
+=============================================================================
+
+
+
+PURPOSE
+
+
+
+Central, tile-based landing page linking to every functional view
+
+(assets, alerts, exposure, users, configuration, logs, etc.).
+
+Matches the same “portal tile” pattern used in the Documentation Hub.
+
+
+
+=============================================================================
+
+-->
+
+
 <dashboard version="1.1" theme="light">
   <label>📚 Armis Centrix™ – Feature Navigation Hub</label>
 
