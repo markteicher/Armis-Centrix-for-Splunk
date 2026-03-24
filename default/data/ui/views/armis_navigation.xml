@@ -7,9 +7,8 @@
 
 PURPOSE
 
-Central, tile-based landing page linking to every functional view
-(assets, alerts, exposure, users, configuration, logs, etc.).
-Matches the same “portal tile” pattern used in the Documentation Hub.
+Central, tile-based landing page linking to every functional view.
+Matches the same “portal tile” design used by the Documentation Hub.
 
 =============================================================================
 -->
@@ -17,13 +16,13 @@ Matches the same “portal tile” pattern used in the Documentation Hub.
   <label>📚 Armis Centrix™ – Feature Navigation Hub</label>
 
   <!-- =============================================================== -->
-  <!-- ROW 1-6: PORTAL GRID (see embedded CSS)                         -->
+  <!-- ROW 1-6: PORTAL GRID (CSS + tiles)                              -->
   <!-- =============================================================== -->
   <row>
     <panel>
       <html>
 
-        <!-- ---------- Tile-grid styling (reused across hubs) ---------- -->
+        <!-- --- tile-grid styling (reused across hubs) --- -->
         <style>
           .portal-grid{
             display:grid;
@@ -48,19 +47,25 @@ Matches the same “portal tile” pattern used in the Documentation Hub.
           .portal-link{text-decoration:none;color:inherit;display:block;}
         </style>
 
-        <!-- ---------------------- Tile grid ---------------------- -->
+        <!-- ----------------  tile grid  ----------------- -->
         <div class="portal-grid">
+
           <!-- Overview -->
           <a class="portal-link" href="armis_overview"><div class="portal-tile"><div class="portal-icon">🧭</div><div class="portal-title">Overview</div></div></a>
 
-          <!-- Assets & Intelligence -->
+          <!-- Assets & Discovery -->
           <a class="portal-link" href="armis_assets"><div class="portal-tile"><div class="portal-icon">🖥️</div><div class="portal-title">Assets</div></div></a>
+          <a class="portal-link" href="armis_collectors"><div class="portal-tile"><div class="portal-icon">🛰️</div><div class="portal-title">Collectors</div></div></a>
+          <a class="portal-link" href="armis_networks"><div class="portal-tile"><div class="portal-icon">🌐</div><div class="portal-title">Networks</div></div></a>
+          <a class="portal-link" href="armis_boundaries"><div class="portal-tile"><div class="portal-icon">🛑</div><div class="portal-title">Boundaries</div></div></a>
+
+          <!-- Asset Intelligence & Communications -->
           <a class="portal-link" href="armis_asset_intel"><div class="portal-tile"><div class="portal-icon">🧠</div><div class="portal-title">Asset Intelligence</div></div></a>
-          <a class="portal-link" href="armis_asset_comms"><div class="portal-tile"><div class="portal-icon">🌐</div><div class="portal-title">Asset Communications</div></div></a>
+          <a class="portal-link" href="armis_asset_comms"><div class="portal-tile"><div class="portal-icon">🔗</div><div class="portal-title">Asset Communications</div></div></a>
 
           <!-- Alerts & Vulnerabilities -->
           <a class="portal-link" href="armis_alerts"><div class="portal-tile"><div class="portal-icon">🚨</div><div class="portal-title">Alerts</div></div></a>
-          <a class="portal-link" href="armis_alerts_severity"><div class="portal-tile"><div class="portal-icon">🔥</div><div class="portal-title">Alerts - Severity</div></div></a>
+          <a class="portal-link" href="armis_alerts_severity"><div class="portal-tile"><div class="portal-icon">🔥</div><div class="portal-title">Alerts – Severity</div></div></a>
           <a class="portal-link" href="armis_vulns"><div class="portal-tile"><div class="portal-icon">🧬</div><div class="portal-title">Vulnerabilities</div></div></a>
           <a class="portal-link" href="armis_vipr"><div class="portal-tile"><div class="portal-icon">🎯</div><div class="portal-title">VIPR Prioritization</div></div></a>
 
@@ -87,30 +92,6 @@ Matches the same “portal tile” pattern used in the Documentation Hub.
           <a class="portal-link" href="armis_error_logs"><div class="portal-tile"><div class="portal-icon">⚠️</div><div class="portal-title">Error Logs</div></div></a>
           <a class="portal-link" href="armis_system_health"><div class="portal-tile"><div class="portal-icon">❤️</div><div class="portal-title">System Health</div></div></a>
 
-<!-- Collectors -->
-<a class="portal-link" href="armis_collectors">
-  <div class="portal-tile">
-    <div class="portal-icon">🛰️</div>
-    <div class="portal-title">Collectors</div>
-  </div>
-</a>
-
-<!-- Networks -->
-<a class="portal-link" href="armis_networks">
-  <div class="portal-tile">
-    <div class="portal-icon">🌐</div>
-    <div class="portal-title">Networks</div>
-  </div>
-</a>
-
-<!-- Boundaries -->
-<a class="portal-link" href="armis_boundaries">
-  <div class="portal-tile">
-    <div class="portal-icon">🛑</div>
-    <div class="portal-title">Boundaries</div>
-  </div>
-</a>
-         
         </div>
       </html>
     </panel>
