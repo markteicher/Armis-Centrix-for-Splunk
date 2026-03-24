@@ -1,80 +1,130 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_integrations_status.xml
+ Armis Centrix™ for Splunk App
+ Integrations Status Monitoring
+=============================================================================
+
+Purpose:
+Provide operational visibility into Armis integrations status using the
+integration status lookup dataset. This dashboard presents high-level status
+distribution, current state visibility, integration type breakdown, and
+detailed integration records.
+
+Data Source:
+Lookup File
+armis_integrations_status.csv
+
+Splunk Source:
+| inputlookup armis_integrations_status.csv
+
+Expected Fields:
+Collector
+Instance
+Name
+Types
+Status First Reported
+Last Edit At
+Last Status Report
+Current State
+Status
+Host / Address
+
+Design Standards:
+• Enterprise base-search architecture
+• Post-process panel searches
+• Lookup-backed dashboard design
+• Shared source search across all panels
+• Structured operational sections
+• No field-name redesign
+• No panel-logic redesign
+
+=============================================================================
+-->
+
 <dashboard version="1.1" theme="light">
   <label>Armis Integrations Status</label>
+
+  <!-- ========================================================= -->
+  <!-- Base Search -->
+  <!-- ========================================================= -->
+
+  <search id="base_armis_integrations_status">
+    <query>| inputlookup armis_integrations_status.csv</query>
+    <earliest>-24h@h</earliest>
+    <latest>now</latest>
+  </search>
+
+  <!-- ========================================================= -->
+  <!-- Integrations Status Overview -->
+  <!-- ========================================================= -->
+
   <row>
     <panel>
       <title>Total Count</title>
       <single>
-        <search>
-          <query>|inputlookup armis_integrations_status.csv
-|stats count</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+        <search base="base_armis_integrations_status">
+          <query>| stats count</query>
         </search>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
       </single>
     </panel>
+
     <panel>
       <title>Armis Integrations by Name</title>
       <table>
-        <search>
-          <query>|inputlookup armis_integrations_status.csv
-|stats count by Name</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+        <search base="base_armis_integrations_status">
+          <query>| stats count by Name</query>
         </search>
         <option name="drilldown">none</option>
       </table>
     </panel>
+
     <panel>
       <title>Armis Integrations by Status</title>
       <table>
-        <search>
-          <query>|inputlookup armis_integrations_status.csv
-|stats count by Status</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+        <search base="base_armis_integrations_status">
+          <query>| stats count by Status</query>
         </search>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
       </table>
     </panel>
+
     <panel>
       <title>Armis Integrations by Current State</title>
       <table>
-        <search>
-          <query>|inputlookup armis_integrations_status.csv
-|stats count by "Current State"</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+        <search base="base_armis_integrations_status">
+          <query>| stats count by "Current State"</query>
         </search>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
       </table>
     </panel>
+
     <panel>
       <title>Armis Integrations by Types</title>
       <table>
-        <search>
-          <query>|inputlookup armis_integrations_status.csv
-|stats count by Types</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+        <search base="base_armis_integrations_status">
+          <query>| stats count by Types</query>
         </search>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
       </table>
     </panel>
   </row>
+
+  <!-- ========================================================= -->
+  <!-- Integration Status Details -->
+  <!-- ========================================================= -->
+
   <row>
     <panel>
       <table>
-        <search>
-          <query>|inputlookup armis_integrations_status.csv
-|fields - "Host / Address"
-|table Collector, Instance, "Name", "Types", "Status First Reported", "Last Edit At", "Last Status Report", "Current State", "Status"</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+        <search base="base_armis_integrations_status">
+          <query>| fields - "Host / Address"
+| table Collector, Instance, "Name", "Types", "Status First Reported", "Last Edit At", "Last Status Report", "Current State", "Status"</query>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="count">20</option>
