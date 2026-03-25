@@ -207,5 +207,21 @@ Design Standards:
     </single>
   </panel>
 </row>
+<row>
+<panel>
+  <title>📈 Active / Total Integrations (%)</title>
+  <single>
+    <search base="base_armis_integrations_status">
+      <query><![CDATA[
+| stats count as total count(eval('Current State'="Active")) as active
+| eval pct=tostring(floor((active/total)*1000)/10)."%"
+| table pct
+      ]]></query>
+    </search>
+    <option name="drilldown">none</option>
+  </single>
+</panel>
+</row>
 
+ 
 </dashboard>
