@@ -38,6 +38,8 @@ Design Standards:
 • Structured operational sections
 • No spath usage
 • No field-name redesign
+• No helper fields
+• No invented display logic
 
 =============================================================================
 -->
@@ -52,13 +54,6 @@ Design Standards:
     <query>
       <![CDATA[
 | inputlookup armis_integrations_status.csv
-| eval collector_clean=trim(Collector)
-| eval instance_clean=trim(Instance)
-| eval name_clean=trim(Name)
-| eval types_clean=trim(Types)
-| eval status_clean=trim(Status)
-| eval current_state_clean=trim('Current State')
-| eval host_clean=trim('Host / Address')
       ]]>
     </query>
     <earliest>-24h@h</earliest>
@@ -82,7 +77,7 @@ Design Standards:
       <title>🛰️ Unique Collectors</title>
       <single>
         <search base="base_armis_integrations_status">
-          <query><![CDATA[ | stats dc(collector_clean) ]]></query>
+          <query><![CDATA[ | stats dc(Collector) ]]></query>
         </search>
         <option name="drilldown">none</option>
       </single>
@@ -92,7 +87,7 @@ Design Standards:
       <title>🧩 Unique Instances</title>
       <single>
         <search base="base_armis_integrations_status">
-          <query><![CDATA[ | stats dc(instance_clean) ]]></query>
+          <query><![CDATA[ | stats dc(Instance) ]]></query>
         </search>
         <option name="drilldown">none</option>
       </single>
@@ -102,7 +97,7 @@ Design Standards:
       <title>🏷️ Unique Integration Names</title>
       <single>
         <search base="base_armis_integrations_status">
-          <query><![CDATA[ | stats dc(name_clean) ]]></query>
+          <query><![CDATA[ | stats dc(Name) ]]></query>
         </search>
         <option name="drilldown">none</option>
       </single>
@@ -116,13 +111,10 @@ Design Standards:
       <title>📊 Integrations by Status</title>
       <table>
         <search base="base_armis_integrations_status">
-          <query>
-            <![CDATA[
-| eval Status=case(isnull(status_clean) OR status_clean="","(blank)",true(),status_clean)
+          <query><![CDATA[
 | stats count by Status
 | sort -count
-            ]]>
-          </query>
+          ]]></query>
         </search>
         <option name="count">20</option>
         <option name="drilldown">none</option>
@@ -133,13 +125,10 @@ Design Standards:
       <title>📈 Integrations by Current State</title>
       <table>
         <search base="base_armis_integrations_status">
-          <query>
-            <![CDATA[
-| eval "Current State"=case(isnull(current_state_clean) OR current_state_clean="","(blank)",true(),current_state_clean)
+          <query><![CDATA[
 | stats count by "Current State"
 | sort -count
-            ]]>
-          </query>
+          ]]></query>
         </search>
         <option name="count">20</option>
         <option name="drilldown">none</option>
@@ -147,16 +136,13 @@ Design Standards:
     </panel>
 
     <panel>
-      <title>🧬 Integrations by Type</title>
+      <title>🧬 Integrations by Types</title>
       <table>
         <search base="base_armis_integrations_status">
-          <query>
-            <![CDATA[
-| eval Types=case(isnull(types_clean) OR types_clean="","(blank)",true(),types_clean)
+          <query><![CDATA[
 | stats count by Types
 | sort -count
-            ]]>
-          </query>
+          ]]></query>
         </search>
         <option name="count">20</option>
         <option name="drilldown">none</option>
@@ -167,14 +153,11 @@ Design Standards:
       <title>🧱 Integrations by Collector</title>
       <table>
         <search base="base_armis_integrations_status">
-          <query>
-            <![CDATA[
-| eval Collector=case(isnull(collector_clean) OR collector_clean="","(blank)",true(),collector_clean)
+          <query><![CDATA[
 | stats count by Collector
 | sort -count
 | head 20
-            ]]>
-          </query>
+          ]]></query>
         </search>
         <option name="count">20</option>
         <option name="drilldown">none</option>
@@ -186,30 +169,13 @@ Design Standards:
 
   <row>
     <panel>
-      <title>⚠️ Missing Host / Address</title>
-      <single>
-        <search base="base_armis_integrations_status">
-          <query>
-            <![CDATA[
-| where isnull(host_clean) OR host_clean=""
-| stats count
-            ]]>
-          </query>
-        </search>
-        <option name="drilldown">none</option>
-      </single>
-    </panel>
-
-    <panel>
       <title>⚠️ Missing Current State</title>
       <single>
         <search base="base_armis_integrations_status">
-          <query>
-            <![CDATA[
-| where isnull(current_state_clean) OR current_state_clean=""
+          <query><![CDATA[
+| where isnull('Current State') OR 'Current State'=""
 | stats count
-            ]]>
-          </query>
+          ]]></query>
         </search>
         <option name="drilldown">none</option>
       </single>
@@ -219,12 +185,10 @@ Design Standards:
       <title>⚠️ Missing Status</title>
       <single>
         <search base="base_armis_integrations_status">
-          <query>
-            <![CDATA[
-| where isnull(status_clean) OR status_clean=""
+          <query><![CDATA[
+| where isnull(Status) OR Status=""
 | stats count
-            ]]>
-          </query>
+          ]]></query>
         </search>
         <option name="drilldown">none</option>
       </single>
@@ -234,12 +198,10 @@ Design Standards:
       <title>⚠️ Missing Collector</title>
       <single>
         <search base="base_armis_integrations_status">
-          <query>
-            <![CDATA[
-| where isnull(collector_clean) OR collector_clean=""
+          <query><![CDATA[
+| where isnull(Collector) OR Collector=""
 | stats count
-            ]]>
-          </query>
+          ]]></query>
         </search>
         <option name="drilldown">none</option>
       </single>
@@ -253,14 +215,11 @@ Design Standards:
       <title>📋 Integrations by Name</title>
       <table>
         <search base="base_armis_integrations_status">
-          <query>
-            <![CDATA[
-| eval Name=case(isnull(name_clean) OR name_clean="","(blank)",true(),name_clean)
+          <query><![CDATA[
 | stats count by Name
 | sort -count
 | head 20
-            ]]>
-          </query>
+          ]]></query>
         </search>
         <option name="count">20</option>
         <option name="drilldown">none</option>
@@ -272,14 +231,11 @@ Design Standards:
       <title>🧾 Integrations by Instance</title>
       <table>
         <search base="base_armis_integrations_status">
-          <query>
-            <![CDATA[
-| eval Instance=case(isnull(instance_clean) OR instance_clean="","(blank)",true(),instance_clean)
+          <query><![CDATA[
 | stats count by Instance
 | sort -count
 | head 20
-            ]]>
-          </query>
+          ]]></query>
         </search>
         <option name="count">20</option>
         <option name="drilldown">none</option>
@@ -295,12 +251,10 @@ Design Standards:
       <title>📋 Integrations Status Detailed Listing</title>
       <table>
         <search base="base_armis_integrations_status">
-          <query>
-            <![CDATA[
+          <query><![CDATA[
 | fields - "Host / Address"
 | table Collector, Instance, "Name", "Types", "Status First Reported", "Last Edit At", "Last Status Report", "Current State", "Status"
-            ]]>
-          </query>
+          ]]></query>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="count">20</option>
