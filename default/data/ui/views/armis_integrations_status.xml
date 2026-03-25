@@ -176,4 +176,36 @@ Design Standards:
       </table>
     </panel>
   </row>
+<row>
+  <panel>
+    <title>📈 Active / Total Integrations (%)</title>
+    <single>
+      <search base="base_armis_integrations_status">
+        <query><![CDATA[
+| eval active_flag=if('Current State'="Active",1,0)
+| stats sum(active_flag) as active count as total
+| eval pct=round((active/total)*100,2)."%"
+| table pct
+        ]]></query>
+      </search>
+      <option name="drilldown">none</option>
+    </single>
+  </panel>
+
+  <panel>
+    <title>⚠️ No Network Traffic Error / Total Integrations (%)</title>
+    <single>
+      <search base="base_armis_integrations_status">
+        <query><![CDATA[
+| eval error_flag=if(Status="No Network Traffic Error",1,0)
+| stats sum(error_flag) as affected count as total
+| eval pct=round((affected/total)*100,2)."%"
+| table pct
+        ]]></query>
+      </search>
+      <option name="drilldown">none</option>
+    </single>
+  </panel>
+</row>
+
 </dashboard>
