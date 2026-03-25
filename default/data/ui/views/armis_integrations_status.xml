@@ -2,13 +2,13 @@
 =============================================================================
  default/data/ui/views/armis_integrations_status.xml
  Armis Centrix™ for Splunk App
- Integrations Status Monitoring
+ Integrations Status Monitoring & Operational Inventory
 =============================================================================
 
 Purpose:
 Provide operational visibility into Armis integrations status using the
-integration status lookup dataset. This dashboard presents high-level status
-distribution, current state visibility, integration type breakdown, and
+integration status lookup dataset. This dashboard presents summary metrics,
+status distribution, current state visibility, collector coverage, and
 detailed integration records.
 
 Data Source:
@@ -33,98 +33,274 @@ Host / Address
 Design Standards:
 • Enterprise base-search architecture
 • Post-process panel searches
-• Lookup-backed dashboard design
+• Lookup-backed operational dashboard
 • Shared source search across all panels
 • Structured operational sections
+• No spath usage
 • No field-name redesign
-• No panel-logic redesign
 
 =============================================================================
 -->
 
 <dashboard version="1.1" theme="light">
-  <label>Armis Integrations Status</label>
+  <label>🔌 Armis Integrations Status</label>
+  <description>Operational monitoring and summary analytics for Armis integrations status</description>
 
-  <!-- ========================================================= -->
-  <!-- Base Search -->
-  <!-- ========================================================= -->
+  <!-- ===================== BASE SEARCH ===================== -->
 
   <search id="base_armis_integrations_status">
-    <query>| inputlookup armis_integrations_status.csv</query>
+    <query>
+      <![CDATA[
+| inputlookup armis_integrations_status.csv
+| eval collector_clean=trim(Collector)
+| eval instance_clean=trim(Instance)
+| eval name_clean=trim(Name)
+| eval types_clean=trim(Types)
+| eval status_clean=trim(Status)
+| eval current_state_clean=trim('Current State')
+| eval host_clean=trim('Host / Address')
+      ]]>
+    </query>
     <earliest>-24h@h</earliest>
     <latest>now</latest>
   </search>
 
-  <!-- ========================================================= -->
-  <!-- Integrations Status Overview -->
-  <!-- ========================================================= -->
+  <!-- ===================== TOP METRICS ===================== -->
 
   <row>
     <panel>
-      <title>Total Count</title>
+      <title>🔢 Total Integrations</title>
       <single>
         <search base="base_armis_integrations_status">
-          <query>| stats count</query>
+          <query><![CDATA[ | stats count ]]></query>
         </search>
         <option name="drilldown">none</option>
-        <option name="refresh.display">progressbar</option>
       </single>
     </panel>
 
     <panel>
-      <title>Armis Integrations by Name</title>
+      <title>🛰️ Unique Collectors</title>
+      <single>
+        <search base="base_armis_integrations_status">
+          <query><![CDATA[ | stats dc(collector_clean) ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🧩 Unique Instances</title>
+      <single>
+        <search base="base_armis_integrations_status">
+          <query><![CDATA[ | stats dc(instance_clean) ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🏷️ Unique Integration Names</title>
+      <single>
+        <search base="base_armis_integrations_status">
+          <query><![CDATA[ | stats dc(name_clean) ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ===================== STATUS BREAKDOWN ===================== -->
+
+  <row>
+    <panel>
+      <title>📊 Integrations by Status</title>
       <table>
         <search base="base_armis_integrations_status">
-          <query>| stats count by Name</query>
+          <query>
+            <![CDATA[
+| eval Status=case(isnull(status_clean) OR status_clean="","(blank)",true(),status_clean)
+| stats count by Status
+| sort -count
+            ]]>
+          </query>
         </search>
+        <option name="count">20</option>
         <option name="drilldown">none</option>
       </table>
     </panel>
 
     <panel>
-      <title>Armis Integrations by Status</title>
+      <title>📈 Integrations by Current State</title>
       <table>
         <search base="base_armis_integrations_status">
-          <query>| stats count by Status</query>
+          <query>
+            <![CDATA[
+| eval "Current State"=case(isnull(current_state_clean) OR current_state_clean="","(blank)",true(),current_state_clean)
+| stats count by "Current State"
+| sort -count
+            ]]>
+          </query>
         </search>
+        <option name="count">20</option>
         <option name="drilldown">none</option>
-        <option name="refresh.display">progressbar</option>
       </table>
     </panel>
 
     <panel>
-      <title>Armis Integrations by Current State</title>
+      <title>🧬 Integrations by Type</title>
       <table>
         <search base="base_armis_integrations_status">
-          <query>| stats count by "Current State"</query>
+          <query>
+            <![CDATA[
+| eval Types=case(isnull(types_clean) OR types_clean="","(blank)",true(),types_clean)
+| stats count by Types
+| sort -count
+            ]]>
+          </query>
         </search>
+        <option name="count">20</option>
         <option name="drilldown">none</option>
-        <option name="refresh.display">progressbar</option>
       </table>
     </panel>
 
     <panel>
-      <title>Armis Integrations by Types</title>
+      <title>🧱 Integrations by Collector</title>
       <table>
         <search base="base_armis_integrations_status">
-          <query>| stats count by Types</query>
+          <query>
+            <![CDATA[
+| eval Collector=case(isnull(collector_clean) OR collector_clean="","(blank)",true(),collector_clean)
+| stats count by Collector
+| sort -count
+| head 20
+            ]]>
+          </query>
         </search>
+        <option name="count">20</option>
         <option name="drilldown">none</option>
-        <option name="refresh.display">progressbar</option>
       </table>
     </panel>
   </row>
 
-  <!-- ========================================================= -->
-  <!-- Integration Status Details -->
-  <!-- ========================================================= -->
+  <!-- ===================== DATA QUALITY ===================== -->
 
   <row>
     <panel>
+      <title>⚠️ Missing Host / Address</title>
+      <single>
+        <search base="base_armis_integrations_status">
+          <query>
+            <![CDATA[
+| where isnull(host_clean) OR host_clean=""
+| stats count
+            ]]>
+          </query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚠️ Missing Current State</title>
+      <single>
+        <search base="base_armis_integrations_status">
+          <query>
+            <![CDATA[
+| where isnull(current_state_clean) OR current_state_clean=""
+| stats count
+            ]]>
+          </query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚠️ Missing Status</title>
+      <single>
+        <search base="base_armis_integrations_status">
+          <query>
+            <![CDATA[
+| where isnull(status_clean) OR status_clean=""
+| stats count
+            ]]>
+          </query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚠️ Missing Collector</title>
+      <single>
+        <search base="base_armis_integrations_status">
+          <query>
+            <![CDATA[
+| where isnull(collector_clean) OR collector_clean=""
+| stats count
+            ]]>
+          </query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ===================== NAME / INSTANCE BREAKDOWN ===================== -->
+
+  <row>
+    <panel>
+      <title>📋 Integrations by Name</title>
       <table>
         <search base="base_armis_integrations_status">
-          <query>| fields - "Host / Address"
-| table Collector, Instance, "Name", "Types", "Status First Reported", "Last Edit At", "Last Status Report", "Current State", "Status"</query>
+          <query>
+            <![CDATA[
+| eval Name=case(isnull(name_clean) OR name_clean="","(blank)",true(),name_clean)
+| stats count by Name
+| sort -count
+| head 20
+            ]]>
+          </query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>🧾 Integrations by Instance</title>
+      <table>
+        <search base="base_armis_integrations_status">
+          <query>
+            <![CDATA[
+| eval Instance=case(isnull(instance_clean) OR instance_clean="","(blank)",true(),instance_clean)
+| stats count by Instance
+| sort -count
+| head 20
+            ]]>
+          </query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ===================== DETAILED LISTING ===================== -->
+
+  <row>
+    <panel>
+      <title>📋 Integrations Status Detailed Listing</title>
+      <table>
+        <search base="base_armis_integrations_status">
+          <query>
+            <![CDATA[
+| fields - "Host / Address"
+| table Collector, Instance, "Name", "Types", "Status First Reported", "Last Edit At", "Last Status Report", "Current State", "Status"
+            ]]>
+          </query>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="count">20</option>
