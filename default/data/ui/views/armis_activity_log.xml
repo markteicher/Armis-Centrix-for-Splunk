@@ -1,0 +1,321 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_activity_log.xml
+ Armis Centrix™ for Splunk App
+ Activity Log Monitoring & Event Analysis
+=============================================================================
+
+Purpose:
+Provide operational visibility into Armis activity log events using the
+activity log event stream. This dashboard presents severity monitoring,
+activity type distribution, site visibility, sensor visibility, event trends,
+and recent activity records.
+
+Data Source:
+Armis Activity Log JSON Events
+
+Splunk Source:
+index=$index$
+sourcetype=armis_activity_log
+
+Expected Fields:
+title
+content
+type
+protocol
+sensor.name
+sensor.type
+sites{}.location
+sites{}.name
+site.location
+site.name
+time
+connectionIds{}
+deviceIds{}
+activityUUID
+sourceEndpoints{}
+destinationEndpoints{}
+decisionData.device_id
+decisionData.ipAddress
+decisionData.ipv6
+decisionData.macAddress
+decisionData.manufacturer
+decisionData.model
+decisionData.names
+decisionData.riskLevel
+
+Design Standards:
+• Enterprise base-search architecture
+• Post-process panel searches
+• JSON field extraction via spath
+• Global filters for site and time
+• Structured operational sections
+
+=============================================================================
+-->
+
+<dashboard version="1.1" theme="light">
+  <label>📝 Armis Activity Log</label>
+  <description>Operational monitoring and event analysis for Armis activity log data</description>
+
+  <init>
+    <set token="index">armis</set>
+  </init>
+
+  <!-- ========================================================= -->
+  <!-- Global Filters -->
+  <!-- ========================================================= -->
+
+  <fieldset submitButton="false">
+    <input type="time" token="time_range">
+      <label>Time Range</label>
+      <default>
+        <earliest>-30d@d</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+
+    <input type="dropdown" token="site_filter">
+      <label>Site</label>
+      <choice value="*">All Sites</choice>
+      <fieldForLabel>site</fieldForLabel>
+      <fieldForValue>site</fieldForValue>
+      <search>
+        <query>
+index=$index$ sourcetype=armis_activity_log
+| spath path=site.name output=site_name
+| search site_name=*
+| stats count by site_name
+| rename site_name as site
+| sort site
+        </query>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+      </search>
+    </input>
+  </fieldset>
+
+  <!-- ========================================================= -->
+  <!-- Base Search -->
+  <!-- ========================================================= -->
+
+  <search id="base_activity_log">
+    <query>
+      <![CDATA[
+index=$index$ sourcetype=armis_activity_log
+| spath path=sensor.name output=sensor_name
+| spath path=sensor.type output=sensor_type
+| spath path=site.name output=site_name
+| spath path=site.location output=site_location
+| spath path=time output=activity_time
+| spath path=activityUUID output=activityUUID
+| spath path=decisionData.device_id output=device_id
+| spath path=decisionData.ipAddress output=ipAddress
+| spath path=decisionData.ipv6 output=ipv6
+| spath path=decisionData.macAddress output=macAddress
+| spath path=decisionData.manufacturer output=manufacturer
+| spath path=decisionData.model output=model
+| spath path=decisionData.names output=device_names
+| spath path=decisionData.riskLevel output=riskLevel
+| rex field=content "Severity:\s(?<severity>[^\.]+)"
+| eval site_match=if("$site_filter$"="*" OR site_name="$site_filter$",1,0)
+| where site_match=1
+| fields - site_match
+      ]]>
+    </query>
+    <earliest>$time_range.earliest$</earliest>
+    <latest>$time_range.latest$</latest>
+  </search>
+
+  <!-- ========================================================= -->
+  <!-- Activity Overview -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>🔢 Total Activity Events</title>
+      <single>
+        <search base="base_activity_log">
+          <query><![CDATA[
+| stats count as Total_Activity_Events
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🚨 Critical Severity Events</title>
+      <single>
+        <search base="base_activity_log">
+          <query><![CDATA[
+| search severity="Critical"
+| stats count as Critical_Severity_Events
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>📍 Sites Reporting Activity</title>
+      <single>
+        <search base="base_activity_log">
+          <query><![CDATA[
+| stats dc(site_name) as Sites_Reporting_Activity
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>📡 Sensors Reporting Activity</title>
+      <single>
+        <search base="base_activity_log">
+          <query><![CDATA[
+| stats dc(sensor_name) as Sensors_Reporting_Activity
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Activity Distribution -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📊 Activity by Severity</title>
+      <chart>
+        <search base="base_activity_log">
+          <query><![CDATA[
+| stats count by severity
+| sort -count
+          ]]></query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>📊 Activity by Type</title>
+      <chart>
+        <search base="base_activity_log">
+          <query><![CDATA[
+| stats count by type
+| sort -count
+          ]]></query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>📊 Activity by Site</title>
+      <chart>
+        <search base="base_activity_log">
+          <query><![CDATA[
+| stats count by site_name
+| sort -count
+          ]]></query>
+        </search>
+        <option name="charting.chart">column</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Sensor and Risk Context -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📊 Activity by Sensor Type</title>
+      <chart>
+        <search base="base_activity_log">
+          <query><![CDATA[
+| stats count by sensor_type
+| sort -count
+          ]]></query>
+        </search>
+        <option name="charting.chart">column</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>📊 Activity by Sensor Name</title>
+      <table>
+        <search base="base_activity_log">
+          <query><![CDATA[
+| stats count by sensor_name
+| sort -count
+| head 20
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📊 Activity by Risk Level</title>
+      <table>
+        <search base="base_activity_log">
+          <query><![CDATA[
+| stats count by riskLevel
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Activity Over Time -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📈 Activity Events Over Time</title>
+      <chart>
+        <search base="base_activity_log">
+          <query><![CDATA[
+| timechart span=1d count as Activity_Events
+          ]]></query>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Recent Activity Records -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📋 Recent Activity Records</title>
+      <table>
+        <search base="base_activity_log">
+          <query><![CDATA[
+| sort -_time
+| table activity_time title type severity site_name site_location sensor_name sensor_type device_id manufacturer model riskLevel activityUUID
+          ]]></query>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
