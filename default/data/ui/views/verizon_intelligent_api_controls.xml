@@ -1,0 +1,308 @@
+<!--
+=============================================================================
+ default/data/ui/views/verizon_intelligent_api_controls.xml
+ Verizon Intelligent API
+ NIST 800-53 Control Implementation Status Dashboard
+=============================================================================
+
+Purpose:
+Provide operational visibility into Verizon Intelligent API control
+implementation status using the provided NIST 800-53 control content.
+This dashboard presents implementation status metrics, control family
+distribution, family-by-status breakdown, and detailed control listings.
+
+Data Source:
+Lookup File
+verizon_intelligent_api_controls.csv
+
+Splunk Source:
+| inputlookup verizon_intelligent_api_controls.csv
+
+Lookup Normalization:
+One row per control entry from the provided source content.
+
+Expected Fields:
+control_key
+standard_key
+implementation_status
+narrative_text
+name
+schema_version
+documentation_complete
+
+Design Standards:
+• Enterprise base-search architecture
+• Post-process panel searches
+• Lookup-backed operational dashboard
+• Shared source search across all panels
+• Structured operational sections
+• No spath usage
+• No field-name redesign
+• No invented status values
+
+=============================================================================
+-->
+
+<dashboard version="1.1" theme="light">
+  <label>🛡️ Verizon Intelligent API Control Status</label>
+  <description>NIST 800-53 control implementation status dashboard for Verizon Intelligent API</description>
+
+  <!-- ========================================================= -->
+  <!-- Global Filters -->
+  <!-- ========================================================= -->
+
+  <fieldset submitButton="false">
+    <input type="dropdown" token="family_filter">
+      <label>Control Family</label>
+      <choice value="*">All Families</choice>
+      <fieldForLabel>control_family</fieldForLabel>
+      <fieldForValue>control_family</fieldForValue>
+      <search>
+        <query>
+| inputlookup verizon_intelligent_api_controls.csv
+| rex field=control_key "^(?&lt;control_family&gt;[A-Z]+)-"
+| search control_family=*
+| stats count by control_family
+| sort control_family
+        </query>
+      </search>
+    </input>
+
+    <input type="dropdown" token="status_filter">
+      <label>Implementation Status</label>
+      <choice value="*">All Statuses</choice>
+      <fieldForLabel>implementation_status</fieldForLabel>
+      <fieldForValue>implementation_status</fieldForValue>
+      <search>
+        <query>
+| inputlookup verizon_intelligent_api_controls.csv
+| search implementation_status=*
+| stats count by implementation_status
+| sort implementation_status
+        </query>
+      </search>
+    </input>
+  </fieldset>
+
+  <!-- ========================================================= -->
+  <!-- Base Search -->
+  <!-- ========================================================= -->
+
+  <search id="base_verizon_intelligent_api_controls">
+    <query>
+      <![CDATA[
+| inputlookup verizon_intelligent_api_controls.csv
+| rex field=control_key "^(?<control_family>[A-Z]+)-"
+| eval implementation_status=coalesce(implementation_status,"unknown")
+| eval control_family=coalesce(control_family,"OTHER")
+| eval family_match=if("$family_filter$"="*" OR control_family="$family_filter$",1,0)
+| eval status_match=if("$status_filter$"="*" OR implementation_status="$status_filter$",1,0)
+| where family_match=1 AND status_match=1
+| fields - family_match status_match
+      ]]>
+    </query>
+  </search>
+
+  <!-- ========================================================= -->
+  <!-- Top Metrics -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📘 Total Controls</title>
+      <single>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>✅ Complete</title>
+      <single>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| search implementation_status="complete"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🟡 Planned</title>
+      <single>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| search implementation_status="planned"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>❌ Unsatisfied</title>
+      <single>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| search implementation_status="unsatisfied"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>🟠 Partial</title>
+      <single>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| search implementation_status="partial"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🔵 Inherited</title>
+      <single>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| search implementation_status="inherited"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚪ Not Applicable</title>
+      <single>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| search implementation_status="not applicable"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🛠️ In Process</title>
+      <single>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| search implementation_status="in process"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Status & Family Breakdown -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📊 Controls by Implementation Status</title>
+      <chart>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| stats count by implementation_status
+| sort -count
+          ]]></query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>📂 Controls by Family</title>
+      <chart>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| stats count by control_family
+| sort -count
+          ]]></query>
+        </search>
+        <option name="charting.chart">column</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Control Distribution -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📋 Family by Status Breakdown</title>
+      <table>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| stats count by control_family implementation_status
+| sort control_family implementation_status
+          ]]></query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📋 Controls by Family</title>
+      <table>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| stats count by control_family
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Detailed Listing -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📑 Detailed Control Listing</title>
+      <table>
+        <search base="base_verizon_intelligent_api_controls">
+          <query><![CDATA[
+| sort control_key
+| table control_key standard_key implementation_status narrative_text
+          ]]></query>
+        </search>
+        <option name="count">100</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
