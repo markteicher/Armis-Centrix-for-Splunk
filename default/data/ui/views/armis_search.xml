@@ -1,0 +1,225 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_search.xml
+ Armis Centrix™ for Splunk App
+ Search Explorer & Scoped Result Visibility
+=============================================================================
+
+Purpose:
+Provide a scoped search explorer for Armis search results using the Armis
+Search API dataset. This dashboard supports cascading filters for:
+1. Search scope
+2. Type
+
+Data Source:
+Armis REST API
+GET /api/v1/search/
+
+Available Search Scopes:
+• activity
+• alerts
+• auditlog
+• applications
+• businessApplications
+• connections
+• devices
+• operatingSystems
+• riskFactors
+• services
+• traffic
+• users
+• vulnerabilities
+
+Example:
+GET /api/v1/search/?aql=in:activity type:"Dns Query"
+
+Splunk Source:
+index=$index$
+sourcetype=armis_search
+
+Expected Fields:
+search_scope
+type
+_time
+_raw
+
+Design Standards:
+• Enterprise base-search architecture
+• Post-process panel searches
+• Cascading dropdown filters
+• Structured operational sections
+
+=============================================================================
+-->
+
+<dashboard version="1.1" theme="light">
+  <label>🔎 Armis Search</label>
+  <description>Scoped search explorer for Armis Search API results</description>
+
+  <init>
+    <set token="index">armis</set>
+  </init>
+
+  <!-- ========================================================= -->
+  <!-- Global Filters -->
+  <!-- ========================================================= -->
+
+  <fieldset submitButton="false">
+    <input type="time" token="time_range">
+      <label>Time Range</label>
+      <default>
+        <earliest>-30d@d</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+
+    <input type="dropdown" token="search_scope">
+      <label>Search</label>
+      <choice value="activity">activity</choice>
+      <choice value="alerts">alerts</choice>
+      <choice value="auditlog">auditlog</choice>
+      <choice value="applications">applications</choice>
+      <choice value="businessApplications">businessApplications</choice>
+      <choice value="connections">connections</choice>
+      <choice value="devices">devices</choice>
+      <choice value="operatingSystems">operatingSystems</choice>
+      <choice value="riskFactors">riskFactors</choice>
+      <choice value="services">services</choice>
+      <choice value="traffic">traffic</choice>
+      <choice value="users">users</choice>
+      <choice value="vulnerabilities">vulnerabilities</choice>
+      <default>activity</default>
+    </input>
+
+    <input type="dropdown" token="type_filter">
+      <label>Type</label>
+      <choice value="*">All Types</choice>
+      <fieldForLabel>type</fieldForLabel>
+      <fieldForValue>type</fieldForValue>
+      <search>
+        <query><![CDATA[
+index=$index$ sourcetype=armis_search search_scope="$search_scope$"
+| search type=*
+| stats count by type
+| sort type
+        ]]></query>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+      </search>
+      <default>*</default>
+    </input>
+  </fieldset>
+
+  <!-- ========================================================= -->
+  <!-- Base Search -->
+  <!-- ========================================================= -->
+
+  <search id="base_armis_search">
+    <query><![CDATA[
+index=$index$ sourcetype=armis_search search_scope="$search_scope$"
+| eval type_match=if("$type_filter$"="*" OR type="$type_filter$",1,0)
+| where type_match=1
+| fields - type_match
+    ]]></query>
+    <earliest>$time_range.earliest$</earliest>
+    <latest>$time_range.latest$</latest>
+  </search>
+
+  <!-- ========================================================= -->
+  <!-- Search Context -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>🧭 Current AQL Pattern</title>
+      <table>
+        <search>
+          <query><![CDATA[
+| makeresults
+| eval aql=if("$type_filter$"="*","in:$search_scope$","in:$search_scope$ type:\"$type_filter$\"")
+| table aql
+          ]]></query>
+        </search>
+        <option name="count">1</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Top Metrics -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>🔢 Total Results</title>
+      <single>
+        <search base="base_armis_search">
+          <query><![CDATA[
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🏷️ Distinct Types</title>
+      <single>
+        <search base="base_armis_search">
+          <query><![CDATA[
+| stats dc(type)
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Type Visibility -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📋 Results by Type</title>
+      <table>
+        <search base="base_armis_search">
+          <query><![CDATA[
+| stats count by type
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Detailed Listing -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📑 Search Result Listing</title>
+      <table>
+        <search base="base_armis_search">
+          <query><![CDATA[
+| sort -_time
+| table _time search_scope type _raw
+          ]]></query>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
