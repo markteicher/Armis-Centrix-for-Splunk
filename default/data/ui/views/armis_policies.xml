@@ -1,0 +1,245 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_policies.xml
+ Armis Centrix™ for Splunk App
+ Policy Inventory & Alert Policy Visibility
+=============================================================================
+
+Purpose:
+Provide operational visibility into Armis policies using the policies API
+dataset. This dashboard presents policy inventory metrics, enablement
+visibility, action visibility, severity visibility, rule visibility, and
+detailed policy records.
+
+Data Source:
+Armis REST API
+GET /api/v1/policies/
+
+Splunk Source:
+index=$index$
+sourcetype=armis_policies
+
+Expected Fields:
+data.policies{}.action.type
+data.policies{}.action.params.consolidation.amount
+data.policies{}.action.params.consolidation.unit
+data.policies{}.action.params.description
+data.policies{}.action.params.severity
+data.policies{}.action.params.type
+data.policies{}.id
+data.policies{}.isEnabled
+data.policies{}.name
+data.policies{}.rules.and{}
+data.count
+data.next
+data.prev
+data.total
+success
+
+Design Standards:
+• Enterprise base-search architecture
+• Post-process panel searches
+• JSON field extraction via spath
+• Structured operational sections
+• No mvjoin usage
+
+=============================================================================
+-->
+
+<dashboard version="1.1" theme="light">
+  <label>📜 Armis Policies</label>
+  <description>Operational monitoring and inventory visibility for Armis policies</description>
+
+  <init>
+    <set token="index">armis</set>
+  </init>
+
+  <!-- ========================================================= -->
+  <!-- Base Search -->
+  <!-- ========================================================= -->
+
+  <search id="base_policies">
+    <query><![CDATA[
+index=$index$ sourcetype=armis_policies
+| spath path=data.policies{} output=policies
+| mvexpand policies
+| spath input=policies path=action.type output=actionType
+| spath input=policies path=action.params.consolidation.amount output=consolidationAmount
+| spath input=policies path=action.params.consolidation.unit output=consolidationUnit
+| spath input=policies path=action.params.description output=description
+| spath input=policies path=action.params.severity output=severity
+| spath input=policies path=action.params.type output=policyType
+| spath input=policies path=id output=id
+| spath input=policies path=isEnabled output=isEnabled
+| spath input=policies path=name output=name
+| spath input=policies path=rules.and{} output=ruleAnd
+| dedup id sortby -_time
+    ]]></query>
+  </search>
+
+  <!-- ========================================================= -->
+  <!-- Top Metrics -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📜 Total Policies</title>
+      <single>
+        <search base="base_policies">
+          <query><![CDATA[
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>✅ Enabled Policies</title>
+      <single>
+        <search base="base_policies">
+          <query><![CDATA[
+| search isEnabled="true"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⛔ Disabled Policies</title>
+      <single>
+        <search base="base_policies">
+          <query><![CDATA[
+| search isEnabled="false"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🚨 Alert Policies</title>
+      <single>
+        <search base="base_policies">
+          <query><![CDATA[
+| search actionType="alert"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Policy Breakdown -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📋 Policies by Enabled Status</title>
+      <table>
+        <search base="base_policies">
+          <query><![CDATA[
+| stats count by isEnabled
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📋 Policies by Action Type</title>
+      <table>
+        <search base="base_policies">
+          <query><![CDATA[
+| stats count by actionType
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📋 Policies by Severity</title>
+      <table>
+        <search base="base_policies">
+          <query><![CDATA[
+| stats count by severity
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📋 Policies by Policy Type</title>
+      <table>
+        <search base="base_policies">
+          <query><![CDATA[
+| stats count by policyType
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Rule Visibility -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📋 Policies by Rule Condition</title>
+      <table>
+        <search base="base_policies">
+          <query><![CDATA[
+| mvexpand ruleAnd
+| stats count by ruleAnd
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Detailed Listing -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📑 Policy Detailed Listing</title>
+      <table>
+        <search base="base_policies">
+          <query><![CDATA[
+| table id name isEnabled actionType severity policyType description consolidationAmount consolidationUnit ruleAnd
+          ]]></query>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">50</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
