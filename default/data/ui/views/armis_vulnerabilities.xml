@@ -1,0 +1,255 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_vulnerabilities.xml
+ Armis Centrix™ for Splunk App
+ Vulnerability Match Monitoring & Exposure Visibility
+=============================================================================
+
+Purpose:
+Provide operational visibility into Armis vulnerability matches using the
+vulnerability match API dataset. This dashboard presents vulnerability
+inventory metrics, severity visibility, status distribution, confidence
+visibility, top CVEs, affected devices, and detailed vulnerability records.
+
+Data Source:
+Armis REST API
+GET /api/v1/vulnerability-match/
+
+Splunk Source:
+index=$index$
+sourcetype=armis_vulnerabilities
+
+Expected Fields:
+advisoryId
+avmRating
+confidenceLevel
+cveUid
+deviceId
+firstDetected
+lastDetected
+matchCriteriaString
+recommendedSteps
+remediationTypes
+status
+statusSource
+
+Design Standards:
+• Enterprise base-search architecture
+• Post-process panel searches
+• JSON field extraction via spath
+• Structured operational sections
+
+=============================================================================
+-->
+
+<dashboard version="1.1" theme="light">
+  <label>🛡️ Armis Vulnerabilities</label>
+  <description>Operational monitoring and exposure visibility for Armis vulnerability matches</description>
+
+  <init>
+    <set token="index">armis</set>
+  </init>
+
+  <!-- ========================================================= -->
+  <!-- Base Search -->
+  <!-- ========================================================= -->
+
+  <search id="base_vulnerabilities">
+    <query><![CDATA[
+index=$index$ sourcetype=armis_vulnerabilities
+| spath path=advisoryId output=advisoryId
+| spath path=avmRating output=avmRating
+| spath path=confidenceLevel output=confidenceLevel
+| spath path=cveUid output=cveUid
+| spath path=deviceId output=deviceId
+| spath path=firstDetected output=firstDetected
+| spath path=lastDetected output=lastDetected
+| spath path=matchCriteriaString output=matchCriteriaString
+| spath path=recommendedSteps output=recommendedSteps
+| spath path=remediationTypes output=remediationTypes
+| spath path=status output=status
+| spath path=statusSource output=statusSource
+    ]]></query>
+  </search>
+
+  <!-- ========================================================= -->
+  <!-- Top Metrics -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>🔢 Total Vulnerability Matches</title>
+      <single>
+        <search base="base_vulnerabilities">
+          <query><![CDATA[
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🚨 Open Vulnerabilities</title>
+      <single>
+        <search base="base_vulnerabilities">
+          <query><![CDATA[
+| search status="Open"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>✅ Resolved Vulnerabilities</title>
+      <single>
+        <search base="base_vulnerabilities">
+          <query><![CDATA[
+| search status="Resolved"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🔥 Critical Vulnerabilities</title>
+      <single>
+        <search base="base_vulnerabilities">
+          <query><![CDATA[
+| search avmRating="CRITICAL"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Severity & Status Breakdown -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📊 Vulnerabilities by AVM Rating</title>
+      <table>
+        <search base="base_vulnerabilities">
+          <query><![CDATA[
+| stats count by avmRating
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📊 Vulnerabilities by Status</title>
+      <table>
+        <search base="base_vulnerabilities">
+          <query><![CDATA[
+| stats count by status
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📊 Vulnerabilities by Confidence Level</title>
+      <table>
+        <search base="base_vulnerabilities">
+          <query><![CDATA[
+| stats count by confidenceLevel
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📊 Vulnerabilities by Status Source</title>
+      <table>
+        <search base="base_vulnerabilities">
+          <query><![CDATA[
+| stats count by statusSource
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Exposure Context -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📋 Top CVEs</title>
+      <table>
+        <search base="base_vulnerabilities">
+          <query><![CDATA[
+| stats count by cveUid
+| sort -count
+| head 20
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📋 Top Affected Devices</title>
+      <table>
+        <search base="base_vulnerabilities">
+          <query><![CDATA[
+| stats count by deviceId
+| sort -count
+| head 20
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Detailed Listing -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📑 Vulnerability Detailed Listing</title>
+      <table>
+        <search base="base_vulnerabilities">
+          <query><![CDATA[
+| table cveUid deviceId avmRating confidenceLevel status statusSource firstDetected lastDetected matchCriteriaString recommendedSteps remediationTypes advisoryId
+          ]]></query>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">50</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
