@@ -1,0 +1,280 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_users.xml
+ Armis Centrix™ for Splunk App
+ User Inventory & Access Monitoring
+=============================================================================
+
+Purpose:
+Provide operational visibility into Armis platform users using the users API
+dataset. This dashboard presents user inventory metrics, account status
+visibility, role distribution, MFA visibility, and detailed user records.
+
+Data Source:
+Armis REST API
+GET /api/v1/users/
+
+Splunk Source:
+index=$index$
+sourcetype=armis_users
+
+Expected Fields:
+data.users{}.email
+data.users{}.id
+data.users{}.isActive
+data.users{}.location
+data.users{}.name
+data.users{}.phone
+data.users{}.reportPermissions
+data.users{}.role
+data.users{}.roleAssignment{}.name{}
+data.users{}.title
+data.users{}.twoFactorAuthentication
+data.users{}.username
+success
+
+Design Standards:
+• Enterprise base-search architecture
+• Post-process panel searches
+• JSON field extraction via spath
+• Global filters for time and role
+• Structured operational sections
+
+=============================================================================
+-->
+
+<dashboard version="1.1" theme="light">
+  <label>👤 Armis Users</label>
+  <description>Operational monitoring and inventory visibility for Armis users</description>
+
+  <init>
+    <set token="index">armis</set>
+  </init>
+
+  <!-- ========================================================= -->
+  <!-- Global Filters -->
+  <!-- ========================================================= -->
+
+  <fieldset submitButton="false">
+    <input type="time" token="time_range">
+      <label>Time Range</label>
+      <default>
+        <earliest>-30d@d</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+
+    <input type="dropdown" token="role_filter">
+      <label>Role</label>
+      <choice value="*">All Roles</choice>
+      <fieldForLabel>role</fieldForLabel>
+      <fieldForValue>role</fieldForValue>
+      <search>
+        <query><![CDATA[
+index=$index$ sourcetype=armis_users
+| spath path=data.users{} output=users
+| mvexpand users
+| spath input=users path=id output=id
+| spath input=users path=role output=role
+| dedup id sortby -_time
+| stats count by role
+| sort role
+        ]]></query>
+        <earliest>$time_range.earliest$</earliest>
+        <latest>$time_range.latest$</latest>
+      </search>
+    </input>
+  </fieldset>
+
+  <!-- ========================================================= -->
+  <!-- Base Search -->
+  <!-- ========================================================= -->
+
+  <search id="base_users">
+    <query><![CDATA[
+index=$index$ sourcetype=armis_users
+| spath path=data.users{} output=users
+| mvexpand users
+| spath input=users path=email output=email
+| spath input=users path=id output=id
+| spath input=users path=isActive output=isActive
+| spath input=users path=location output=location
+| spath input=users path=name output=name
+| spath input=users path=phone output=phone
+| spath input=users path=reportPermissions output=reportPermissions
+| spath input=users path=role output=role
+| spath input=users path=title output=title
+| spath input=users path=twoFactorAuthentication output=twoFactorAuthentication
+| spath input=users path=username output=username
+| dedup id sortby -_time
+| eval role_match=if("$role_filter$"="*" OR role="$role_filter$",1,0)
+| where role_match=1
+| fields - role_match
+    ]]></query>
+    <earliest>$time_range.earliest$</earliest>
+    <latest>$time_range.latest$</latest>
+  </search>
+
+  <!-- ========================================================= -->
+  <!-- Top Metrics -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>👥 Total Users</title>
+      <single>
+        <search base="base_users">
+          <query><![CDATA[
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>✅ Active Users</title>
+      <single>
+        <search base="base_users">
+          <query><![CDATA[
+| search isActive=true
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⛔ Inactive Users</title>
+      <single>
+        <search base="base_users">
+          <query><![CDATA[
+| search isActive=false
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🔐 MFA Enabled</title>
+      <single>
+        <search base="base_users">
+          <query><![CDATA[
+| search twoFactorAuthentication=true
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Status & Role Breakdown -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📊 Users by Role</title>
+      <chart>
+        <search base="base_users">
+          <query><![CDATA[
+| stats count by role
+| sort -count
+          ]]></query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>📊 Users by Active Status</title>
+      <chart>
+        <search base="base_users">
+          <query><![CDATA[
+| stats count by isActive
+| sort -count
+          ]]></query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>📊 Users by MFA Status</title>
+      <chart>
+        <search base="base_users">
+          <query><![CDATA[
+| stats count by twoFactorAuthentication
+| sort -count
+          ]]></query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Access Context -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📋 Users by Report Permissions</title>
+      <table>
+        <search base="base_users">
+          <query><![CDATA[
+| stats count by reportPermissions
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📋 Users by Role and Active Status</title>
+      <table>
+        <search base="base_users">
+          <query><![CDATA[
+| stats count by role isActive
+| sort role -count
+          ]]></query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Detailed Listing -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📑 User Detailed Listing</title>
+      <table>
+        <search base="base_users">
+          <query><![CDATA[
+| sort role username
+| table id username name email role isActive twoFactorAuthentication reportPermissions title location phone
+          ]]></query>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">50</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
