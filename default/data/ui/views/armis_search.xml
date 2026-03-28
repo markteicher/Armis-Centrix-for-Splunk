@@ -2,14 +2,12 @@
 =============================================================================
  default/data/ui/views/armis_search.xml
  Armis Centrix™ for Splunk App
- Search Explorer & Scoped Result Visibility
+ Search Explorer & Cascading Search Filters
 =============================================================================
 
 Purpose:
-Provide a scoped search explorer for Armis search results using the Armis
-Search API dataset. This dashboard supports cascading filters for:
-1. Search scope
-2. Type
+Provide operational visibility into Armis Search API results using scoped
+search selections and cascading type filters.
 
 Data Source:
 Armis REST API
@@ -30,24 +28,36 @@ Available Search Scopes:
 • users
 • vulnerabilities
 
-Example:
+Example Request:
+GET /api/v1/search/?aql=in:activity
 GET /api/v1/search/?aql=in:activity type:"Dns Query"
 
 Splunk Source:
 index=$index$
 sourcetype=armis_search
 
-Expected Fields:
-search_scope
-type
-_time
-_raw
+Required Indexed Request Field:
+aql
+
+Expected Result Fields:
+data.results{}.activityUUID
+data.results{}.title
+data.results{}.content
+data.results{}.type
+data.results{}.protocol
+data.results{}.sensor.name
+data.results{}.time
+data.results{}.deviceIds{}
+data.results{}.connectionIds{}
+success
 
 Design Standards:
 • Enterprise base-search architecture
 • Post-process panel searches
 • Cascading dropdown filters
+• JSON field extraction via spath
 • Structured operational sections
+• No mvjoin usage
 
 =============================================================================
 -->
@@ -98,7 +108,10 @@ Design Standards:
       <fieldForValue>type</fieldForValue>
       <search>
         <query><![CDATA[
-index=$index$ sourcetype=armis_search search_scope="$search_scope$"
+index=$index$ sourcetype=armis_search aql="in:$search_scope$"
+| spath path=data.results{} output=results
+| mvexpand results
+| spath input=results path=type output=type
 | search type=*
 | stats count by type
 | sort type
@@ -116,7 +129,18 @@ index=$index$ sourcetype=armis_search search_scope="$search_scope$"
 
   <search id="base_armis_search">
     <query><![CDATA[
-index=$index$ sourcetype=armis_search search_scope="$search_scope$"
+index=$index$ sourcetype=armis_search aql="in:$search_scope$"
+| spath path=data.results{} output=results
+| mvexpand results
+| spath input=results path=activityUUID output=activityUUID
+| spath input=results path=title output=title
+| spath input=results path=content output=content
+| spath input=results path=type output=type
+| spath input=results path=protocol output=protocol
+| spath input=results path=sensor.name output=sensor_name
+| spath input=results path=time output=event_time
+| spath input=results path=deviceIds{} output=deviceIds
+| spath input=results path=connectionIds{} output=connectionIds
 | eval type_match=if("$type_filter$"="*" OR type="$type_filter$",1,0)
 | where type_match=1
 | fields - type_match
@@ -131,7 +155,7 @@ index=$index$ sourcetype=armis_search search_scope="$search_scope$"
 
   <row>
     <panel>
-      <title>🧭 Current AQL Pattern</title>
+      <title>🧭 Current AQL</title>
       <table>
         <search>
           <query><![CDATA[
@@ -177,7 +201,7 @@ index=$index$ sourcetype=armis_search search_scope="$search_scope$"
   </row>
 
   <!-- ========================================================= -->
-  <!-- Type Visibility -->
+  <!-- Type Breakdown -->
   <!-- ========================================================= -->
 
   <row>
@@ -208,7 +232,7 @@ index=$index$ sourcetype=armis_search search_scope="$search_scope$"
         <search base="base_armis_search">
           <query><![CDATA[
 | sort -_time
-| table _time search_scope type _raw
+| table event_time activityUUID title content type protocol sensor_name deviceIds connectionIds
           ]]></query>
           <sampleRatio>1</sampleRatio>
         </search>
