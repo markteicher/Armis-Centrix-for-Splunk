@@ -1,0 +1,232 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_vendor_integrations.xml
+ Armis Centrix™ for Splunk App
+ Vendor Integrations Monitoring & Operational Visibility
+=============================================================================
+
+Purpose:
+Provide operational visibility into Armis vendor integrations using the
+vendor integrations API dataset. This dashboard presents integration
+inventory metrics, vendor distribution, state visibility, cycle status
+visibility, and detailed integration records.
+
+Data Source:
+Armis REST API
+GET /api/v2/integrations/
+
+Splunk Source:
+index=$index$
+sourcetype=armis_vendor_integrations
+
+Expected Fields:
+data.integrations{}.changeTime
+data.integrations{}.collectorId
+data.integrations{}.creationTime
+data.integrations{}.id
+data.integrations{}.instance
+data.integrations{}.integrationState
+data.integrations{}.lastRunEnd
+data.integrations{}.name
+data.integrations{}.statistics.lastSuccessfulCycleEnded
+data.integrations{}.statistics.status
+data.integrations{}.statistics.statusCategory
+data.count
+data.next
+data.prev
+data.total
+success
+
+Design Standards:
+• Enterprise base-search architecture
+• Post-process panel searches
+• JSON field extraction via spath
+• Structured operational sections
+
+=============================================================================
+-->
+
+<dashboard version="1.1" theme="light">
+  <label>🔌 Armis Vendor Integrations</label>
+  <description>Operational monitoring and inventory visibility for Armis vendor integrations</description>
+
+  <init>
+    <set token="index">armis</set>
+  </init>
+
+  <!-- ========================================================= -->
+  <!-- Base Search -->
+  <!-- ========================================================= -->
+
+  <search id="base_vendor_integrations">
+    <query><![CDATA[
+index=$index$ sourcetype=armis_vendor_integrations
+| spath path=data.integrations{} output=integrations
+| mvexpand integrations
+| spath input=integrations path=changeTime output=changeTime
+| spath input=integrations path=collectorId output=collectorId
+| spath input=integrations path=creationTime output=creationTime
+| spath input=integrations path=id output=id
+| spath input=integrations path=instance output=instance
+| spath input=integrations path=integrationState output=integrationState
+| spath input=integrations path=lastRunEnd output=lastRunEnd
+| spath input=integrations path=name output=name
+| spath input=integrations path=statistics.lastSuccessfulCycleEnded output=lastSuccessfulCycleEnded
+| spath input=integrations path=statistics.status output=statisticsStatus
+| spath input=integrations path=statistics.statusCategory output=statisticsStatusCategory
+| dedup id sortby -_time
+    ]]></query>
+  </search>
+
+  <!-- ========================================================= -->
+  <!-- Top Metrics -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>🔢 Total Vendor Integrations</title>
+      <single>
+        <search base="base_vendor_integrations">
+          <query><![CDATA[
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>✅ Active Integrations</title>
+      <single>
+        <search base="base_vendor_integrations">
+          <query><![CDATA[
+| search integrationState="ACTIVE"
+| stats count
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🧓 Oldest Integration</title>
+      <table>
+        <search base="base_vendor_integrations">
+          <query><![CDATA[
+| eval "Creation Time"=strftime(creationTime/1000,"%Y-%m-%d %H:%M:%S")
+| sort creationTime
+| head 1
+| table name instance id "Creation Time"
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>🆕 Newest Integration</title>
+      <table>
+        <search base="base_vendor_integrations">
+          <query><![CDATA[
+| eval "Creation Time"=strftime(creationTime/1000,"%Y-%m-%d %H:%M:%S")
+| sort -creationTime
+| head 1
+| table name instance id "Creation Time"
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- State & Status Breakdown -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📋 Integrations by Vendor Name</title>
+      <table>
+        <search base="base_vendor_integrations">
+          <query><![CDATA[
+| stats count by name
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📋 Integrations by State</title>
+      <table>
+        <search base="base_vendor_integrations">
+          <query><![CDATA[
+| stats count by integrationState
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📋 Integrations by Statistics Status</title>
+      <table>
+        <search base="base_vendor_integrations">
+          <query><![CDATA[
+| stats count by statisticsStatus
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📋 Integrations by Status Category</title>
+      <table>
+        <search base="base_vendor_integrations">
+          <query><![CDATA[
+| stats count by statisticsStatusCategory
+| sort -count
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Detailed Listing -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📑 Vendor Integration Detailed Listing</title>
+      <table>
+        <search base="base_vendor_integrations">
+          <query><![CDATA[
+| eval "Creation Time"=strftime(creationTime/1000,"%Y-%m-%d %H:%M:%S")
+| eval "Change Time"=strftime(changeTime/1000,"%Y-%m-%d %H:%M:%S")
+| table id collectorId name instance integrationState statisticsStatus statisticsStatusCategory lastRunEnd lastSuccessfulCycleEnded "Creation Time" "Change Time"
+          ]]></query>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">50</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
