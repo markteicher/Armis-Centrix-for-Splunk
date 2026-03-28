@@ -1,0 +1,276 @@
+<!--
+=============================================================================
+ default/data/ui/views/armis_roles.xml
+ Armis Centrix™ for Splunk App
+ Role Inventory & Permission Visibility
+=============================================================================
+
+Purpose:
+Provide operational visibility into Armis roles using the roles API dataset.
+This dashboard presents role inventory metrics, permission coverage visibility,
+role-level access distribution, and detailed role permission records.
+
+Data Source:
+Armis REST API
+GET /api/v1/roles/
+
+Splunk Source:
+index=$index$
+sourcetype=armis_roles
+
+Expected Fields:
+name
+permissions.all
+permissions.advancedPermissions.all
+permissions.alert.all
+permissions.alert.manage.all
+permissions.alert.read.all
+permissions.business_applications.all
+permissions.business_applications.manage.all
+permissions.business_applications.read.all
+permissions.device.all
+permissions.device.manage.all
+permissions.device.read.all
+permissions.risk_factor.all
+permissions.risk_factor.manage.all
+permissions.risk_factor.read.all
+permissions.settings.all
+permissions.user.all
+permissions.user.read.all
+permissions.vulnerability.all
+permissions.vulnerability.manage.all
+permissions.vulnerability.read.all
+
+Design Standards:
+• Enterprise base-search architecture
+• Post-process panel searches
+• JSON field extraction via spath
+• Structured operational sections
+
+=============================================================================
+-->
+
+<dashboard version="1.1" theme="light">
+  <label>🧩 Armis Roles</label>
+  <description>Operational monitoring and permission visibility for Armis roles</description>
+
+  <init>
+    <set token="index">armis</set>
+  </init>
+
+  <!-- ========================================================= -->
+  <!-- Base Search -->
+  <!-- ========================================================= -->
+
+  <search id="base_roles">
+    <query><![CDATA[
+index=$index$ sourcetype=armis_roles
+| spath path=name output=name
+| spath path=permissions.all output=permissions_all
+| spath path=permissions.advancedPermissions.all output=advanced_permissions_all
+| spath path=permissions.alert.all output=alert_all
+| spath path=permissions.alert.manage.all output=alert_manage_all
+| spath path=permissions.alert.read.all output=alert_read_all
+| spath path=permissions.business_applications.all output=business_applications_all
+| spath path=permissions.business_applications.manage.all output=business_applications_manage_all
+| spath path=permissions.business_applications.read.all output=business_applications_read_all
+| spath path=permissions.device.all output=device_all
+| spath path=permissions.device.manage.all output=device_manage_all
+| spath path=permissions.device.read.all output=device_read_all
+| spath path=permissions.risk_factor.all output=risk_factor_all
+| spath path=permissions.risk_factor.manage.all output=risk_factor_manage_all
+| spath path=permissions.risk_factor.read.all output=risk_factor_read_all
+| spath path=permissions.settings.all output=settings_all
+| spath path=permissions.user.all output=user_all
+| spath path=permissions.user.read.all output=user_read_all
+| spath path=permissions.vulnerability.all output=vulnerability_all
+| spath path=permissions.vulnerability.manage.all output=vulnerability_manage_all
+| spath path=permissions.vulnerability.read.all output=vulnerability_read_all
+    ]]></query>
+  </search>
+
+  <!-- ========================================================= -->
+  <!-- Top Metrics -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>👥 Total Roles</title>
+      <single>
+        <search base="base_roles">
+          <query><![CDATA[
+| stats dc(name)
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🌐 Roles with Global Permissions</title>
+      <single>
+        <search base="base_roles">
+          <query><![CDATA[
+| search permissions_all=true
+| stats dc(name)
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🚨 Roles with Alert Management</title>
+      <single>
+        <search base="base_roles">
+          <query><![CDATA[
+| search alert_manage_all=true
+| stats dc(name)
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🛡️ Roles with Vulnerability Management</title>
+      <single>
+        <search base="base_roles">
+          <query><![CDATA[
+| search vulnerability_manage_all=true
+| stats dc(name)
+          ]]></query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Permission Coverage -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📋 Roles by Name</title>
+      <table>
+        <search base="base_roles">
+          <query><![CDATA[
+| stats count by name
+| sort name
+          ]]></query>
+        </search>
+        <option name="count">50</option>
+        <option name="drilldown">none</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📊 Permission Domain Coverage</title>
+      <table>
+        <search base="base_roles">
+          <query><![CDATA[
+| stats count(eval(permissions_all="true")) as global_permissions
+        count(eval(advanced_permissions_all="true")) as advanced_permissions
+        count(eval(alert_all="true")) as alert_permissions
+        count(eval(business_applications_all="true")) as business_application_permissions
+        count(eval(device_all="true")) as device_permissions
+        count(eval(risk_factor_all="true")) as risk_factor_permissions
+        count(eval(settings_all="true")) as settings_permissions
+        count(eval(user_all="true")) as user_permissions
+        count(eval(vulnerability_all="true")) as vulnerability_permissions
+| transpose 0 header_field="column"
+| rename column as "Permission Domain" "row 1" as "Role Count"
+          ]]></query>
+        </search>
+        <option name="count">20</option>
+        <option name="drilldown">none</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Role Access Breakdown -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📋 Alert Access Breakdown</title>
+      <table>
+        <search base="base_roles">
+          <query><![CDATA[
+| stats count(eval(alert_all="true")) as alert_all
+        count(eval(alert_manage_all="true")) as alert_manage
+        count(eval(alert_read_all="true")) as alert_read
+| transpose 0 header_field="column"
+| rename column as "Alert Permission" "row 1" as "Role Count"
+          ]]></query>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📋 Device Access Breakdown</title>
+      <table>
+        <search base="base_roles">
+          <query><![CDATA[
+| stats count(eval(device_all="true")) as device_all
+        count(eval(device_manage_all="true")) as device_manage
+        count(eval(device_read_all="true")) as device_read
+| transpose 0 header_field="column"
+| rename column as "Device Permission" "row 1" as "Role Count"
+          ]]></query>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📋 Vulnerability Access Breakdown</title>
+      <table>
+        <search base="base_roles">
+          <query><![CDATA[
+| stats count(eval(vulnerability_all="true")) as vulnerability_all
+        count(eval(vulnerability_manage_all="true")) as vulnerability_manage
+        count(eval(vulnerability_read_all="true")) as vulnerability_read
+| transpose 0 header_field="column"
+| rename column as "Vulnerability Permission" "row 1" as "Role Count"
+          ]]></query>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================================================= -->
+  <!-- Detailed Listing -->
+  <!-- ========================================================= -->
+
+  <row>
+    <panel>
+      <title>📑 Role Detailed Listing</title>
+      <table>
+        <search base="base_roles">
+          <query><![CDATA[
+| sort name
+| table name permissions_all advanced_permissions_all alert_all alert_manage_all alert_read_all business_applications_all business_applications_manage_all business_applications_read_all device_all device_manage_all device_read_all risk_factor_all risk_factor_manage_all risk_factor_read_all settings_all user_all user_read_all vulnerability_all vulnerability_manage_all vulnerability_read_all
+          ]]></query>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">50</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</dashboard>
