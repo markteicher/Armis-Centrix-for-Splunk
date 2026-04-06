@@ -1,33 +1,73 @@
+<!--
+=============================================================================
+ default/data/ui/views/alerts_overview_api.xml
+ Armis Centrix™ for Splunk App
+ 🚨 Alerts Overview (API)
+=============================================================================
+
+• ⏱️ Time Range
+• 📍 Site
+• 🔢 Total Alerts
+• 📊 Alerts by Severity
+• 🏷️ Alerts by Title
+• 📈 Alerts over Time by Severity
+• 🖥️ Alerts by Device Type
+• 🏢 Alerts by Site
+• 📋 Recent Alerts
+
+• 🔎 Base Search: Alerts Overview
+• 🎛️ Filter: Time Range
+• 🎛️ Filter: Site
+• 🎛️ Filter: Device Type Result Limit
+• 🎛️ Filter: Site Result Limit
+• 🔗 Drilldown: Search View
+=============================================================================
+-->
+
 <form version="1.1">
-  <label>Alerts Overview (API)</label>
+  <label>🚨 Alerts Overview (API)</label>
+
   <search id="base">
-    <query>`get_armis_index` sourcetype="armis:api:alerts" alert_id=* | dedup alert_id
-| stats values(deviceIds{}) as Device_id by alert_id, severity 
-| stats count by Device_id, alert_id , severity 
-| join Device_id 
-    [| search `get_armis_index` sourcetype="armis:device" 
-    | dedup id 
-    | table id, site.location,type 
-    | rename id as Device_id, site.location as device_location, type as device_type] 
-| search device_location="$site$" 
-| stats values(*) as * by alert_id </query>
+    <query>`get_armis_index` sourcetype="armis:api:alerts" alert_id=*
+| dedup alert_id
+| stats values(deviceIds{}) as Device_id by alert_id, severity
+| stats count by Device_id, alert_id, severity
+| join Device_id
+    [ | search `get_armis_index` sourcetype="armis:device"
+    | dedup id
+    | table id, site.location, type
+    | rename id as Device_id, site.location as device_location, type as device_type ]
+| search device_location="$site$"
+| stats values(*) as * by alert_id</query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
   </search>
+
   <fieldset submitButton="false" autoRun="true">
     <input type="time" token="field1">
-      <label>Time Range</label>
+      <label>⏱️ Time Range</label>
       <default>
         <earliest>-24h@h</earliest>
         <latest>now</latest>
       </default>
     </input>
+
     <input type="dropdown" token="site" searchWhenChanged="true">
-      <label>Site</label>
+      <label>📍 Site</label>
       <fieldForLabel>device_location</fieldForLabel>
       <fieldForValue>device_location</fieldForValue>
       <search>
-        <query>`get_armis_index` sourcetype="armis:api:alerts" | dedup alert_id | stats values(deviceIds{}) as Device_id by alert_id | stats count by Device_id, alert_id | join Device_id [| search `get_armis_index` sourcetype="armis:device" | dedup id | table id, site.location | rename id as Device_id, site.location as device_location] | dedup device_location | table device_location</query>
+        <query>`get_armis_index` sourcetype="armis:api:alerts"
+| dedup alert_id
+| stats values(deviceIds{}) as Device_id by alert_id
+| stats count by Device_id, alert_id
+| join Device_id
+    [ | search `get_armis_index` sourcetype="armis:device"
+    | dedup id
+    | table id, site.location
+    | rename id as Device_id, site.location as device_location ]
+| dedup device_location
+| table device_location</query>
         <earliest>$field1.earliest$</earliest>
         <latest>$field1.latest$</latest>
       </search>
@@ -35,12 +75,24 @@
       <default>*</default>
     </input>
   </fieldset>
+
   <row>
     <panel>
-      <title>Total Alerts</title>
+      <title>🔢 Total Alerts</title>
       <single>
         <search>
-          <query>`get_armis_index` sourcetype="armis:api:alerts" alert_id=* | dedup alert_id | stats values(deviceIds{}) as Device_id by alert_id | stats count by Device_id, alert_id | join Device_id [| search `get_armis_index` sourcetype="armis:device" | dedup id | table id, site.location | rename id as Device_id, site.location as device_location] | search device_location="$site$" | stats values(*) as * by alert_id | stats count</query>
+          <query>`get_armis_index` sourcetype="armis:api:alerts" alert_id=*
+| dedup alert_id
+| stats values(deviceIds{}) as Device_id by alert_id
+| stats count by Device_id, alert_id
+| join Device_id
+    [ | search `get_armis_index` sourcetype="armis:device"
+    | dedup id
+    | table id, site.location
+    | rename id as Device_id, site.location as device_location ]
+| search device_location="$site$"
+| stats values(*) as * by alert_id
+| stats count</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
         </search>
@@ -49,35 +101,38 @@
         <option name="refresh.display">progressbar</option>
       </single>
     </panel>
+
     <panel>
-      <title>Alerts by Severity</title>
+      <title>📊 Alerts by Severity</title>
       <chart>
         <search base="base">
           <query>stats count by severity</query>
         </search>
         <option name="charting.chart">pie</option>
         <option name="charting.drilldown">all</option>
-        <option name="charting.fieldColors">{"high": 0xB8232F,"medium": 0xFDB71A,"low": 0x73B564}</option>
+        <option name="charting.fieldColors">{"high":0xB8232F,"medium":0xFDB71A,"low":0x73B564}</option>
         <option name="refresh.display">progressbar</option>
         <drilldown>
           <link target="_blank">search?q=%60get_armis_index%60%20alert_id%3D*%20%0A%7C%20dedup%20alert_id%20%0A%7C%20stats%20values(deviceIds%7B%7D)%20as%20Device_id%20values(*)%20as%20*%20by%20alert_id%2C%20severity%20%0A%7C%20stats%20count%20values(*)%20as%20*%20by%20Device_id%2C%20alert_id%2C%20severity%20%0A%7C%20join%20Device_id%20%0A%20%20%20%20%5B%7C%20search%20index%20IN%20(main)%20sourcetype%3D%22armis%3Adevice%22%20%0A%20%20%20%20%7C%20dedup%20id%20%0A%20%20%20%20%7C%20table%20id%2C%20site.location%20%0A%20%20%20%20%7C%20rename%20id%20as%20Device_id%2C%20site.location%20as%20device_location%5D%20%0A%7C%20search%20device_location%3D%22*%22%20%0A%7C%20stats%20values(*)%20as%20*%20by%20alert_id%20%0A%7C%20search%20severity%3D$click.value$&amp;earliest=$field1.earliest$&amp;latest=$field1.latest$</link>
         </drilldown>
       </chart>
     </panel>
+
     <panel>
-      <title>Alerts by Title</title>
+      <title>🏷️ Alerts by Title</title>
       <chart>
         <search>
-          <query>`get_armis_index` sourcetype="armis:api:alerts" alert_id=* 
-|dedup alert_id | stats values(deviceIds{}) as Device_id by alert_id, alert_title 
-| stats count by Device_id, alert_id,  alert_title
-| join Device_id 
-    [| search `get_armis_index` sourcetype="armis:device" 
-    | dedup id 
-    | table id, site.location 
-    | rename id as Device_id, site.location as device_location] 
-| search device_location="$site$" 
-| stats values(*) as * by alert_id 
+          <query>`get_armis_index` sourcetype="armis:api:alerts" alert_id=*
+| dedup alert_id
+| stats values(deviceIds{}) as Device_id by alert_id, alert_title
+| stats count by Device_id, alert_id, alert_title
+| join Device_id
+    [ | search `get_armis_index` sourcetype="armis:device"
+    | dedup id
+    | table id, site.location
+    | rename id as Device_id, site.location as device_location ]
+| search device_location="$site$"
+| stats values(*) as * by alert_id
 | top alert_title useother=true</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
@@ -89,66 +144,69 @@
         <option name="refresh.display">progressbar</option>
         <drilldown>
           <condition match="like('click.value',&quot;OTHER&quot;)">
-            <link target="_blank">search?q=`get_armis_index` sourcetype="armis:api:alerts" alert_id=* 
-| dedup alert_id 
-| stats values(deviceIds{}) as Device_id values(*) as * by alert_id, alert_title , _time 
-| stats count values(*) as * by Device_id, alert_id, alert_title, _time 
-| join Device_id 
-    [| search `get_armis_index` sourcetype="armis:device" 
-    | dedup id 
-    | table id, site.location 
-    | rename id as Device_id, site.location as device_location] 
-| search device_location="$site$" 
-| stats values(*) as * by _time alert_id 
-| search NOT 
-    [ search `get_armis_index` sourcetype="armis:api:alerts" alert_id=* 
-    | dedup alert_id 
-    | stats values(deviceIds{}) as Device_id values(*) as * by alert_id, alert_title , _time 
-    | stats count values(*) as * by Device_id, alert_id, alert_title, _time 
-    | join Device_id 
-        [| search `get_armis_index` sourcetype="armis:device" 
-        | dedup id 
-        | table id, site.location 
-        | rename id as Device_id, site.location as device_location] 
-    | search device_location="$site$" 
-    | stats values(*) as * by _time alert_id 
-    | top alert_title useother=true showcount=false showperc=false 
-    | format]&amp;earliest=$field1.earliest$&amp;latest=$field1.latest$</link>
+            <link target="_blank">search?q=`get_armis_index` sourcetype="armis:api:alerts" alert_id=*
+| dedup alert_id
+| stats values(deviceIds{}) as Device_id values(*) as * by alert_id, alert_title, _time
+| stats count values(*) as * by Device_id, alert_id, alert_title, _time
+| join Device_id
+    [ | search `get_armis_index` sourcetype="armis:device"
+    | dedup id
+    | table id, site.location
+    | rename id as Device_id, site.location as device_location ]
+| search device_location="$site$"
+| stats values(*) as * by _time alert_id
+| search NOT
+    [ search `get_armis_index` sourcetype="armis:api:alerts" alert_id=*
+    | dedup alert_id
+    | stats values(deviceIds{}) as Device_id values(*) as * by alert_id, alert_title, _time
+    | stats count values(*) as * by Device_id, alert_id, alert_title, _time
+    | join Device_id
+        [ | search `get_armis_index` sourcetype="armis:device"
+        | dedup id
+        | table id, site.location
+        | rename id as Device_id, site.location as device_location ]
+    | search device_location="$site$"
+    | stats values(*) as * by _time alert_id
+    | top alert_title useother=true showcount=false showperc=false
+    | format ]&amp;earliest=$field1.earliest$&amp;latest=$field1.latest$</link>
           </condition>
           <condition>
-            <link target="_blank">search?q=`get_armis_index` sourcetype="armis:api:alerts" alert_id=* | dedup alert_id | stats values(deviceIds{}) as Device_id, values(*) as * by alert_id, alert_title , _time
-| stats count values(*) as * by Device_id, alert_id,  alert_title, _time
-| join Device_id 
-    [| search `get_armis_index` sourcetype="armis:device" 
-    | dedup id 
-    | table id, site.location 
-    | rename id as Device_id, site.location as device_location] 
-| search device_location="$site$"  | stats values(*) as * by _time alert_id | search alert_title="$click.value$"&amp;earliest=$field1.earliest$&amp;latest=$field1.latest$</link>
+            <link target="_blank">search?q=`get_armis_index` sourcetype="armis:api:alerts" alert_id=* | dedup alert_id | stats values(deviceIds{}) as Device_id, values(*) as * by alert_id, alert_title, _time
+| stats count values(*) as * by Device_id, alert_id, alert_title, _time
+| join Device_id
+    [ | search `get_armis_index` sourcetype="armis:device"
+    | dedup id
+    | table id, site.location
+    | rename id as Device_id, site.location as device_location ]
+| search device_location="$site$"
+| stats values(*) as * by _time alert_id
+| search alert_title="$click.value$"&amp;earliest=$field1.earliest$&amp;latest=$field1.latest$</link>
           </condition>
         </drilldown>
       </chart>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>Alerts over Time by Severity</title>
+      <title>📈 Alerts over Time by Severity</title>
       <chart>
         <search>
-          <query>`get_armis_index` sourcetype="armis:api:alerts" alert_id=* 
+          <query>`get_armis_index` sourcetype="armis:api:alerts" alert_id=*
 | dedup alert_id
-| stats values(deviceIds{}) as Device_id by alert_id,severity, _time 
+| stats values(deviceIds{}) as Device_id by alert_id, severity, _time
 | stats count by Device_id, alert_id, severity, _time
-| join Device_id 
-    [| search `get_armis_index` sourcetype="armis:device" 
-    | dedup id 
-    | table id, site.location 
-    | rename id as Device_id, site.location as device_location] 
-| search device_location="$site$" 
+| join Device_id
+    [ | search `get_armis_index` sourcetype="armis:device"
+    | dedup id
+    | table id, site.location
+    | rename id as Device_id, site.location as device_location ]
+| search device_location="$site$"
 | stats values(*) as * by alert_id, _time
-| eval severity=if(severity="high","1.high",if(severity="medium","2.medium","3.low")) 
-| timechart count by severity 
-| rename 1.* as * 
-| rename 2.* as * 
+| eval severity=if(severity="high","1.high",if(severity="medium","2.medium","3.low"))
+| timechart count by severity
+| rename 1.* as *
+| rename 2.* as *
 | rename 3.* as *</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
@@ -162,7 +220,7 @@
         <option name="charting.chart.showDataLabels">none</option>
         <option name="charting.chart.stackMode">stacked</option>
         <option name="charting.drilldown">all</option>
-        <option name="charting.fieldColors">{"high": 0xB8232F,"medium": 0xFDB71A,"low": 0x73B564}</option>
+        <option name="charting.fieldColors">{"high":0xB8232F,"medium":0xFDB71A,"low":0x73B564}</option>
         <option name="charting.layout.splitSeries">0</option>
         <option name="charting.legend.placement">bottom</option>
         <option name="refresh.display">progressbar</option>
@@ -172,11 +230,12 @@
       </chart>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>Alerts by Device Type</title>
+      <title>🖥️ Alerts by Device Type</title>
       <input type="dropdown" token="device_type">
-        <label># of Device Type</label>
+        <label>🔢 # of Device Type</label>
         <choice value="5">5</choice>
         <choice value="10">10</choice>
         <choice value="15">15</choice>
@@ -185,9 +244,9 @@
       </input>
       <chart>
         <search base="base">
-          <query>stats count(eval(severity="low")) as low count(eval(severity="medium")) as medium count(eval(severity="high")) as high count as total by  device_type 
-| rename device_type as "Site" 
-| sort $device_type$ -total 
+          <query>stats count(eval(severity="low")) as low count(eval(severity="medium")) as medium count(eval(severity="high")) as high count as total by device_type
+| rename device_type as "Site"
+| sort $device_type$ -total
 | fields - total</query>
         </search>
         <option name="charting.axisLabelsX.integerUnits">1</option>
@@ -198,7 +257,7 @@
         <option name="charting.chart">bar</option>
         <option name="charting.chart.stackMode">stacked</option>
         <option name="charting.drilldown">all</option>
-        <option name="charting.fieldColors">{"high": 0xB8232F,"medium": 0xFDB71A,"low": 0x73B564}</option>
+        <option name="charting.fieldColors">{"high":0xB8232F,"medium":0xFDB71A,"low":0x73B564}</option>
         <option name="charting.legend.placement">none</option>
         <option name="refresh.display">progressbar</option>
         <drilldown>
@@ -206,10 +265,11 @@
         </drilldown>
       </chart>
     </panel>
+
     <panel>
-      <title>Alerts by Site</title>
+      <title>🏢 Alerts by Site</title>
       <input type="dropdown" token="device_location" searchWhenChanged="true">
-        <label># of Site</label>
+        <label>🔢 # of Site</label>
         <choice value="5">5</choice>
         <choice value="10">10</choice>
         <choice value="15">15</choice>
@@ -218,9 +278,9 @@
       </input>
       <chart>
         <search base="base">
-          <query>stats count(eval(severity="low")) as low count(eval(severity="medium")) as medium count(eval(severity="high")) as high count as total by  device_location 
-| rename device_location as "Site" 
-| sort $device_location$ -total 
+          <query>stats count(eval(severity="low")) as low count(eval(severity="medium")) as medium count(eval(severity="high")) as high count as total by device_location
+| rename device_location as "Site"
+| sort $device_location$ -total
 | fields - total</query>
         </search>
         <option name="charting.axisLabelsX.integerUnits">1</option>
@@ -231,7 +291,7 @@
         <option name="charting.chart">bar</option>
         <option name="charting.chart.stackMode">stacked</option>
         <option name="charting.drilldown">all</option>
-        <option name="charting.fieldColors">{"high": 0xB8232F,"medium": 0xFDB71A,"low": 0x73B564}</option>
+        <option name="charting.fieldColors">{"high":0xB8232F,"medium":0xFDB71A,"low":0x73B564}</option>
         <option name="charting.legend.placement">none</option>
         <option name="refresh.display">progressbar</option>
         <drilldown>
@@ -240,24 +300,26 @@
       </chart>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>Recent Alerts</title>
+      <title>📋 Recent Alerts</title>
       <table>
         <search>
-          <query>`get_armis_index` sourcetype="armis:api:alerts" alert_id=* | dedup alert_id
-| stats values(deviceIds{}) as Device_id by alert_id,_time,severity, status, alert_title,title
+          <query>`get_armis_index` sourcetype="armis:api:alerts" alert_id=*
+| dedup alert_id
+| stats values(deviceIds{}) as Device_id by alert_id, _time, severity, status, alert_title, title
 | stats count, values(_time) as _time, values(severity) as severity, values(status) as status, values(alert_title) as alert_title, values(title) as title by Device_id, alert_id
-| join Device_id 
-    [| search `get_armis_index` sourcetype="armis:device" 
-    | dedup id 
-    | table id, site.location , name
-    | rename id as Device_id, site.location as device_location, name as dvc] 
-| search device_location="$site$" 
-| stats values(*) as * by alert_id,_time,severity, status, alert_title,title 
-| rename device_location as site 
-| eval "Latest Related Activity"=mvindex('title',0) 
-| table _time severity alert_title "Latest Related Activity" status site alert_id dvc 
+| join Device_id
+    [ | search `get_armis_index` sourcetype="armis:device"
+    | dedup id
+    | table id, site.location, name
+    | rename id as Device_id, site.location as device_location, name as dvc ]
+| search device_location="$site$"
+| stats values(*) as * by alert_id, _time, severity, status, alert_title, title
+| rename device_location as site
+| eval "Latest Related Activity"=mvindex('title',0)
+| table _time severity alert_title "Latest Related Activity" status site alert_id dvc
 | rename alert_title as "Alert Title" site as "Sites Impacted" severity as "Severity" status as "Status" dvc as "Devices Impacted"</query>
           <earliest>$field1.earliest$</earliest>
           <latest>$field1.latest$</latest>
