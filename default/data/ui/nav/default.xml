@@ -1,36 +1,42 @@
 <nav color="3C4B68">
-   <collection label="Armis Collectors">
- <!-- =================================================================== -->
- <!-- Armis Collectors                                                           -->
- <!-- =================================================================== -->
- 
-<view name="armis_collectors_product_listing_aging_view"/> 
+
+  <!-- =================================================================== -->
+  <!-- Armis Collectors                                                    -->
+  <!-- =================================================================== -->
+  <collection label="Armis Collectors">
+    <view name="armis_collectors_product_listing_aging_view"/>
   </collection>
-     
-     
- <collection label="Armis Users">
- <!-- =================================================================== -->
- <!-- ARMIS USERS                                                             -->
- <!-- =================================================================== -->
 
- </collection>     
-     
-  <view name="alerts"/>
-  
+  <!-- =================================================================== -->
+  <!-- Armis Users                                                         -->
+  <!-- =================================================================== -->
+  <collection label="Armis Users">
+  </collection>
 
-
-  <view name="devices"/>
-  <view name="vulnerability"/>
+  <!-- =================================================================== -->
+  <!-- Armis Dashboards                                                    -->
+  <!-- =================================================================== -->
+  <collection label="Armis Dashboards">
+    <view name="alerts"/>
+    <view name="alerts_overview_syslog"/>
+    <view name="alerts_overview_api"/>
+    <view name="devices"/>
+    <view name="devices_overview"/>
+    <view name="vulnerability"/>
+    <view name="vulnerabilities_overview"/>
+    <view name="affected_devices"/>
+    <view name="armis_vulnerability_and_devices"/>
     <view name="armis_boundaries"/>
-     <view name="armis_certificate"/>
+    <view name="armis_certificate"/>
+  </collection>
 
- 
+  <!-- =================================================================== -->
+  <!-- Armis Help                                                          -->
+  <!-- =================================================================== -->
   <collection label="Armis Help">
- <!-- =================================================================== -->
- <!-- ABOUT                                                               -->
- <!-- =================================================================== -->
-   <view name="armis_help"/>  
-  <view name="armis_about"/>  
-  <view name="armis_documentation"/>
-     </collection>
+    <view name="armis_help"/>
+    <view name="armis_about"/>
+    <view name="armis_documentation"/>
+  </collection>
+
 </nav>
