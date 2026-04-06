@@ -39,115 +39,115 @@
     <a href="https://cve.armis.com" target="_blank">cve.armis.com</a>
   </collection>
 
-  <collection label="🎯 VIPR Prioritization">
+  <collection label="VIPR Prioritization">
     <view name="armis_vipr_prioritization"/>
   </collection>
 
-  <collection label="📊 Exposure Analytics">
+  <collection label="Exposure Analytics">
     <view name="armis_exposure_analytics"/>
   </collection>
 
-  <collection label="📈 Exposure Trends">
+  <collection label="Exposure Trends">
     <view name="armis_exposure_trends"/>
   </collection>
 
-  <collection label="🏷️ Asset Tags">
+  <collection label="Asset Tags">
     <view name="armis_asset_tags"/>
   </collection>
 
-  <collection label="🧠 Threat Intelligence">
+  <collection label="Threat Intelligence">
     <view name="armis_threat_intelligence"/>
   </collection>
 
-  <collection label="👤 Users">
+  <collection label="Users">
     <view name="armis_users"/>
   </collection>
 
-  <collection label="⏳ User Activity">
+  <collection label="User Activity">
     <view name="armis_user_activity"/>
   </collection>
 
-  <collection label="🔐 Roles">
+  <collection label="Roles">
     <view name="armis_roles"/>
   </collection>
 
-  <collection label="🛡️ Permissions">
+  <collection label="Permissions">
     <view name="armis_permissions"/>
   </collection>
 
-  <collection label="🔑 API Keys">
+  <collection label="API Keys">
     <view name="armis_api_keys"/>
   </collection>
 
-  <collection label="🔗 Integrations">
+  <collection label="Integrations">
     <view name="armis_integrations_status"/>
   </collection>
 
-  <collection label="🔗 Vendor Integrations">
+  <collection label="Vendor Integrations">
     <view name="armis_vendor_integrations"/>
   </collection>
 
-  <collection label="⚙️ Configuration">
+  <collection label="Configuration">
     <view name="armis_configuration"/>
   </collection>
 
-  <collection label="📄 Reports">
+  <collection label="Reports">
     <view name="armis_reports"/>
   </collection>
 
-  <collection label="📜 Audit Logs">
+  <collection label="Audit Logs">
     <view name="armis_auditlog"/>
   </collection>
 
-  <collection label="⚠️ Error Logs">
+  <collection label="Error Logs">
     <view name="armis_error_logs"/>
   </collection>
 
-  <collection label="❤️ System Health">
+  <collection label="System Health">
     <view name="armis_system_health"/>
   </collection>
 
-  <collection label="🏷️ Version">
+  <collection label="Version">
     <view name="armis_version"/>
   </collection>
 
-  <collection label="🔎 Search">
+  <collection label="Search">
     <view name="armis_search"/>
   </collection>
 
-  <collection label="🛡️ Policies">
+  <collection label="Policies">
     <view name="armis_policies"/>
   </collection>
 
-  <collection label="📜 Logging">
+  <collection label="Logging">
     <view name="armis_activity_log"/>
   </collection>
 
-  <collection label="🏷️ Certificate">
+  <collection label="Certificate">
     <view name="armis_certificate"/>
   </collection>
 
-  <collection label="📡 Collectors">
+  <collection label="Collectors">
     <view name="armis_collectors_product_listing_aging_view"/>
   </collection>
 
-  <collection label="🌐 Boundaries">
+  <collection label="Boundaries">
     <view name="armis_boundaries"/>
   </collection>
 
-  <collection label="📚 Documentation">
+  <collection label="Documentation">
     <view name="armis_documentation"/>
   </collection>
 
-  <collection label="🛟 Support">
+  <collection label="Support">
     <view name="armis_support"/>
   </collection>
 
-  <collection label="❓ Help">
+  <collection label="Help">
     <view name="armis_help"/>
   </collection>
 
-  <collection label="ℹ️ About">
+  <collection label="About">
     <view name="armis_about"/>
   </collection>
 
