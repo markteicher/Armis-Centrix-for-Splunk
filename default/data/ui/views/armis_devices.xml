@@ -1,13 +1,37 @@
+<!--
+=============================================================================
+ default/data/ui/views/devices_overview.xml
+ Armis Centrix™ for Splunk App
+ 🖥️ Devices Overview
+=============================================================================
+
+• 📍 Site
+• 🔢 Total Devices
+• 📊 Devices by Risk Level
+• 🗂️ Devices by Category
+• 🧩 Devices by Type
+• 💻 Devices by Operating System
+• 🏢 Devices by Site
+• 📋 Last Seen Devices
+
+• 🔎 Base Search: Devices Overview
+• 🎛️ Filter: Site
+• 🔗 Drilldown: Device Details
+=============================================================================
+-->
+
 <form version="1.1">
-  <label>Devices Overview</label>
+  <label>🖥️ Devices Overview</label>
+
   <search id="base">
     <query>`get_armis_index` sourcetype="armis:device" site.location="$site$" | dedup id | stats values(*) as * by _time id</query>
     <earliest>-24h@h</earliest>
     <latest>now</latest>
   </search>
+
   <fieldset submitButton="false">
     <input type="dropdown" token="site" searchWhenChanged="true">
-      <label>Site</label>
+      <label>📍 Site</label>
       <fieldForLabel>site.location</fieldForLabel>
       <fieldForValue>site.location</fieldForValue>
       <search>
@@ -19,9 +43,10 @@
       <default>*</default>
     </input>
   </fieldset>
+
   <row>
     <panel>
-      <title>Total Devices</title>
+      <title>🔢 Total Devices</title>
       <single>
         <search base="base">
           <query>stats count</query>
@@ -31,8 +56,9 @@
         <option name="refresh.display">progressbar</option>
       </single>
     </panel>
+
     <panel>
-      <title>Devices by Risk Level</title>
+      <title>📊 Devices by Risk Level</title>
       <chart>
         <search base="base">
           <query>rangemap field=riskLevel medium=4-7 low=1-3 high=8-10 | stats count by range</query>
@@ -47,9 +73,10 @@
       </chart>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>Devices by Category</title>
+      <title>🗂️ Devices by Category</title>
       <chart>
         <search base="base">
           <query>top category limit=10 useother=true</query>
@@ -73,8 +100,9 @@
         </drilldown>
       </chart>
     </panel>
+
     <panel>
-      <title>Devices by Type</title>
+      <title>🧩 Devices by Type</title>
       <chart>
         <search base="base">
           <query>top type limit=10 useother=true</query>
@@ -99,9 +127,10 @@
       </chart>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>Devices by Operating System</title>
+      <title>💻 Devices by Operating System</title>
       <chart>
         <search base="base">
           <query>| eval operatingSystem=if(operatingSystem="null","Unknown",operatingSystem) | top operatingSystem limit=10 useother=true</query>
@@ -121,8 +150,9 @@
         </drilldown>
       </chart>
     </panel>
+
     <panel>
-      <title>Devices by Site</title>
+      <title>🏢 Devices by Site</title>
       <chart>
         <search base="base">
           <query>top site.location limit=10 useother=true</query>
@@ -143,9 +173,10 @@
       </chart>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>Last Seen Devices</title>
+      <title>📋 Last Seen Devices</title>
       <table>
         <search base="base">
           <query>sort - lastSeen | head 10 | rangemap field=riskLevel medium=4-7 low=1-3 high=8-1 | table id range, name, category, type, model, manufacturer, macAddress, ipAddress, firstSeen, lastSeen, site.location, site.name, tags{} | rename id as ID, range as Risk, name as "Device Name", category as Category, type as Type, model as Model, manufacturer as Brand, macAddress as MAC, ipAddress as "IP Address", firstSeen as "First Seen", lastSeen as "Last Seen", site.location as "Site Location", site.name as "Site Name", tags{} as Tags | eval "IP Address"=if('IP Address'="null","-",'IP Address') | eval epoch = strptime('First Seen',"%Y-%m-%dT%H:%M:%S.%f") | eval "First Seen" = strftime(epoch, "%b %d,%Y %I:%M:%S %p") | eval epoch = strptime('Last Seen',"%Y-%m-%dT%H:%M:%S.%f") | eval "Last Seen" = strftime(epoch, "%b %d,%Y %I:%M:%S %p") | fields - epoch</query>
