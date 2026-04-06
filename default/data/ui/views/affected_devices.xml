@@ -1,16 +1,49 @@
+<!--
+=============================================================================
+ default/data/ui/views/affected_devices.xml
+ Armis Centrix™ for Splunk App
+ Affected Devices
+=============================================================================
+
+• Associated Vulnerability ID
+• Total Number of Affected Devices
+• All Affected Devices by Risk Severity
+• Affected Devices Details
+
+• Base Search: CVE Summary
+• Base Search: Affected Device Population
+• Filter: Type of Device
+• Filter: Risk Level
+• Filter: Device Name
+• Drilldown: vulnerability_and_devices_info
+=============================================================================
+-->
+
 <form version="1.1" theme="light" script="severity_multiselect.js">
   <label>Affected Devices</label>
+
   <search id="base_cve">
-    <query>`get_armis_index` sourcetype="armis:cve" | where cveUid=$cveUID$ | dedup cveUid | table cveUid, affectedDevicesCount </query>
+    <query>`get_armis_index` sourcetype="armis:cve"
+| where cveUid=$cveUID$
+| dedup cveUid
+| table cveUid, affectedDevicesCount</query>
     <earliest>0</earliest>
     <latest></latest>
   </search>
+
   <search id="base_device_vuln">
-    <query>`get_armis_index` sourcetype="armis:device" | dedup id
-          | join type=inner id[| inputlookup "affected_devices_lookup" | where vuln_id=$cveUID$ | table deviceId | stats count by deviceId | rename deviceId as id] </query>
+    <query>`get_armis_index` sourcetype="armis:device"
+| dedup id
+| join type=inner id
+    [ | inputlookup "affected_devices_lookup"
+    | where vuln_id=$cveUID$
+    | table deviceId
+    | stats count by deviceId
+    | rename deviceId as id ]</query>
     <earliest>0</earliest>
     <latest></latest>
   </search>
+
   <fieldset submitButton="false" autoRun="true">
     <input type="multiselect" token="tkn_type" searchWhenChanged="true" id="multiselect_severities">
       <label>Type of Device</label>
@@ -19,7 +52,8 @@
       <fieldForLabel>type</fieldForLabel>
       <fieldForValue>type</fieldForValue>
       <search>
-        <query>`get_armis_index` sourcetype=armis:device | stats count by type</query>
+        <query>`get_armis_index` sourcetype="armis:device"
+| stats count by type</query>
         <earliest>0</earliest>
         <latest></latest>
       </search>
@@ -29,6 +63,7 @@
       <valuePrefix>"</valuePrefix>
       <valueSuffix>"</valueSuffix>
     </input>
+
     <input type="text" token="tkn_risk" searchWhenChanged="true">
       <label>Risk Level</label>
       <change>
@@ -38,11 +73,13 @@
       </change>
       <default>&gt;=0</default>
     </input>
+
     <input type="text" token="tkn_name" searchWhenChanged="true">
       <label>Device Name</label>
       <default>*</default>
     </input>
   </fieldset>
+
   <row>
     <panel>
       <title>Associated Vulnerability ID</title>
@@ -59,6 +96,7 @@
         <option name="useColors">1</option>
       </single>
     </panel>
+
     <panel>
       <title>Total Number of Affected Devices</title>
       <single>
@@ -74,43 +112,43 @@
         <option name="useColors">1</option>
       </single>
     </panel>
+
     <panel>
-      <title>All Affected Devices by Risk severity</title>
+      <title>All Affected Devices by Risk Severity</title>
       <chart>
         <search base="base_device_vuln">
           <query>table id, riskLevel, name, type, ipAddress
-          | rename vuln_id as "Vulnerability ID" id as "Device ID" riskLevel as "Risk Level" name as "Device Name" type as "Type of Device" ipAddress as "IPv4 Address" 
-          | stats count by "Risk Level" 
-          | rangemap field="Risk Level" Low=0-3 Medium=4-7 High=8-9 Critical=10-100 
-          | stats sum(count) by range 
-          | rename sum(count) as "Number of Devices" range as "Severity"</query>
+| rename vuln_id as "Vulnerability ID" id as "Device ID" riskLevel as "Risk Level" name as "Device Name" type as "Type of Device" ipAddress as "IPv4 Address"
+| stats count by "Risk Level"
+| rangemap field="Risk Level" Low=0-3 Medium=4-7 High=8-9 Critical=10-100
+| stats sum(count) by range
+| rename sum(count) as "Number of Devices" range as "Severity"</query>
         </search>
         <option name="charting.chart">pie</option>
         <option name="charting.drilldown">none</option>
         <option name="charting.backgroundColor">#ffffcc</option>
-        <option name="charting.fieldColors">{"Critical": #9E4C55,"High": #E31C3D,"Medium": #FFBE2F,"Low": #019F5C}</option>
+        <option name="charting.fieldColors">{"Critical":#9E4C55,"High":#E31C3D,"Medium":#FFBE2F,"Low":#019F5C}</option>
         <option name="height">195</option>
         <option name="refresh.display">progressbar</option>
       </chart>
     </panel>
   </row>
+
   <row>
     <panel>
       <title>Affected Devices Details</title>
       <table>
         <search base="base_device_vuln">
           <query>search type IN $tkn_type$ riskLevel $tkn_risk$ name="*$tkn_name$*"
-          |rangemap field=riskLevel medium=4-7 low=1-3 high=8-9 critical=10-100
-          | table id, riskLevel, range, name, type, model, category, ipAddress,manufacturer, macAddress,firstSeen, lastSeen, site.location, tags{}
-          | rename range as "Risk Severity" vuln_id as "Vulnerability ID" id as "ID" model as "Model" riskLevel as "Risk Level" name as "Device Name" type as "Type of Device" 
-          ipAddress as "IP Address" manufacturer as Brand, macAddress as MAC, category as Category, firstSeen as "First Seen", lastSeen as "Last Seen", 
-          site.location as "Site", tags{} as Tags
-          | sort "Risk Level" 
-          | eval epoch = strptime('First Seen',"%Y-%m-%dT%H:%M:%S.%f") 
-          | eval "First Seen" = strftime(epoch, "%b %d,%Y %I:%M:%S %p") 
-          | eval epoch = strptime('Last Seen',"%Y-%m-%dT%H:%M:%S.%f") 
-          | eval "Last Seen" = strftime(epoch, "%b %d,%Y %I:%M:%S %p") 
-          | fields - epoch</query>
+| rangemap field=riskLevel medium=4-7 low=1-3 high=8-9 critical=10-100
+| table id, riskLevel, range, name, type, model, category, ipAddress, manufacturer, macAddress, firstSeen, lastSeen, site.location, tags{}
+| rename range as "Risk Severity" vuln_id as "Vulnerability ID" id as "ID" model as "Model" riskLevel as "Risk Level" name as "Device Name" type as "Type of Device" ipAddress as "IP Address" manufacturer as "Brand" macAddress as "MAC" category as "Category" firstSeen as "First Seen" lastSeen as "Last Seen" site.location as "Site" tags{} as "Tags"
+| sort "Risk Level"
+| eval epoch=strptime('First Seen',"%Y-%m-%dT%H:%M:%S.%f")
+| eval "First Seen"=strftime(epoch,"%b %d,%Y %I:%M:%S %p")
+| eval epoch=strptime('Last Seen',"%Y-%m-%dT%H:%M:%S.%f")
+| eval "Last Seen"=strftime(epoch,"%b %d,%Y %I:%M:%S %p")
+| fields - epoch</query>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="count">10</option>
@@ -121,11 +159,14 @@
         <option name="rowNumbers">false</option>
         <option name="totalsRow">false</option>
         <option name="wrap">true</option>
+
         <format type="color" field="Risk Level">
           <colorPalette type="list">[#019F5C,#FFBE2F,#E31C3D,#9E4C55]</colorPalette>
           <scale type="threshold">4,8,10</scale>
         </format>
-        <fields>["ID","Risk Level","Risk Severity", "Device Name", "Category", "Type of Device","Model","Brand","MAC","IP Address","First Seen","Last Seen","Site","Tags"]</fields>
+
+        <fields>["ID","Risk Level","Risk Severity","Device Name","Category","Type of Device","Model","Brand","MAC","IP Address","First Seen","Last Seen","Site","Tags"]</fields>
+
         <drilldown>
           <link target="_blank">/app/armis/vulnerability_and_devices_info?device_id="$row.ID$"&amp;device_name="$row.Device Name$"&amp;earliest=0</link>
         </drilldown>
