@@ -1,4 +1,4 @@
-<nav color="3C4B68">
+<nav search_view="armis_navigation" color="3C4B68">
 
   <view name="armis_navigation" default="true"/>
 
