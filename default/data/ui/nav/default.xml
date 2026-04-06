@@ -1,8 +1,6 @@
 <nav color="3C4B68">
 
-  <collection label="🧭 Overview">
-    <view name="armis_navigation"/>
-  </collection>
+  <view name="armis_navigation" default="true"/>
 
   <collection label="🖥️ Devices">
     <view name="armis_devices"/>
