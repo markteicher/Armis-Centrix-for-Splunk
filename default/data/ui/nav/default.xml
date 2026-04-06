@@ -2,40 +2,40 @@
 
   <view name="armis_navigation" default="true"/>
 
-  <collection label="🖥️ Devices">
+  <collection label="Devices">
     <view name="armis_devices"/>
     <view name="armis_devices_overview"/>
   </collection>
 
-  <collection label="🌐 Networks">
+  <collection label="Networks">
     <view name="armis_networks"/>
   </collection>
 
-  <collection label="🧠 Asset Intelligence">
+  <collection label="Asset Intelligence">
     <view name="armis_asset_intelligence"/>
   </collection>
 
-  <collection label="🌐 Asset Communications">
+  <collection label="Asset Communications">
     <view name="armis_asset_communications"/>
   </collection>
 
-  <collection label="🚨 Alerts">
+  <collection label="Alerts">
     <view name="armis_alerts"/>
   </collection>
 
-  <collection label="🔥 Alerts - By Severity">
+  <collection label="Alerts - By Severity">
     <view name="armis_alerts_overview_api"/>
     <view name="armis_alerts_overview_syslog"/>
   </collection>
 
-  <collection label="🧬 Vulnerabilities">
+  <collection label="Vulnerabilities">
     <view name="armis_vulnerabilities"/>
     <view name="armis_vulnerabilities_overview"/>
     <view name="armis_affected_devices"/>
     <view name="armis_vulnerability_and_devices"/>
   </collection>
 
-  <collection label="🧠 CVE Intelligence">
+  <collection label="CVE Intelligence">
     <a href="https://cve.armis.com" target="_blank">cve.armis.com</a>
   </collection>
 
