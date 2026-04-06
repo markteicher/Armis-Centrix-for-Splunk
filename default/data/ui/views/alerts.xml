@@ -1,24 +1,56 @@
+<!--
+=============================================================================
+ default/data/ui/views/alerts_overview_syslog.xml
+ Armis Centrix™ for Splunk App
+ 🚨 Alerts Overview (Syslog)
+=============================================================================
+
+• ⏱️ Time Range
+• 📍 Site
+• 🔢 Total Alerts
+• 📊 Alerts by Severity
+• 🏷️ Alerts by Title
+• 📈 Alerts over Time by Severity
+• 🖥️ Alerts by Device Type
+• 🏢 Alerts by Site
+• 📋 Recent Alerts
+
+• 🔎 Base Search: Alerts Overview
+• 🎛️ Filter: Time Range
+• 🎛️ Filter: Site
+• 🎛️ Filter: Device Type Result Limit
+• 🎛️ Filter: Site Result Limit
+• 🔗 Drilldown: Search View
+=============================================================================
+-->
+
 <form version="1.1">
-  <label>Alerts Overview (Syslog)</label>
+  <label>🚨 Alerts Overview (Syslog)</label>
+
   <search id="base">
-    <query>`get_armis_index` sourcetype="armis:alert" alert_id=* device_location="$site$" | stats values(*) as * by _time alert_id</query>
+    <query>`get_armis_index` sourcetype="armis:alert" alert_id=* device_location="$site$"
+| stats values(*) as * by _time alert_id</query>
     <earliest>$field1.earliest$</earliest>
     <latest>$field1.latest$</latest>
   </search>
+
   <fieldset submitButton="false" autoRun="true">
     <input type="time" token="field1">
-      <label>Time Range</label>
+      <label>⏱️ Time Range</label>
       <default>
         <earliest>-24h@h</earliest>
         <latest>now</latest>
       </default>
     </input>
+
     <input type="dropdown" token="site" searchWhenChanged="true">
-      <label>Site</label>
+      <label>📍 Site</label>
       <fieldForLabel>device_location</fieldForLabel>
       <fieldForValue>device_location</fieldForValue>
       <search>
-        <query>`get_armis_index` sourcetype=armis:alert | dedup device_location | table device_location</query>
+        <query>`get_armis_index` sourcetype="armis:alert"
+| dedup device_location
+| table device_location</query>
         <earliest>$field1.earliest$</earliest>
         <latest>$field1.latest$</latest>
       </search>
@@ -26,9 +58,10 @@
       <default>*</default>
     </input>
   </fieldset>
+
   <row>
     <panel>
-      <title>Total Alerts</title>
+      <title>🔢 Total Alerts</title>
       <single>
         <search base="base">
           <query>stats count</query>
@@ -38,23 +71,25 @@
         <option name="refresh.display">progressbar</option>
       </single>
     </panel>
+
     <panel>
-      <title>Alerts by Severity</title>
+      <title>📊 Alerts by Severity</title>
       <chart>
         <search base="base">
           <query>stats count by severity</query>
         </search>
         <option name="charting.chart">pie</option>
         <option name="charting.drilldown">all</option>
-        <option name="charting.fieldColors">{"high": 0xB8232F,"medium": 0xFDB71A,"low": 0x73B564}</option>
+        <option name="charting.fieldColors">{"high":0xB8232F,"medium":0xFDB71A,"low":0x73B564}</option>
         <option name="refresh.display">progressbar</option>
         <drilldown>
           <link target="_blank">search?q=`get_armis_index` sourcetype="armis:alert" alert_id=* device_location="$site$" | stats values(*) as * by _time alert_id | search severity=$click.value$&amp;earliest=$field1.earliest$&amp;latest=$field1.latest$</link>
         </drilldown>
       </chart>
     </panel>
+
     <panel>
-      <title>Alerts by Title</title>
+      <title>🏷️ Alerts by Title</title>
       <chart>
         <search base="base">
           <query>top alert_title useother=true</query>
@@ -65,7 +100,7 @@
         <option name="charting.seriesColors">[#009ADA,#73B564,#381460,#B8232F,#878A8F,#343741,#484A9A,#FDB71A,#6673AC,#48206E,#C7C9C8,#000000]</option>
         <drilldown>
           <condition match="like('click.value',&quot;OTHER&quot;)">
-            <link target="_blank">search?q=`get_armis_index` sourcetype="armis:alert" alert_id=* device_location="$site$" | stats values(*) as * by _time alert_id | search NOT[search `get_armis_index` sourcetype="armis:alert" alert_id=* device_location="$site$" | stats values(*) as * by _time alert_id | top alert_title useother=true showcount=false showperc=false | format]&amp;earliest=$field1.earliest$&amp;latest=$field1.latest$</link>
+            <link target="_blank">search?q=`get_armis_index` sourcetype="armis:alert" alert_id=* device_location="$site$" | stats values(*) as * by _time alert_id | search NOT [ search `get_armis_index` sourcetype="armis:alert" alert_id=* device_location="$site$" | stats values(*) as * by _time alert_id | top alert_title useother=true showcount=false showperc=false | format ]&amp;earliest=$field1.earliest$&amp;latest=$field1.latest$</link>
           </condition>
           <condition>
             <link target="_blank">search?q=`get_armis_index` sourcetype="armis:alert" alert_id=* device_location="$site$" | stats values(*) as * by _time alert_id | search alert_title="$click.value$"&amp;earliest=$field1.earliest$&amp;latest=$field1.latest$</link>
@@ -74,9 +109,10 @@
       </chart>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>Alerts over Time by Severity</title>
+      <title>📈 Alerts over Time by Severity</title>
       <chart>
         <search base="base">
           <query>| eval severity=if(severity="high","1.high",if(severity="medium","2.medium","3.low"))
@@ -94,7 +130,7 @@
         <option name="charting.chart.showDataLabels">none</option>
         <option name="charting.chart.stackMode">stacked</option>
         <option name="charting.drilldown">all</option>
-        <option name="charting.fieldColors">{"high": 0xB8232F,"medium": 0xFDB71A,"low": 0x73B564}</option>
+        <option name="charting.fieldColors">{"high":0xB8232F,"medium":0xFDB71A,"low":0x73B564}</option>
         <option name="charting.layout.splitSeries">0</option>
         <option name="charting.legend.placement">bottom</option>
         <option name="refresh.display">progressbar</option>
@@ -105,11 +141,12 @@
       </chart>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>Alerts by Device Type</title>
+      <title>🖥️ Alerts by Device Type</title>
       <input type="dropdown" token="device_type">
-        <label># of Device Type</label>
+        <label>🔢 # of Device Type</label>
         <choice value="5">5</choice>
         <choice value="10">10</choice>
         <choice value="15">15</choice>
@@ -118,7 +155,10 @@
       </input>
       <chart>
         <search base="base">
-          <query>stats count(eval(severity="low")) as low count(eval(severity="medium")) as medium count(eval(severity="high")) as high count as total by device_type | rename device_type as "Site" | sort $device_type$ -total | fields - total</query>
+          <query>stats count(eval(severity="low")) as low count(eval(severity="medium")) as medium count(eval(severity="high")) as high count as total by device_type
+| rename device_type as "Site"
+| sort $device_type$ -total
+| fields - total</query>
         </search>
         <option name="charting.axisLabelsX.integerUnits">1</option>
         <option name="charting.axisLabelsY.integerUnits">1</option>
@@ -128,7 +168,7 @@
         <option name="charting.chart">bar</option>
         <option name="charting.chart.stackMode">stacked</option>
         <option name="charting.drilldown">all</option>
-        <option name="charting.fieldColors">{"high": 0xB8232F,"medium": 0xFDB71A,"low": 0x73B564}</option>
+        <option name="charting.fieldColors">{"high":0xB8232F,"medium":0xFDB71A,"low":0x73B564}</option>
         <option name="charting.legend.placement">none</option>
         <option name="refresh.display">progressbar</option>
         <drilldown>
@@ -136,10 +176,11 @@
         </drilldown>
       </chart>
     </panel>
+
     <panel>
-      <title>Alerts by Site</title>
+      <title>🏢 Alerts by Site</title>
       <input type="dropdown" token="device_location">
-        <label># of Site</label>
+        <label>🔢 # of Site</label>
         <choice value="5">5</choice>
         <choice value="10">10</choice>
         <choice value="15">15</choice>
@@ -148,7 +189,10 @@
       </input>
       <chart>
         <search base="base">
-          <query>stats count(eval(severity="low")) as low count(eval(severity="medium")) as medium count(eval(severity="high")) as high by device_location | rename device_location as "Device Location" | sort $device_location$ -total | fields - total</query>
+          <query>stats count(eval(severity="low")) as low count(eval(severity="medium")) as medium count(eval(severity="high")) as high by device_location
+| rename device_location as "Device Location"
+| sort $device_location$ -total
+| fields - total</query>
         </search>
         <option name="charting.axisLabelsX.integerUnits">1</option>
         <option name="charting.axisLabelsY.integerUnits">1</option>
@@ -158,7 +202,7 @@
         <option name="charting.chart">bar</option>
         <option name="charting.chart.stackMode">stacked</option>
         <option name="charting.drilldown">all</option>
-        <option name="charting.fieldColors">{"high": 0xB8232F,"medium": 0xFDB71A,"low": 0x73B564}</option>
+        <option name="charting.fieldColors">{"high":0xB8232F,"medium":0xFDB71A,"low":0x73B564}</option>
         <option name="charting.legend.placement">none</option>
         <option name="refresh.display">progressbar</option>
         <drilldown>
@@ -167,12 +211,16 @@
       </chart>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>Recent Alerts</title>
+      <title>📋 Recent Alerts</title>
       <table>
         <search base="base">
-          <query>rename device_location as site | eval "Latest Related Activity"=mvindex('title',0) |  table _time severity alert_title "Latest Related Activity" status site alert_id dvc | rename alert_title as "Alert Title" site as "Sites Impacted" severity as "Severity" status as "Status" dvc as "Devices Impacted"</query>
+          <query>rename device_location as site
+| eval "Latest Related Activity"=mvindex('title',0)
+| table _time severity alert_title "Latest Related Activity" status site alert_id dvc
+| rename alert_title as "Alert Title" site as "Sites Impacted" severity as "Severity" status as "Status" dvc as "Devices Impacted"</query>
         </search>
         <option name="drilldown">row</option>
         <option name="refresh.display">progressbar</option>
