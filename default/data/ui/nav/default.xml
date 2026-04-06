@@ -1,6 +1,81 @@
 <nav color="3C4B68">
 
   <!-- =================================================================== -->
+  <!-- Armis Hub                                                           -->
+  <!-- =================================================================== -->
+  <view name="armis_navigation"/>
+
+  <!-- =================================================================== -->
+  <!-- Alerts                                                              -->
+  <!-- =================================================================== -->
+  <collection label="Alerts">
+    <view name="armis_alerts"/>
+    <view name="armis_alerts_overview_api"/>
+    <view name="armis_alerts_overview_syslog"/>
+  </collection>
+
+  <!-- =================================================================== -->
+  <!-- Devices                                                             -->
+  <!-- =================================================================== -->
+  <collection label="Devices">
+    <view name="armis_devices"/>
+  </collection>
+
+  <!-- =================================================================== -->
+  <!-- Vulnerabilities                                                     -->
+  <!-- =================================================================== -->
+  <collection label="Vulnerabilities">
+    <view name="armis_vulnerabilities"/>
+    <view name="armis_vulnerabilities_overview"/>
+    <view name="armis_affected_devices"/>
+    <view name="armis_vulnerability_and_devices_info"/>
+  </collection>
+
+  <!-- =================================================================== -->
+  <!-- Logging                                                             -->
+  <!-- =================================================================== -->
+  <collection label="Logging">
+    <view name="armis_activity_log"/>
+    <view name="armis_auditlog"/>
+  </collection>
+
+  <!-- =================================================================== -->
+  <!-- Boundaries                                                          -->
+  <!-- =================================================================== -->
+  <collection label="Boundaries">
+    <view name="armis_boundaries"/>
+  </collection>
+
+  <!-- =================================================================== -->
+  <!-- Certificate                                                         -->
+  <!-- =================================================================== -->
+  <collection label="Certificate">
+    <view name="armis_certificate"/>
+  </collection>
+
+  <!-- =================================================================== -->
+  <!-- Search                                                              -->
+  <!-- =================================================================== -->
+  <collection label="Search">
+    <view name="armis_search"/>
+  </collection>
+
+  <!-- =================================================================== -->
+  <!-- Policies                                                            -->
+  <!-- =================================================================== -->
+  <collection label="Policies">
+    <view name="armis_policies"/>
+  </collection>
+
+  <!-- =================================================================== -->
+  <!-- Integrations                                                        -->
+  <!-- =================================================================== -->
+  <collection label="Integrations">
+    <view name="armis_integrations_status"/>
+    <view name="armis_vendor_integrations"/>
+  </collection>
+
+  <!-- =================================================================== -->
   <!-- Armis Collectors                                                    -->
   <!-- =================================================================== -->
   <collection label="Armis Collectors">
@@ -11,31 +86,28 @@
   <!-- Armis Users                                                         -->
   <!-- =================================================================== -->
   <collection label="Armis Users">
+    <view name="armis_users"/>
+    <view name="armis_roles"/>
   </collection>
 
   <!-- =================================================================== -->
-  <!-- Armis Dashboards                                                    -->
+  <!-- Help                                                                -->
   <!-- =================================================================== -->
-  <collection label="Armis Dashboards">
-    <view name="alerts"/>
-    <view name="alerts_overview_syslog"/>
-    <view name="alerts_overview_api"/>
-    <view name="devices"/>
-    <view name="devices_overview"/>
-    <view name="vulnerability"/>
-    <view name="vulnerabilities_overview"/>
-    <view name="affected_devices"/>
-    <view name="armis_vulnerability_and_devices"/>
-    <view name="armis_boundaries"/>
-    <view name="armis_certificate"/>
-  </collection>
-
-  <!-- =================================================================== -->
-  <!-- Armis Help                                                          -->
-  <!-- =================================================================== -->
-  <collection label="Armis Help">
+  <collection label="Help">
     <view name="armis_help"/>
+  </collection>
+
+  <!-- =================================================================== -->
+  <!-- About                                                               -->
+  <!-- =================================================================== -->
+  <collection label="About">
     <view name="armis_about"/>
+  </collection>
+
+  <!-- =================================================================== -->
+  <!-- Documentation                                                       -->
+  <!-- =================================================================== -->
+  <collection label="Documentation">
     <view name="armis_documentation"/>
   </collection>
 
