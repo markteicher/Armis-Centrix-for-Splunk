@@ -53,18 +53,16 @@
 =============================================================================
 -->
 
-<dashboard version="1.1" theme="light">
-<label>Help</label>
+<form version="1.1" theme="light">
+  <label>Help</label>
 
-<!-- =============================================================== -->
-<!-- API AUTHENTICATION                                              -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>API Authentication</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- API AUTHENTICATION                                              -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>API Authentication</title>
+      <html><![CDATA[
 POST /api/v1/access_token/
 
 URI Parameters
@@ -85,20 +83,17 @@ HTTP Status Codes
 
 200 OK
 400 Bad request
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- SEARCH API                                                      -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Search API</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- SEARCH API                                                      -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Search API</title>
+      <html><![CDATA[
 GET /api/v1/search/?aql=<query>
 
 Datasets
@@ -120,20 +115,17 @@ from
 Example
 
 GET /api/v1/search/?aql=in:devices
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- ARMIS STANDARD QUERY                                            -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Armis Standard Query (ASQ)</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- ARMIS STANDARD QUERY                                            -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Armis Standard Query (ASQ)</title>
+      <html><![CDATA[
 Examples
 
 in:devices
@@ -152,20 +144,17 @@ in:alerts after:2022-03-11T14:00:00 before:2022-03-16T14:00:00
 Example
 
 in:auditLog timeFrame:"7 Days" user:"John"
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- DEVICES                                                         -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Devices</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- DEVICES                                                         -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Devices</title>
+      <html><![CDATA[
 GET /api/v1/search/?aql=in:devices
 
 Device attributes returned
@@ -185,214 +174,178 @@ riskLevel
 tags
 networkId
 siteId
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- BRANDS                                                          -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Brands</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- BRANDS                                                          -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Brands</title>
+      <html><![CDATA[
 manufacturer
 vendor
 productFamily
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- MODELS                                                          -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Models</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- MODELS                                                          -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Models</title>
+      <html><![CDATA[
 model
 modelNumber
 hardwareVersion
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- DEVICE CATEGORIES                                               -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Device Categories</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- DEVICE CATEGORIES                                               -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Device Categories</title>
+      <html><![CDATA[
 IT
 OT
 IoT
 IoMT
 Network Infrastructure
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- DEVICE SUBCATEGORIES                                            -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Device Subcategories</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- DEVICE SUBCATEGORIES                                            -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Device Subcategories</title>
+      <html><![CDATA[
 Server
 Router
 PLC
 Medical Imaging
 Camera
 Printer
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- DEVICE PROFILES                                                 -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Device Profiles</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- DEVICE PROFILES                                                 -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Device Profiles</title>
+      <html><![CDATA[
 Device fingerprint profiles
 
 protocol behavior
 service fingerprints
 network activity patterns
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- OPERATING SYSTEMS                                               -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Operating Systems</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- OPERATING SYSTEMS                                               -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Operating Systems</title>
+      <html><![CDATA[
 os
 osVersion
 kernelVersion
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- SOFTWARE                                                        -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Software</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- SOFTWARE                                                        -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Software</title>
+      <html><![CDATA[
 applicationName
 applicationVersion
 vendor
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- FIRMWARE                                                        -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Firmware</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- FIRMWARE                                                        -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Firmware</title>
+      <html><![CDATA[
 firmwareVersion
 firmwareBuild
 firmwareVendor
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- SERVICES                                                        -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Services</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- SERVICES                                                        -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Services</title>
+      <html><![CDATA[
 serviceName
 protocol
 port
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- PORTS                                                           -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Ports</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- PORTS                                                           -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Ports</title>
+      <html><![CDATA[
 port
 protocol
 service
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- INTERFACES                                                      -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Interfaces</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- INTERFACES                                                      -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Interfaces</title>
+      <html><![CDATA[
 macAddress
 ipAddress
 networkInterface
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- ALERTS                                                          -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Alerts</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- ALERTS                                                          -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Alerts</title>
+      <html><![CDATA[
 PATCH /api/v1/alerts/{alert_id}
 
 Fields
@@ -408,37 +361,31 @@ connectionIds
 activityUUIDs
 time
 lastAlertUpdateTime
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- NOTIFICATIONS                                                   -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Notifications</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- NOTIFICATIONS                                                   -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Notifications</title>
+      <html><![CDATA[
 Alert notifications
 policy notifications
 integration notifications
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- ACTIVITY EVENTS                                                 -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Activity Events</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- ACTIVITY EVENTS                                                 -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Activity Events</title>
+      <html><![CDATA[
 GET /api/v1/search/?aql=in:activity
 
 Fields
@@ -452,20 +399,17 @@ sourcePort
 destinationPort
 connectionId
 time
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- CONNECTIONS                                                     -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Connections</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- CONNECTIONS                                                     -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Connections</title>
+      <html><![CDATA[
 GET /api/v1/search/?aql=in:connections
 
 Fields
@@ -476,56 +420,47 @@ destinationDeviceId
 protocol
 port
 time
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- NETWORKS                                                        -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Networks</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- NETWORKS                                                        -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Networks</title>
+      <html><![CDATA[
 networkId
 subnet
 gateway
 vlan
 siteId
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- BOUNDARIES                                                      -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Boundaries</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- BOUNDARIES                                                      -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Boundaries</title>
+      <html><![CDATA[
 boundaryId
 name
 type
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- TAGS                                                            -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Tags</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- TAGS                                                            -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Tags</title>
+      <html><![CDATA[
 POST /api/v1/devices_tags/
 
 Fields
@@ -534,39 +469,33 @@ ips
 macs
 tags
 remove
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- POLICIES                                                        -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Policies</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- POLICIES                                                        -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Policies</title>
+      <html><![CDATA[
 policyId
 policyTitle
 policyLabels
 policyType
 policyStatus
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- INTEGRATIONS                                                    -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Integrations</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- INTEGRATIONS                                                    -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Integrations</title>
+      <html><![CDATA[
 GET /api/v2/integrations/
 
 Parameters
@@ -582,127 +511,106 @@ integrationState
 collectorId
 creationTime
 changeTime
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- COLLECTORS                                                      -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Collectors</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- COLLECTORS                                                      -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Collectors</title>
+      <html><![CDATA[
 collectorId
 collectorName
 ipAddress
 deploymentType
 status
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- SENSORS                                                         -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Sensors</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- SENSORS                                                         -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Sensors</title>
+      <html><![CDATA[
 sensorId
 sensorName
 collectorId
 sensorStatus
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- USERS                                                           -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Users</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- USERS                                                           -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Users</title>
+      <html><![CDATA[
 userId
 username
 email
 roles
 boundaries
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- ROLES                                                           -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Roles</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- ROLES                                                           -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Roles</title>
+      <html><![CDATA[
 roleId
 roleName
 permissions
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- PERMISSIONS                                                     -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Permissions</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- PERMISSIONS                                                     -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Permissions</title>
+      <html><![CDATA[
 read
 write
 admin
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- USER ACTIVITY                                                   -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>User Activity</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- USER ACTIVITY                                                   -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>User Activity</title>
+      <html><![CDATA[
 user actions
 login attempts
 configuration changes
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- AUDIT LOGS                                                      -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Audit Logs</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- AUDIT LOGS                                                      -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Audit Logs</title>
+      <html><![CDATA[
 GET /api/v1/search/?aql=in:auditLog
 
 Filters
@@ -720,247 +628,204 @@ timeUtc
 trigger
 user
 userIp
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- SITES                                                           -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Sites</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- SITES                                                           -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Sites</title>
+      <html><![CDATA[
 siteId
 siteName
 location
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- RISK FACTORS                                                    -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Risk Factors</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- RISK FACTORS                                                    -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Risk Factors</title>
+      <html><![CDATA[
 riskLevel
 riskScore
 riskCategory
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- ENFORCEMENT                                                     -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Enforcement</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- ENFORCEMENT                                                     -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Enforcement</title>
+      <html><![CDATA[
 network enforcement
 policy enforcement
 integration enforcement
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- VULNERABILITIES                                                 -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Vulnerabilities</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- VULNERABILITIES                                                 -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Vulnerabilities</title>
+      <html><![CDATA[
 cveId
 severity
 cvss
 affectedDevices
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- VIPR                                                            -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>VIPR</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- VIPR                                                            -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>VIPR</title>
+      <html><![CDATA[
 Vulnerability Prioritization and Remediation
 
 exploitability
 exposure
 threat intelligence correlation
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- CVE INTELLIGENCE                                                -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>CVE Intelligence</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- CVE INTELLIGENCE                                                -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>CVE Intelligence</title>
+      <html><![CDATA[
 https://cve.armis.com
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- THREAT INTELLIGENCE                                             -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Threat Intelligence</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- THREAT INTELLIGENCE                                             -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Threat Intelligence</title>
+      <html><![CDATA[
 threat actors
 malware indicators
 attack campaigns
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- ASSET INTELLIGENCE ENGINE                                       -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Asset Intelligence Engine</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- ASSET INTELLIGENCE ENGINE                                       -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Asset Intelligence Engine</title>
+      <html><![CDATA[
 device fingerprinting
 behavioral analysis
 classification engine
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- EXPOSURE ANALYTICS                                              -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Exposure Analytics</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- EXPOSURE ANALYTICS                                              -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Exposure Analytics</title>
+      <html><![CDATA[
 asset exposure metrics
 attack surface analysis
 risk posture insights
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- PLATFORM HEALTH                                                 -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Platform Health</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- PLATFORM HEALTH                                                 -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Platform Health</title>
+      <html><![CDATA[
 collector status
 sensor status
 system uptime
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- REPORTING                                                       -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Reporting</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- REPORTING                                                       -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Reporting</title>
+      <html><![CDATA[
 GET /api/v1/report-results/{report_id}
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- CONFIGURATION                                                   -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Configuration</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- CONFIGURATION                                                   -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Configuration</title>
+      <html><![CDATA[
 system configuration
 integration configuration
 collector configuration
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- PLATFORM VERSION                                                -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Platform Version</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- PLATFORM VERSION                                                -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Platform Version</title>
+      <html><![CDATA[
 Armis Centrix platform version information
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-<!-- =============================================================== -->
-<!-- PAGINATION                                                      -->
-<!-- =============================================================== -->
-
-<row>
-<panel>
-<title>Pagination</title>
-<html><![CDATA[
-
+  <!-- =============================================================== -->
+  <!-- PAGINATION                                                      -->
+  <!-- =============================================================== -->
+  <row>
+    <panel>
+      <title>Pagination</title>
+      <html><![CDATA[
 from
 length
 
 Example
 
 GET /api/v1/search/?aql=in:devices&length=100&from=0
+      ]]></html>
+    </panel>
+  </row>
 
-]]></html>
-</panel>
-</row>
-
-</dashboard>
+</form>
