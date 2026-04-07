@@ -33,56 +33,42 @@ inspect and copy the tenant root CA certificate stored within Splunk.
 =============================================================================
 -->
 
-<dashboard version="1.1">
+<form version="1.1">
+  <label>Armis Root CA Certificate</label>
+  <description>Tenant Root Certificate Authority used by the Armis platform</description>
 
-<label>🔐 Armis Root CA Certificate</label>
-<description>Tenant Root Certificate Authority used by the Armis platform</description>
+  <init>
+    <set token="index">armis</set>
+  </init>
 
-<init>
-  <set token="index">armis</set>
-</init>
+  <!-- ========================================================= -->
+  <!-- Root Certificate -->
+  <!-- ========================================================= -->
 
-<!-- ========================================================= -->
-<!-- Root Certificate -->
-<!-- ========================================================= -->
+  <row>
+    <panel>
+      <title>Tenant Root CA Certificate (PEM)</title>
+      <table>
+        <search>
+          <query>index=$index$ sourcetype=armis_certificate
+| table certificate</query>
+          <earliest>0</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+      </table>
+    </panel>
+  </row>
 
-<row>
+  <!-- ========================================================= -->
+  <!-- Certificate Context -->
+  <!-- ========================================================= -->
 
-<panel>
-
-<title>📜 Tenant Root CA Certificate (PEM)</title>
-
-<table>
-
-<search>
-<query>
-index=$index$ sourcetype=armis_certificate
-| table certificate
-</query>
-<earliest>0</earliest>
-<latest>now</latest>
-</search>
-
-<option name="wrap">true</option>
-<option name="rowNumbers">false</option>
-
-</table>
-
-</panel>
-
-</row>
-
-<!-- ========================================================= -->
-<!-- Certificate Context -->
-<!-- ========================================================= -->
-
-<row>
-
-<panel>
-
-<html>
-
-<h2>📚 About the Armis Root CA Certificate</h2>
+  <row>
+    <panel>
+      <html><![CDATA[
+<h2>About the Armis Root CA Certificate</h2>
 
 <p>
 The Armis Root Certificate Authority (CA) certificate is used to establish
@@ -101,11 +87,7 @@ Administrators may copy the certificate content from the table above and
 install it in systems that require validation of the Armis platform's
 certificate chain.
 </p>
-
-</html>
-
-</panel>
-
-</row>
-
-</dashboard>
+      ]]></html>
+    </panel>
+  </row>
+</form>
