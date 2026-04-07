@@ -16,8 +16,10 @@ and mapping Armis functionality into Splunk dashboards and searches.
 Content is derived from the Armis API Guide.
 
 =============================================================================
---><dashboard version="1.1" theme="light">
-  <label>🔎 Armis Centrix™ for Splunk App Help Page</label>
+-->
+<form version="1.1" theme="light">
+  <label>Armis Centrix™ for Splunk App Help Page</label>
+
   <!-- =============================================================== -->
   <!-- PLATFORM OVERVIEW                                               -->
   <!-- =============================================================== -->
@@ -48,11 +50,11 @@ Content is derived from the Armis API Guide.
   <!-- =============================================================== -->
   <!-- API BEST PRACTICES                                              -->
   <!-- =============================================================== -->
+
   <row>
     <panel>
-      <title>🧠 Armis Centrix™ Platform Overview</title>
-      <html>
-      
+      <title>Armis Centrix™ Platform Overview</title>
+      <html><![CDATA[
         <p>
         Armis Centrix™ provides cyber exposure management by discovering,
         classifying, and monitoring assets across IT, OT, IoT, and IoMT
@@ -69,13 +71,12 @@ Content is derived from the Armis API Guide.
         This Splunk application uses those APIs to ingest Armis telemetry
         and present operational dashboards, analytics, and reporting.
         </p>
-       
-      </html>
+      ]]></html>
     </panel>
+
     <panel>
-      <title>⚙️ API Best Practices</title>
-      <html>
-      
+      <title>API Best Practices</title>
+      <html><![CDATA[
         <ul>
         <li>Always authenticate using an access token.</li>
         <li>Use pagination for large data sets.</li>
@@ -83,15 +84,14 @@ Content is derived from the Armis API Guide.
         <li>Use ASQ queries to retrieve targeted datasets.</li>
         <li>Validate API responses and error codes.</li>
         </ul>
-       
-      </html>
+      ]]></html>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>🔐 API Authentication</title>
-      <html>
-        
+      <title>API Authentication</title>
+      <html><![CDATA[
         <p>
         All Armis API requests require authentication using a temporary
         access token.
@@ -126,13 +126,12 @@ POST /api/v1/access_token/
         The token must be included in all API requests using the
         Authorization header.
         </p>
-       
-      </html>
+      ]]></html>
     </panel>
+
     <panel>
-      <title>📄 Pagination</title>
-      <html>
-        
+      <title>Pagination</title>
+      <html><![CDATA[
         <p>
         Large datasets must be retrieved using pagination parameters.
         </p>
@@ -149,21 +148,19 @@ POST /api/v1/access_token/
 GET /api/v1/search/?aql=in:devices and length=100
 GET /api/v1/search/?aql=in:devices and length=100 and from=100
         </pre>
-  
 
         <p>
         The response returns metadata including total record counts
         and the next pagination offset.
         </p>
-       
-      </html>
+      ]]></html>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>🔎 Armis Search API (ASQ)</title>
-      <html>
-       
+      <title>Armis Search API (ASQ)</title>
+      <html><![CDATA[
         <p>
         The primary API used to retrieve information from Armis is the
         Search API.
@@ -191,13 +188,12 @@ in:alerts after:2022-03-11T14:00:00 before:2022-03-16T14:00:00
         ASQ queries can be used to retrieve alerts, devices, activity,
         and other telemetry from the Armis platform.
         </p>
-       
-      </html>
+      ]]></html>
     </panel>
+
     <panel>
-      <title>💻 Devices API</title>
-      <html>
-        
+      <title>Devices API</title>
+      <html><![CDATA[
         <p>
         Devices represent discovered assets in the environment including
         IT devices, OT equipment, IoT devices, and unmanaged systems.
@@ -219,13 +215,12 @@ GET /api/v1/search/?aql=in:devices
         <p>
         The Armis API supports page sizes up to 5000 records.
         </p>
-       
-      </html>
+      ]]></html>
     </panel>
+
     <panel>
-      <title>🚨 Alerts API</title>
-      <html>
-       
+      <title>Alerts API</title>
+      <html><![CDATA[
         <p>
         Alerts represent security events or anomalies detected within
         the Armis environment.
@@ -254,15 +249,14 @@ GET /api/v1/search/?aql=in:alerts
         Alerts may represent anomalous behavior, security violations,
         or suspicious activity detected by Armis.
         </p>
-       
-      </html>
+      ]]></html>
     </panel>
   </row>
+
   <row>
     <panel>
-      <title>📡 Activity Events</title>
-      <html>
-       
+      <title>Activity Events</title>
+      <html><![CDATA[
         <p>
         Activity events represent network or device behavior detected
         by Armis sensors and collectors.
@@ -286,13 +280,12 @@ GET /api/v1/search/?aql=in:activity
         <li>sensor.name</li>
         <li>time</li>
         </ul>
-       
-      </html>
+      ]]></html>
     </panel>
+
     <panel>
-      <title>🏷️ Device Tags</title>
-      <html>
-       
+      <title>Device Tags</title>
+      <html><![CDATA[
         <p>
         Device tags allow administrators to assign labels to assets
         for grouping and operational management.
@@ -316,13 +309,12 @@ POST /api/v1/devices_tags/
         <p>
         Tags can be applied or removed for sets of devices.
         </p>
-      
-      </html>
+      ]]></html>
     </panel>
+
     <panel>
-      <title>🔗 Integrations</title>
-      <html>
-        
+      <title>Integrations</title>
+      <html><![CDATA[
         <p>
         Integrations connect the Armis platform with external systems
         such as SIEMs, ticketing systems, or enforcement platforms.
@@ -344,8 +336,7 @@ GET /api/v2/integrations/
         <li>changeTime</li>
         <li>collectorId</li>
         </ul>
-       
-      </html>
+      ]]></html>
     </panel>
   </row>
-</dashboard>
+</form>o
