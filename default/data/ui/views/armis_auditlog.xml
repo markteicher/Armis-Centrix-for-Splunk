@@ -44,8 +44,8 @@ Design Standards:
 =============================================================================
 -->
 
-<dashboard version="1.1" theme="light">
-  <label>📘 Armis Audit Log</label>
+<form version="1.1" theme="light">
+  <label>Armis Audit Log</label>
   <description>Operational monitoring and visibility into Armis audit log activity</description>
 
   <init>
@@ -96,38 +96,32 @@ index=$index$ sourcetype=armis_auditlog
 
   <row>
     <panel>
-      <title>🔢 Total Audit Events</title>
+      <title>Total Audit Events</title>
       <single>
         <search base="base_auditlog">
-          <query><![CDATA[
-| stats count
-          ]]></query>
+          <query>| stats count</query>
         </search>
         <option name="drilldown">none</option>
       </single>
     </panel>
 
     <panel>
-      <title>👤 User Action Events</title>
+      <title>User Action Events</title>
       <single>
         <search base="base_auditlog">
-          <query><![CDATA[
-| search trigger="User Action"
-| stats count
-          ]]></query>
+          <query>| search trigger="User Action"
+| stats count</query>
         </search>
         <option name="drilldown">none</option>
       </single>
     </panel>
 
     <panel>
-      <title>🔐 Login Attempts</title>
+      <title>Login Attempts</title>
       <single>
         <search base="base_auditlog">
-          <query><![CDATA[
-| search action="Login Attempt"
-| stats count
-          ]]></query>
+          <query>| search action="Login Attempt"
+| stats count</query>
         </search>
         <option name="drilldown">none</option>
       </single>
@@ -140,13 +134,11 @@ index=$index$ sourcetype=armis_auditlog
 
   <row>
     <panel>
-      <title>📋 Audit Events by Action</title>
+      <title>Audit Events by Action</title>
       <table>
         <search base="base_auditlog">
-          <query><![CDATA[
-| stats count by action
-| sort -count
-          ]]></query>
+          <query>| stats count by action
+| sort -count</query>
         </search>
         <option name="count">25</option>
         <option name="drilldown">none</option>
@@ -155,13 +147,11 @@ index=$index$ sourcetype=armis_auditlog
     </panel>
 
     <panel>
-      <title>📋 Audit Events by Trigger</title>
+      <title>Audit Events by Trigger</title>
       <table>
         <search base="base_auditlog">
-          <query><![CDATA[
-| stats count by trigger
-| sort -count
-          ]]></query>
+          <query>| stats count by trigger
+| sort -count</query>
         </search>
         <option name="count">25</option>
         <option name="drilldown">none</option>
@@ -169,14 +159,12 @@ index=$index$ sourcetype=armis_auditlog
     </panel>
 
     <panel>
-      <title>📋 Audit Events by User</title>
+      <title>Audit Events by User</title>
       <table>
         <search base="base_auditlog">
-          <query><![CDATA[
-| stats count by user
+          <query>| stats count by user
 | sort -count
-| head 25
-          ]]></query>
+| head 25</query>
         </search>
         <option name="count">25</option>
         <option name="drilldown">none</option>
@@ -191,13 +179,11 @@ index=$index$ sourcetype=armis_auditlog
 
   <row>
     <panel>
-      <title>📋 Audit Events by User IP</title>
+      <title>Audit Events by User IP</title>
       <table>
         <search base="base_auditlog">
-          <query><![CDATA[
-| stats count by userIp
-| sort -count
-          ]]></query>
+          <query>| stats count by userIp
+| sort -count</query>
         </search>
         <option name="count">25</option>
         <option name="drilldown">none</option>
@@ -211,13 +197,11 @@ index=$index$ sourcetype=armis_auditlog
 
   <row>
     <panel>
-      <title>📑 Audit Log Detailed Listing</title>
+      <title>Audit Log Detailed Listing</title>
       <table>
         <search base="base_auditlog">
-          <query><![CDATA[
-| sort -timeUtc
-| table timeUtc action trigger user userIp additionalInfoType additionalInfoData id
-          ]]></query>
+          <query>| sort -timeUtc
+| table timeUtc action trigger user userIp additionalInfoType additionalInfoData id</query>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="count">50</option>
@@ -230,4 +214,4 @@ index=$index$ sourcetype=armis_auditlog
       </table>
     </panel>
   </row>
-</dashboard>
+</form>
