@@ -54,8 +54,8 @@ Design Standards:
 =============================================================================
 -->
 
-<dashboard version="1.1" theme="light">
-  <label>📝 Armis Activity Log</label>
+<form version="1.1" theme="light">
+  <label>Armis Activity Log</label>
   <description>Operational monitoring and event analysis for Armis activity log data</description>
 
   <init>
@@ -81,14 +81,12 @@ Design Standards:
       <fieldForLabel>site</fieldForLabel>
       <fieldForValue>site</fieldForValue>
       <search>
-        <query>
-index=$index$ sourcetype=armis_activity_log
+        <query>index=$index$ sourcetype=armis_activity_log
 | spath path=site.name output=site_name
 | search site_name=*
 | stats count by site_name
 | rename site_name as site
-| sort site
-        </query>
+| sort site</query>
         <earliest>$time_range.earliest$</earliest>
         <latest>$time_range.latest$</latest>
       </search>
@@ -100,8 +98,7 @@ index=$index$ sourcetype=armis_activity_log
   <!-- ========================================================= -->
 
   <search id="base_activity_log">
-    <query>
-      <![CDATA[
+    <query><![CDATA[
 index=$index$ sourcetype=armis_activity_log
 | spath path=sensor.name output=sensor_name
 | spath path=sensor.type output=sensor_type
@@ -121,8 +118,7 @@ index=$index$ sourcetype=armis_activity_log
 | eval site_match=if("$site_filter$"="*" OR site_name="$site_filter$",1,0)
 | where site_match=1
 | fields - site_match
-      ]]>
-    </query>
+    ]]></query>
     <earliest>$time_range.earliest$</earliest>
     <latest>$time_range.latest$</latest>
   </search>
@@ -133,49 +129,41 @@ index=$index$ sourcetype=armis_activity_log
 
   <row>
     <panel>
-      <title>🔢 Total Activity Events</title>
+      <title>Total Activity Events</title>
       <single>
         <search base="base_activity_log">
-          <query><![CDATA[
-| stats count as Total_Activity_Events
-          ]]></query>
+          <query>| stats count as Total_Activity_Events</query>
         </search>
         <option name="drilldown">none</option>
       </single>
     </panel>
 
     <panel>
-      <title>🚨 Critical Severity Events</title>
+      <title>Critical Severity Events</title>
       <single>
         <search base="base_activity_log">
-          <query><![CDATA[
-| search severity="Critical"
-| stats count as Critical_Severity_Events
-          ]]></query>
+          <query>| search severity="Critical"
+| stats count as Critical_Severity_Events</query>
         </search>
         <option name="drilldown">none</option>
       </single>
     </panel>
 
     <panel>
-      <title>📍 Sites Reporting Activity</title>
+      <title>Sites Reporting Activity</title>
       <single>
         <search base="base_activity_log">
-          <query><![CDATA[
-| stats dc(site_name) as Sites_Reporting_Activity
-          ]]></query>
+          <query>| stats dc(site_name) as Sites_Reporting_Activity</query>
         </search>
         <option name="drilldown">none</option>
       </single>
     </panel>
 
     <panel>
-      <title>📡 Sensors Reporting Activity</title>
+      <title>Sensors Reporting Activity</title>
       <single>
         <search base="base_activity_log">
-          <query><![CDATA[
-| stats dc(sensor_name) as Sensors_Reporting_Activity
-          ]]></query>
+          <query>| stats dc(sensor_name) as Sensors_Reporting_Activity</query>
         </search>
         <option name="drilldown">none</option>
       </single>
@@ -188,39 +176,33 @@ index=$index$ sourcetype=armis_activity_log
 
   <row>
     <panel>
-      <title>📊 Activity by Severity</title>
+      <title>Activity by Severity</title>
       <chart>
         <search base="base_activity_log">
-          <query><![CDATA[
-| stats count by severity
-| sort -count
-          ]]></query>
+          <query>| stats count by severity
+| sort -count</query>
         </search>
         <option name="charting.chart">pie</option>
       </chart>
     </panel>
 
     <panel>
-      <title>📊 Activity by Type</title>
+      <title>Activity by Type</title>
       <chart>
         <search base="base_activity_log">
-          <query><![CDATA[
-| stats count by type
-| sort -count
-          ]]></query>
+          <query>| stats count by type
+| sort -count</query>
         </search>
         <option name="charting.chart">pie</option>
       </chart>
     </panel>
 
     <panel>
-      <title>📊 Activity by Site</title>
+      <title>Activity by Site</title>
       <chart>
         <search base="base_activity_log">
-          <query><![CDATA[
-| stats count by site_name
-| sort -count
-          ]]></query>
+          <query>| stats count by site_name
+| sort -count</query>
         </search>
         <option name="charting.chart">column</option>
       </chart>
@@ -233,27 +215,23 @@ index=$index$ sourcetype=armis_activity_log
 
   <row>
     <panel>
-      <title>📊 Activity by Sensor Type</title>
+      <title>Activity by Sensor Type</title>
       <chart>
         <search base="base_activity_log">
-          <query><![CDATA[
-| stats count by sensor_type
-| sort -count
-          ]]></query>
+          <query>| stats count by sensor_type
+| sort -count</query>
         </search>
         <option name="charting.chart">column</option>
       </chart>
     </panel>
 
     <panel>
-      <title>📊 Activity by Sensor Name</title>
+      <title>Activity by Sensor Name</title>
       <table>
         <search base="base_activity_log">
-          <query><![CDATA[
-| stats count by sensor_name
+          <query>| stats count by sensor_name
 | sort -count
-| head 20
-          ]]></query>
+| head 20</query>
         </search>
         <option name="count">20</option>
         <option name="drilldown">none</option>
@@ -261,13 +239,11 @@ index=$index$ sourcetype=armis_activity_log
     </panel>
 
     <panel>
-      <title>📊 Activity by Risk Level</title>
+      <title>Activity by Risk Level</title>
       <table>
         <search base="base_activity_log">
-          <query><![CDATA[
-| stats count by riskLevel
-| sort -count
-          ]]></query>
+          <query>| stats count by riskLevel
+| sort -count</query>
         </search>
         <option name="count">20</option>
         <option name="drilldown">none</option>
@@ -281,12 +257,10 @@ index=$index$ sourcetype=armis_activity_log
 
   <row>
     <panel>
-      <title>📈 Activity Events Over Time</title>
+      <title>Activity Events Over Time</title>
       <chart>
         <search base="base_activity_log">
-          <query><![CDATA[
-| timechart span=1d count as Activity_Events
-          ]]></query>
+          <query>| timechart span=1d count as Activity_Events</query>
         </search>
         <option name="charting.chart">line</option>
       </chart>
@@ -299,13 +273,11 @@ index=$index$ sourcetype=armis_activity_log
 
   <row>
     <panel>
-      <title>📋 Recent Activity Records</title>
+      <title>Recent Activity Records</title>
       <table>
         <search base="base_activity_log">
-          <query><![CDATA[
-| sort -_time
-| table activity_time title type severity site_name site_location sensor_name sensor_type device_id manufacturer model riskLevel activityUUID
-          ]]></query>
+          <query>| sort -_time
+| table activity_time title type severity site_name site_location sensor_name sensor_type device_id manufacturer model riskLevel activityUUID</query>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="count">20</option>
@@ -318,4 +290,4 @@ index=$index$ sourcetype=armis_activity_log
       </table>
     </panel>
   </row>
-</dashboard>
+</form>
