@@ -48,297 +48,242 @@ Design Standards:
 =============================================================================
 -->
 
-<dashboard version="1.1">
+<form version="1.1">
+  <label>Armis Alerts</label>
+  <description>Operational monitoring and comparative analysis of Armis alerts</description>
 
-<label>🚨 Armis Alerts</label>
-<description>Operational monitoring and comparative analysis of Armis alerts</description>
-
-<init>
+  <init>
     <set token="index">armis</set>
-</init>
+  </init>
 
-<!-- ========================================================= -->
-<!-- Global Filters -->
-<!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- Global Filters -->
+  <!-- ========================================================= -->
 
-<input type="time" token="time_range">
-<label>Time Range</label>
-<default>
-<earliest>-30d@d</earliest>
-<latest>now</latest>
-</default>
-</input>
+  <fieldset submitButton="false">
+    <input type="time" token="time_range">
+      <label>Time Range</label>
+      <default>
+        <earliest>-30d@d</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
 
-<input type="dropdown" token="site_filter">
-<label>Site</label>
-<choice value="*">All Sites</choice>
-<fieldForLabel>site</fieldForLabel>
-<fieldForValue>site</fieldForValue>
-<search>
-<query>
-index=$index$ sourcetype=armis_alerts
-| stats count by site
-</query>
-</search>
-</input>
+    <input type="dropdown" token="site_filter">
+      <label>Site</label>
+      <choice value="*">All Sites</choice>
+      <fieldForLabel>site</fieldForLabel>
+      <fieldForValue>site</fieldForValue>
+      <search>
+        <query>index=$index$ sourcetype=armis_alerts
+| stats count by site</query>
+      </search>
+    </input>
+  </fieldset>
 
-<!-- ========================================================= -->
-<!-- Base Search -->
-<!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- Base Search -->
+  <!-- ========================================================= -->
 
-<search id="base_alerts">
-<query>
-index=$index$ sourcetype=armis_alerts site="$site_filter$"
-| dedup id
-</query>
-<earliest>$time_range.earliest$</earliest>
-<latest>$time_range.latest$</latest>
-</search>
+  <search id="base_alerts">
+    <query>index=$index$ sourcetype=armis_alerts site="$site_filter$"
+| dedup id</query>
+    <earliest>$time_range.earliest$</earliest>
+    <latest>$time_range.latest$</latest>
+  </search>
 
-<!-- ========================================================= -->
-<!-- 🚨 Alert Overview -->
-<!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- Alert Overview -->
+  <!-- ========================================================= -->
 
-<row>
+  <row>
+    <panel>
+      <title>Total Alerts</title>
+      <single>
+        <search base="base_alerts">
+          <query>| stats count as Total_Alerts</query>
+        </search>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
 
-<panel>
-<title>🚨 Total Alerts</title>
-<single>
-<search base="base_alerts">
-<query>
-| stats count as Total_Alerts
-</query>
-</search>
-<option name="drilldown">none</option>
-</single>
-</panel>
+    <panel>
+      <title>Alerts by Severity</title>
+      <chart>
+        <search base="base_alerts">
+          <query>| stats count by severity
+| sort -count</query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
 
-<panel>
-<title>📊 Alerts by Severity</title>
-<chart>
-<search base="base_alerts">
-<query>
-| stats count by severity
+    <panel>
+      <title>Alerts by Status</title>
+      <chart>
+        <search base="base_alerts">
+          <query>| stats count by status
+| sort -count</query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>Alerts by Title</title>
+      <chart>
+        <search base="base_alerts">
+          <query>| stats count by title
 | sort -count
-</query>
-</search>
-<option name="charting.chart">pie</option>
-</chart>
-</panel>
+| head 10</query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+  </row>
 
-<panel>
-<title>📊 Alerts by Status</title>
-<chart>
-<search base="base_alerts">
-<query>
-| stats count by status
-| sort -count
-</query>
-</search>
-<option name="charting.chart">pie</option>
-</chart>
-</panel>
+  <!-- ========================================================= -->
+  <!-- Alerts Over Time -->
+  <!-- ========================================================= -->
 
-<panel>
-<title>📊 Alerts by Title</title>
-<chart>
-<search base="base_alerts">
-<query>
-| stats count by title
-| sort -count
-| head 10
-</query>
-</search>
-<option name="charting.chart">pie</option>
-</chart>
-</panel>
+  <row>
+    <panel>
+      <title>Alerts Over Time by Severity</title>
+      <chart>
+        <search base="base_alerts">
+          <query>| timechart span=1d count by severity</query>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+    </panel>
+  </row>
 
-</row>
+  <!-- ========================================================= -->
+  <!-- Alert Context -->
+  <!-- ========================================================= -->
 
-<!-- ========================================================= -->
-<!-- 📈 Alerts Over Time -->
-<!-- ========================================================= -->
+  <row>
+    <panel>
+      <title>Alerts by Device Type</title>
+      <chart>
+        <search base="base_alerts">
+          <query>| stats count by deviceType severity
+| sort -count</query>
+        </search>
+        <option name="charting.chart">column</option>
+      </chart>
+    </panel>
 
-<row>
+    <panel>
+      <title>Alerts by Site</title>
+      <chart>
+        <search base="base_alerts">
+          <query>| stats count by site severity
+| sort -count</query>
+        </search>
+        <option name="charting.chart">column</option>
+      </chart>
+    </panel>
+  </row>
 
-<panel>
-<title>📈 Alerts Over Time by Severity</title>
-<chart>
-<search base="base_alerts">
-<query>
-| timechart span=1d count by severity
-</query>
-</search>
-<option name="charting.chart">line</option>
-</chart>
-</panel>
+  <row>
+    <panel>
+      <title>Alerts by Category</title>
+      <chart>
+        <search base="base_alerts">
+          <query>| stats count by category
+| sort -count</query>
+        </search>
+        <option name="charting.chart">column</option>
+      </chart>
+    </panel>
 
-</row>
+    <panel>
+      <title>Devices Impacted by Alerts</title>
+      <single>
+        <search base="base_alerts">
+          <query>| stats dc(device) as Devices_Impacted</query>
+        </search>
+      </single>
+    </panel>
+  </row>
 
-<!-- ========================================================= -->
-<!-- 📊 Alert Context -->
-<!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- Comparative Alert Trends -->
+  <!-- ========================================================= -->
 
-<row>
+  <row>
+    <panel>
+      <title>Day-over-Day Alerts</title>
+      <chart>
+        <search base="base_alerts">
+          <query>| timechart span=1d count as Alerts</query>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+    </panel>
 
-<panel>
-<title>📊 Alerts by Device Type</title>
-<chart>
-<search base="base_alerts">
-<query>
-| stats count by deviceType severity
-| sort -count
-</query>
-</search>
-<option name="charting.chart">column</option>
-</chart>
-</panel>
+    <panel>
+      <title>Week-over-Week Alerts</title>
+      <chart>
+        <search base="base_alerts">
+          <query>| timechart span=1w count as Alerts</query>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+    </panel>
+  </row>
 
-<panel>
-<title>📊 Alerts by Site</title>
-<chart>
-<search base="base_alerts">
-<query>
-| stats count by site severity
-| sort -count
-</query>
-</search>
-<option name="charting.chart">column</option>
-</chart>
-</panel>
+  <row>
+    <panel>
+      <title>Month-over-Month Alerts</title>
+      <chart>
+        <search base="base_alerts">
+          <query>| timechart span=1mon count as Alerts</query>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+    </panel>
 
-</row>
+    <panel>
+      <title>Quarter-over-Quarter Alerts</title>
+      <chart>
+        <search base="base_alerts">
+          <query>| timechart span=1q count as Alerts</query>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+    </panel>
+  </row>
 
-<row>
+  <row>
+    <panel>
+      <title>Year-over-Year Alerts</title>
+      <chart>
+        <search base="base_alerts">
+          <query>| timechart span=1y count as Alerts</query>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+    </panel>
+  </row>
 
-<panel>
-<title>📊 Alerts by Category</title>
-<chart>
-<search base="base_alerts">
-<query>
-| stats count by category
-| sort -count
-</query>
-</search>
-<option name="charting.chart">column</option>
-</chart>
-</panel>
+  <!-- ========================================================= -->
+  <!-- Recent Alerts -->
+  <!-- ========================================================= -->
 
-<panel>
-<title>📊 Devices Impacted by Alerts</title>
-<single>
-<search base="base_alerts">
-<query>
-| stats dc(device) as Devices_Impacted
-</query>
-</search>
-</single>
-</panel>
-
-</row>
-
-<!-- ========================================================= -->
-<!-- 📉 Comparative Alert Trends -->
-<!-- ========================================================= -->
-
-<row>
-
-<panel>
-<title>📉 Day-over-Day Alerts</title>
-<chart>
-<search base="base_alerts">
-<query>
-| timechart span=1d count as Alerts
-</query>
-</search>
-<option name="charting.chart">line</option>
-</chart>
-</panel>
-
-<panel>
-<title>📉 Week-over-Week Alerts</title>
-<chart>
-<search base="base_alerts">
-<query>
-| timechart span=1w count as Alerts
-</query>
-</search>
-<option name="charting.chart">line</option>
-</chart>
-</panel>
-
-</row>
-
-<row>
-
-<panel>
-<title>📉 Month-over-Month Alerts</title>
-<chart>
-<search base="base_alerts">
-<query>
-| timechart span=1mon count as Alerts
-</query>
-</search>
-<option name="charting.chart">line</option>
-</chart>
-</panel>
-
-<panel>
-<title>📉 Quarter-over-Quarter Alerts</title>
-<chart>
-<search base="base_alerts">
-<query>
-| timechart span=1q count as Alerts
-</query>
-</search>
-<option name="charting.chart">line</option>
-</chart>
-</panel>
-
-</row>
-
-<row>
-
-<panel>
-<title>📉 Year-over-Year Alerts</title>
-<chart>
-<search base="base_alerts">
-<query>
-| timechart span=1y count as Alerts
-</query>
-</search>
-<option name="charting.chart">line</option>
-</chart>
-</panel>
-
-</row>
-
-<!-- ========================================================= -->
-<!-- 📋 Recent Alerts -->
-<!-- ========================================================= -->
-
-<row>
-
-<panel>
-<title>📋 Recent Alerts</title>
-
-<table>
-
-<search base="base_alerts">
-<query>
-| sort -_time
-| table _time severity title category status latestActivity device site
-</query>
-</search>
-
-<option name="count">20</option>
-<option name="rowNumbers">true</option>
-<option name="wrap">true</option>
-
-</table>
-
-</panel>
-
-</row>
-
-</dashboard>
+  <row>
+    <panel>
+      <title>Recent Alerts</title>
+      <table>
+        <search base="base_alerts">
+          <query>| sort -_time
+| table _time severity title category status latestActivity device site</query>
+        </search>
+        <option name="count">20</option>
+        <option name="rowNumbers">true</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>
